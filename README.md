@@ -2,6 +2,8 @@
 
 ## 📘 Course Overview
 
+## Course by Donald Zvada && Dr Precious Mdlongwa
+
 Welcome to the most comprehensive R programming course designed to take you from absolute beginner to professional R developer. This course covers everything you need to master R for data science, statistical analysis, machine learning, web applications, and package development.
 
 **Total Estimated Learning Time:** 12 weeks (240+ hours)
