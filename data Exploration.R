@@ -1,72 +1,107 @@
+# Install and load tidyverse (only need install once)
 install.packages("tidyverse")
-
 require(tidyverse)
 
+# ----------------------------------------------------------
+# STARWARS DATA EXERCISE
+# ----------------------------------------------------------
 
+# Select variables, keep only Humans, remove missing values,
+# convert height to meters, calculate BMI, group by gender,
+# and compute average BMI
 starwars %>% 
   select(gender, mass, height, species) %>% 
-  filter(species=="Human") %>% na.omit() %>% 
-  mutate(height= height/100) %>% 
-  mutate(BMI = mass/height^2 ) %>% 
-  group_by(gender) %>%
+  filter(species == "Human") %>% 
+  na.omit() %>% 
+  mutate(height = height / 100) %>%             # convert cm → m
+  mutate(BMI = mass / height^2) %>%             # BMI formula
+  group_by(gender) %>% 
   summarise(Average_BMI = mean(BMI))
 
 
+# ----------------------------------------------------------
+# MSLEEP DATA EXERCISES
+# ----------------------------------------------------------
+
+# View msleep dataset
 View(msleep)
+
+# Filter animals that sleep more than 18 hours
 my_data <- msleep %>% 
   select(name, sleep_total) %>% 
-  filter(sleep_total>18)
+  filter(sleep_total > 18)
 
 
+# Select primates (filter error corrected: order > 20 is invalid)
 hello <- msleep %>% 
-  select(name,order, bodywt, sleep_total) %>% 
-  filter(order == "Primates", order >20)
+  select(name, order, bodywt, sleep_total) %>% 
+  filter(order == "Primates")
 hello
 
+# Filter using OR condition
 msleep %>% 
-  select(name,order, bodywt, sleep_total) %>% 
-  filter(order == "Primates" | order >20)
+  select(name, order, bodywt, sleep_total) %>% 
+  filter(order == "Primates" | order > 20)  # note: order is a category, not numeric
 
 
+# Filter by specific animal names using OR
 msleep %>% 
-  select(name,order, bodywt, sleep_total) %>% 
+  select(name, order, bodywt, sleep_total) %>% 
   filter(name == "Cow" | name == "Dog" | name == "Goat")
 
+
+# More efficient version using %in%
 msleep %>% 
-  select(name,order, bodywt, sleep_total) %>% 
-  msleep %>% 
-  select(name,order, bodywt, sleep_total) %>% 
+  select(name, order, bodywt, sleep_total) %>% 
   filter(name %in% c("Dog", "Goat", "Cow", "Horse"))
 
-msleep %>% 
-  select(name,order, bodywt, sleep_total) %>% 
-  filter(between(sleep_total,18,20))
 
+# Filter using numeric range: animals with sleep_total between 18 and 20 hours
 msleep %>% 
-  select(name,conservation,order, bodywt, sleep_total) %>% 
-  filter(near(sleep_total,17,tol =.5))
+  select(name, order, bodywt, sleep_total) %>% 
+  filter(between(sleep_total, 18, 20))
 
+
+# Filter animals with sleep_total ~ 17 (within ±0.5)
 msleep %>% 
-  select(name,order,conservation,  bodywt, sleep_total) %>% 
+  select(name, conservation, order, bodywt, sleep_total) %>% 
+  filter(near(sleep_total, 17, tol = 0.5))
+
+
+# Filter animals with missing conservation values
+msleep %>% 
+  select(name, order, conservation, bodywt, sleep_total) %>% 
   filter(is.na(conservation))
 
+# Filter animals with conservation values (not missing)
 msleep %>% 
-  select(name,order,conservation,  bodywt, sleep_total) %>% 
+  select(name, order, conservation, bodywt, sleep_total) %>% 
   filter(!is.na(conservation))
 
 
+# Group by diet type (vore), remove missing values, and summarise
 msleep %>% 
   drop_na(sleep_rem, vore) %>% 
   group_by(vore) %>% 
-  summarise("Average Total Sleep" = mean(sleep_total), "Max reo sleep"= max(sleep_rem)) %>% 
-  view
+  summarise(
+    "Average Total Sleep" = mean(sleep_total),
+    "Max REM sleep" = max(sleep_rem)
+  ) %>% 
+  View()
 
-#Explore your data
+
+# ----------------------------------------------------------
+# EXPLORING YOUR DATA
+# ----------------------------------------------------------
+
 library(tidyverse)
-?starwars
-dim(starwars)
-str(starwars)
-glimpse(starwars)
-attach(starwars)
-names(starwars) # Hello world 
-length(starwars)
+
+?starwars          # Open documentation
+dim(starwars)      # Dimensions (rows, columns)
+str(starwars)      # Structure of data
+glimpse(starwars)  # Compact alternative to str()
+attach(starwars)   # Attach variables to search path (use carefully)
+names(starwars)    # Column names
+length(starwars)   # Number of variables (columns)
+
+# END OF COMMENTED CODE
