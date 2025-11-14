@@ -62,4 +62,11 @@ msleep %>%
   view
 
 #Explore your data
-
+library(tidyverse)
+?starwars
+dim(starwars)
+str(starwars)
+glimpse(starwars)
+attach(starwars)
+names(starwars) # Hello world 
+length(starwars)
