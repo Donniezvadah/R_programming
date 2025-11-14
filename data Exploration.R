@@ -454,4 +454,308 @@ numeric_matrix <- matrix(1:4, nrow=2)  # Works
 print("Solution code execution completed successfully!")
 
 
+sales <- 5000
+
+if (sales > 5000) {
+  print("Exceeded sales target.")
+} else if (sales == 5000) {
+  print("Exactly met sales target.")
+} else {
+  print("Below target.")
+}
+
+for (patient_id in 1001:1005) {
+  print(paste("Processing patient", patient_id))
+}
+
+
+month <- 1
+total_expenses <- 0  
+
+while (total_expenses < 5000) {
+  total_expenses <- total_expenses + 600  # monthly expense
+  print(paste("Month", month, "- Total:", total_expenses))
+  month <- month + 1 
+}
+
+
+repeat {
+  count_errors <- sample(0:3, 1)  # simulate checking a random error count
+  print(paste("Errors found:", count_errors))
+  
+  if (count_errors == 0) {
+    print("No errors found—stopping check.")
+    break
+  }
+}
+
+
+for (i in 1:5) {
+  if (i == 3) {
+    next  # skips the current iteration
+  }
+  print(i)
+}
+######### FUNCTIONS IN R
+
+# Define a function named 'growthRate' to calculate percentage growth
+growthRate <- function(previous_value, current_value) {
+  rate <- ((current_value - previous_value) / previous_value) * 100
+  return(rate)
+}
+
+calculateTotal <- function(amount, tax_rate = 0.10) {
+  total <- amount + (amount * tax_rate)
+  return(total)
+}
+
+total1 <- calculateTotal(100)
+total2 <- calculateTotal(100, 0.15)
+
+print(total1)
+print(total2)
+
+
+
+# Calculates the discounted price of an item.
+# Parameters:
+#   price: Numeric, original price of the item.
+#   discount: Numeric, discount percentage (default is 10%).
+# Returns:
+#   Numeric, the final price after applying the discount.
+calculateDiscountedPrice <- function(price, discount = 0.10) {
+  final_price <- price - (price * discount)
+  return(final_price)
+}
+
+### Practice Challenge 1###
+# Task: Validate Order Function Solution
+validate_order <- function(price) {
+    # Check for negative price
+    if (price < 0) {
+        return("Invalid price")
+    }
+    # Check for price exceeding limit
+    if (price > 1000) {
+        return("Price exceeds 1000")
+    }
+    # If all checks pass
+    return("Order accepted")
+}
+
+# Test cases
+print("Testing validate_order function:")
+print(validate_order(-10))    # Should return "Invalid price"
+print(validate_order(1001))     # Should return "Price exceeds 1000"
+print(validate_order(100))     # Should return "Order accepted"
+print(validate_order(0))     # Should return "Order accepted"
+
+
+# Practice 2.1: Calculate Total Function Solution
+calculate_total <- function(orders) {
+    total <- 0
+    for (order in orders) {
+        # Apply appropriate discount
+        if (order > 200) {
+            discounted_amount <- order * 0.8  # 20% discount
+        } else if (order > 100) {
+            discounted_amount <- order * 0.9  # 10% discount
+        } else {
+            discounted_amount <- order  # No discount
+        }
+        total <- total + discounted_amount
+    }
+    return(total)
+}
+
+# Test calculate_total function
+test_orders <- c(50, 150, 250)
+print(calculate_total(test_orders)) # Should return 385
+test_orders <- c(50, 99, 1)
+print(calculate_total(test_orders)) # Should return 150
+
+
+# Practice 2.2: Process Until Limit Solution
+process_until_limit <- function(order_amounts) {
+    total <- 0
+    for (amount in order_amounts) {
+        # check amount before adding it to total
+        if (total + amount >= 1000) {
+            break
+        }
+        total <- total + amount
+    }
+    return(total)
+}
+
+# Test process_until_limit function
+test_amounts <- c(300, 400, 500, 200, 100)
+print(process_until_limit(test_amounts)) # Should return 700
+
+
+# Practice 3.1: Order Summary Function Solution
+order_summary <- function(distance, weight) {
+    base_rate <- 10
+    
+    if (distance > 100) {
+        base_rate <- base_rate + 5
+    }
+    if (weight > 10) {
+        base_rate <- base_rate + (weight - 10) * 0.5
+    }
+
+    summary <- list(
+        shipping_cost = base_rate,
+        distance = distance,
+        weight = weight,
+        message = "Shipping calculated successfully"
+    )
+    return(summary)
+}
+
+# Test order_summary function
+print("Testing order_summary function:")
+print(order_summary(80, 5))    # No extra fees
+print(order_summary(150, 25))  # Extra fees applied
+
+
+# Original buggy function
+# process_order <- function(items, prices) {
+#     total <- 0
+#     for (i in 1:length(item)) {  # Bug: wrong variable name
+#         if (prices[i] <= 0) {
+#             continue  # Bug: 'continue' doesn't exist in R
+#         }
+#         total <- total + price[i]  # Bug: wrong variable name
+#     }
+#     return(total)
+# }
+
+# Fixed process_order function
+process_order <- function(items, prices) {
+    total <- 0
+    for (i in 1:length(items)) {  # Fixed: correct variable name
+        if (prices[i] <= 0) {
+            next  # Fixed: using 'next' instead of 'continue'
+        }
+        total <- total + prices[i]  # Fixed: correct variable name
+    }
+    return(total)
+}
+
+# Test the fixed function
+test_items <- c("Book", "Pen", "Notebook")
+test_prices <- c(20, -5, 10)
+print("Testing fixed process_order function:")
+print(paste("Total order amount:", process_order(test_items, test_prices)))
+
+
+
+
+# ================================================
+# RetailTech Solutions - Basic Order Processing
+# Module 2 - Graded Lab
+# ================================================
+
+# ================================================
+# Activity 1: Check Order Amount
+# ================================================
+
+### GRADED CHALLENGE 1 ###
+check_order_amount <- function(order_amount) {
+    
+    if (order_amount <= 0) {
+        return("Invalid")
+    } else if (order_amount < 50) {
+        return("Low")
+    } else if (order_amount <= 100) {
+        return("Regular")
+    } else {
+        return("High")
+    }
+}
+
+# ================================================
+# Activity 2: Calculate Order Total 
+# ================================================
+
+### GRADED CHALLENGE 2 ###
+calculate_total <- function(amount, is_member) {
+    
+    # Check valid amount
+    if (amount <= 0) {
+        return("Invalid amount")
+    }
+    
+    # Apply 10% discount if member
+    if (is_member) {
+        amount <- amount * 0.90
+    }
+    
+    return(amount)
+}
+
+# ================================================
+# Activity 3: Process Multiple Orders 
+# ================================================
+
+### GRADED CHALLENGE 3 ###
+process_orders <- function(order_amounts) {
+    
+    # Basic error checking added for Activity 4
+    
+    # Error: Non-numeric input
+    if (!is.numeric(order_amounts)) {
+        return("Error: Non-numeric input")
+    }
+    
+    # Error: NA values
+    if (any(is.na(order_amounts))) {
+        return("Error: Contains NA values")
+    }
+    
+    large_orders <- sum(order_amounts > 100)
+    average <- mean(order_amounts)
+    
+    return(list(
+        large_orders = large_orders,
+        average = average
+    ))
+}
+
+# ================================================
+# Testing Section
+# ================================================
+
+# Inputs for testing
+test_orders <- c(75, 120, 45, 200, 85)
+test_amounts <- c(75, 120, 45, 200, 85)
+
+test_na <- c(100, NA, 75)
+test_invalid <- c(100, "invalid", 75)
+
+# ------------------------------------------------
+# Activity 1 Test
+# ------------------------------------------------
+print("Testing check_order_amount:")
+for(amount in test_amounts) {
+    print(paste("Amount:", amount, "Result:", check_order_amount(amount)))
+}
+
+# ------------------------------------------------
+# Activity 2 Test
+# ------------------------------------------------
+print("Testing calculate_total:")
+print(paste("Regular total:", calculate_total(100, FALSE)))
+print(paste("Member total:", calculate_total(100, TRUE)))
+
+# ------------------------------------------------
+# Activity 3 & 4 Test
+# ------------------------------------------------
+print("Testing process_orders:")
+print(process_orders(test_orders))
+
+print("Testing error handling:")
+print(process_orders(test_na))       # Expected: Error: Contains NA values
+print(process_orders(test_invalid))  # Expected: Error: Non-numeric input
 
