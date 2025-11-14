@@ -104,4 +104,108 @@ attach(starwars)   # Attach variables to search path (use carefully)
 names(starwars)    # Column names
 length(starwars)   # Number of variables (columns)
 
-# END OF COMMENTED CODE
+length(hair_color)
+unique(hair_color)
+View(sort(table(hair_color), decreasing = TRUE))
+plot(sort(table(eye_color), decreasing = TRUE))
+
+
+#Functions in R
+
+multiply <- function(x,y) 
+{
+  return(x*y)
+}
+multiply(3,5)
+
+
+# Assigning numbers
+a <- 25             # whole number
+b <- 4.987          # decimal number
+
+# Checking the type
+typeof(a)           # returns "double"
+typeof(b)           # returns "double"
+
+# Explicitly creating an integer
+c <- 25L            # 'L' makes R treat it specifically as integer
+typeof(c)           # returns "integer"
+
+# Character examples
+message1 <- "Learning R is fun!"
+message2 <- 'Let’s master R together.'
+
+# Confirming data type
+typeof(message1)      # returns "character"
+
+# Combining text (concatenation)
+paste(message1, message2) # Results in "Learning R is fun! Let’s master R together."
+
+
+# Logical examples
+task_completed <- TRUE
+task_failed <- FALSE
+
+typeof(task_completed)  # returns "logical"
+
+# Logical operations
+task_completed & task_failed # logical "AND"; returns FALSE 
+task_completed | task_failed # logical "OR"; returns TRUE
+
+# Some example variables
+x <- 42
+name <- "Alex"
+is_sunny <- FALSE
+
+# Check data types
+is.numeric(x)       # Returns TRUE, because 42 is numeric
+is.character(name)  # Returns TRUE, because "Alex" is character text
+is.logical(is_sunny)# Returns TRUE, FALSE is logical
+
+# Original variables
+x <- 42
+name <- "Alex"
+is_sunny <- FALSE
+
+# Convert numeric to character
+x_as_text <- as.character(x)
+x_as_text            # "42"
+typeof(x_as_text)    # "character"
+
+name <- "Alex"
+name_as_number <- as.numeric(name) # R flags a warning
+name_as_number                     # returns NA
+
+number_text <- "56.7"
+number_converted <- as.numeric(number_text)
+number_converted          # 56.7 (successful conversion)
+is.na(number_converted)   # FALSE indicates success, no issues
+
+memory.size() # Checks current memory usage
+gc()          # Manually triggers memory cleanup
+
+# Numeric and character combined leads to characters
+mixed_vector <- c(12, "data", 50)
+
+typeof(mixed_vector) # returns "character"
+mixed_vector         # returns "12", "data", "50"
+
+number_as_text <- "42"
+number_converted <- as.numeric(number_as_text)
+typeof(number_converted) # returns "double"
+
+my_data <- c(5, NA, 7)
+is.na(my_data)  # returns FALSE TRUE FALSE
+sum(my_data, na.rm=TRUE) # returns 12 (ignores NA)
+
+empty_var <- NULL
+is.null(empty_var)    # TRUE
+length(empty_var)     # 0
+length(NA)            # 1 (NA counts as a placeholder still occupying space)
+
+undefined_result <- 0/0
+is.nan(undefined_result) # TRUE
+
+
+
+
