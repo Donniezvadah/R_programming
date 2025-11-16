@@ -58,15 +58,65 @@ main.content {
   border-color: #3b82f6;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.author-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.author-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.author-card:hover::before {
+  left: 100%;
+}
+
+.author-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: #007bff;
+  box-shadow: 0 12px 25px rgba(0,123,255,0.2);
+}
+
+.author-title {
+  color: #495057;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: rgba(0,123,255,0.1);
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.author-links {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(0,0,0,0.05);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.author-links a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.author-links a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 /* Callouts a bit more vibrant */
@@ -80,4 +130,37 @@ main.content {
 
 .callout-warning {
   border-left-color: #f97316;
+}
+
+.callout-important {
+  border-left: 4px solid #dc3545 !important;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%) !important;
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.callout-important h3 {
+  color: #dc3545 !important;
+  font-weight: 700;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
