@@ -62,3 +62,6 @@ head(df)
 
 # Compute Monte Carlo means of the estimates
 apply(df, 2, mean)
+
+
+
