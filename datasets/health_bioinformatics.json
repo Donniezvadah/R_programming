@@ -1,0 +1,68 @@
+{
+    "study_id": "BIO2025-087",
+    "metadata": {
+        "study_title": "Gene Expression Analysis in Cancer Patients",
+        "institution": "Global Health Research Institute",
+        "date_collected": "2025-04-15",
+        "principal_investigator": "Dr. Amina Yusuf"
+    },
+    "patients": [
+        {
+            "patient_id": "P001",
+            "age": 57,
+            "gender": "Female",
+            "diagnosis": "Breast Cancer",
+            "sample_id": "S001",
+            "gene_expression": {
+                "BRCA1": 5.7,
+                "BRCA2": 4.1,
+                "TP53": 6.2,
+                "ERBB2": 3.5
+            },
+            "treatment": {
+                "protocol": "TAC chemotherapy",
+                "start_date": "2025-01-05",
+                "end_date": "2025-04-05",
+                "response": "Partial remission"
+            }
+        },
+        {
+            "patient_id": "P002",
+            "age": 64,
+            "gender": "Male",
+            "diagnosis": "Lung Cancer",
+            "sample_id": "S002",
+            "gene_expression": {
+                "EGFR": 8.3,
+                "ALK": 2.9,
+                "KRAS": 5.1,
+                "TP53": 7.0
+            },
+            "treatment": {
+                "protocol": "Targeted therapy with erlotinib",
+                "start_date": "2025-02-10",
+                "end_date": "2025-05-10",
+                "response": "Stable disease"
+            }
+        },
+        {
+            "patient_id": "P003",
+            "age": 45,
+            "gender": "Female",
+            "diagnosis": "Ovarian Cancer",
+            "sample_id": "S003",
+            "gene_expression": {
+                "BRCA1": 6.9,
+                "BRCA2": 6.4,
+                "TP53": 6.8,
+                "MLH1": 3.9
+            },
+            "treatment": {
+                "protocol": "Carboplatin and paclitaxel",
+                "start_date": "2025-03-01",
+                "end_date": "2025-06-01",
+                "response": "Complete response"
+            }
+        }
+    ]
+}

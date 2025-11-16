@@ -759,3 +759,83 @@ print("Testing error handling:")
 print(process_orders(test_na))       # Expected: Error: Contains NA values
 print(process_orders(test_invalid))  # Expected: Error: Non-numeric input
 
+
+install.packages("readxl")    # Install the readxl package for Excel files
+install.packages("jsonlite")  # Install jsonlite for JSON files
+
+library(readxl)    # Load readxl so you can use read_excel()
+library(jsonlite)  # Load jsonlite to work with JSON files
+
+
+# ================================================
+# RetailTech Data Processing Lab - SOLUTION
+# Module 3 - Lab 1: Data Import/Export
+# ================================================
+
+library(readxl)       # For reading Excel files
+library(jsonlite)     # For reading JSON files
+
+# ================================================
+# Activity 1: Importing Sales Data (CSV)
+# ================================================
+
+# Practice 1.1: Import complete sales data
+sales_data <- read.csv("raw_data/daily_sales.csv")
+
+# Practice 1.2: Review sales data
+print("Sales Data Structure:")
+str(sales_data)
+print(summary(sales_data))
+
+
+# ================================================
+# Activity 2: Importing Excel and JSON Files
+# ================================================
+
+# Practice 2.1: Import inventory data
+current_inventory <- read_excel("raw_data/inventory_counts.xlsx", sheet = "Current_Inventory")
+
+# Practice 2.2: Import JSON data
+medicine_stock <- fromJSON("raw_data/medicine_stock.json")
+print("JSON Data Structure:")
+str(medicine_stock)
+
+
+# ================================================
+# Activity 3: Handling Import Errors
+# ================================================
+
+# Practice 3.1 & 3.2: Try to import a missing file and handle error
+tryCatch({
+  fake_file <- read.csv("raw_data/not_real_file.csv")
+}, error = function(e) {
+  print("This file doesn’t exist, skipping import.")
+})
+
+
+# ================================================
+# Activity 4: Validating the Imported Data
+# ================================================
+
+# Practice 4.1: Check for duplicates
+any_duplicates <- any(duplicated(sales_data$transaction_id))
+print(paste("Any duplicate transaction IDs:", any_duplicates))
+
+# Practice 4.2: Check for missing values
+any_missing <- sum(is.na(sales_data$unit_price))
+print(paste("Missing values in unit_price:", any_missing))
+
+
+# ================================================
+# Activity 5: Exporting a Cleaned File
+# ================================================
+
+# Practice 5.1: Export daily_sales to CSV
+write.csv(sales_data, "cleaned_sales_data.csv", row.names = FALSE)
+
+# Practice 5.2: Optional check
+if (file.exists("cleaned_sales_data.csv")) {
+  result <- read.csv("cleaned_sales_data.csv")
+  print(paste("Export successful. Rows in cleaned file:", nrow(result)))
+}
+
