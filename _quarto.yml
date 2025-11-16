@@ -1,0 +1,33 @@
+project:
+  type: book
+
+book:
+  title: "R Programming Course"
+  description: "From beginner to expert: R fundamentals, data analysis, modeling, and development tools."
+  chapters:
+    - index.qmd
+    - authors.qmd
+    - 1_Beginner_Level_R.md
+    - 2_Intermediate_Level_R.md
+    - 3_Expert_Level_R.md
+    - 4_Shiny_Apps_in_R.md
+    - 5_Modules_and_Functions.md
+    - 6_R_Developer_Tools.md
+  appendices:
+    - appendix_resources.qmd
+  navbar:
+    logo: logo.webp
+
+format:
+  html:
+    theme: flatly
+    toc: true
+    number-sections: true
+    code-copy: true
+    smooth-scroll: true
+    link-external-newwindow: true
+    css: styles.css
+    footer: |
+      <div class="site-footer">© 2025 Donnie</div>
+
+editor: visual

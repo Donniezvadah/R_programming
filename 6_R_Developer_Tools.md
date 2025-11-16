@@ -240,7 +240,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```r
+# chunk: setup, include = FALSE
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -254,13 +255,15 @@ This package provides tools for...
 
 ## Installation
 
-```{r eval=FALSE}
+```r
+# chunk: eval=FALSE (installation)
 devtools::install_github("username/mypackage")
 ```
 
 ## Basic Usage
 
-```{r}
+```r
+# chunk: basic-usage
 data <- data.frame(x = 1:10, y = rnorm(10))
 result <- clean_data(data)
 ```
@@ -413,14 +416,16 @@ The goal of mypackage is to...
 
 ## Installation
 
-```{r eval=FALSE}
+```r
+# chunk: eval=FALSE (development version)
 # Development version
 devtools::install_github("username/mypackage")
 ```
 
 ## Example
 
-```{r example}
+```r
+# chunk: example
 library(mypackage)
 data <- data.frame(x = 1:10, y = rnorm(10))
 result <- clean_data(data)

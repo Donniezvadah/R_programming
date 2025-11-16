@@ -1,0 +1,46 @@
+---
+title: "R Programming Course"
+subtitle: "From Beginner to Expert"
+format:
+  html:
+    toc: false
+---
+
+Welcome to the **R Programming Course**. This book takes you from first steps in R through data analysis, modeling, and developer tools.
+
+## How to use this book
+::: {.module-grid}
+
+::: {.module-card}
+### Module 1 – Beginner Level R
+Core R syntax, basic data structures, and getting comfortable with the language.
+:::
+
+::: {.module-card}
+### Module 2 – Intermediate Level R
+Data manipulation, more advanced control structures, and practical workflows.
+:::
+
+::: {.module-card}
+### Module 3 – Expert Level R
+Statistical modeling, machine learning, and the mathematical foundations (with code and LaTeX explanations).
+:::
+
+::: {.module-card}
+### Module 4 – Shiny Apps in R
+Building interactive web applications with Shiny.
+:::
+
+::: {.module-card}
+### Module 5 – Modules and Functions
+Writing robust functions, organizing code, and building reusable modules.
+:::
+
+::: {.module-card}
+### Module 6 – R Developer Tools
+Packages, testing, debugging, and tooling for professional R development.
+:::
+
+:::
+
+Use the sidebar navigation to move between modules and sections. Code cells and math are rendered directly in the browser for easy reading.

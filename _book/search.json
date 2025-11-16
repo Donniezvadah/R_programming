@@ -1,0 +1,935 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "R Programming Course",
+    "section": "",
+    "text": "0.1 How to use this book\nWelcome to the R Programming Course. This book takes you from first steps in R through data analysis, modeling, and developer tools.\nUse the sidebar navigation to move between modules and sections. Code cells and math are rendered directly in the browser for easy reading.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>R Programming Course</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use-this-book",
+    "href": "index.html#how-to-use-this-book",
+    "title": "R Programming Course",
+    "section": "",
+    "text": "0.1.1 Module 1 – Beginner Level R\nCore R syntax, basic data structures, and getting comfortable with the language.\n\n\n0.1.2 Module 2 – Intermediate Level R\nData manipulation, more advanced control structures, and practical workflows.\n\n\n0.1.3 Module 3 – Expert Level R\nStatistical modeling, machine learning, and the mathematical foundations (with code and LaTeX explanations).\n\n\n0.1.4 Module 4 – Shiny Apps in R\nBuilding interactive web applications with Shiny.\n\n\n0.1.5 Module 5 – Modules and Functions\nWriting robust functions, organizing code, and building reusable modules.\n\n\n0.1.6 Module 6 – R Developer Tools\nPackages, testing, debugging, and tooling for professional R development.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>R Programming Course</span>"
+    ]
+  },
+  {
+    "objectID": "authors.html",
+    "href": "authors.html",
+    "title": "2  Authors",
+    "section": "",
+    "text": "2.1 Course Authors",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Authors</span>"
+    ]
+  },
+  {
+    "objectID": "authors.html#course-authors",
+    "href": "authors.html#course-authors",
+    "title": "2  Authors",
+    "section": "",
+    "text": "2.1.1 Donnie\n\nPhD Student, Trinity College Dublin\n\n\n\n\n\n\n\nImportantMy Background\n\n\n\n\n\n\nBSc in Operations Research and Statistics, NUST (2019–2023)\n\nMSc in Mathematical Sciences, AIMS South Africa (2025)\n\nGRIPS Program Certificate, Japan (2025)\n\nPhD Candidate, Trinity College Dublin (Computer Science & Statistics)\n\nHighly active in tutoring and mentorship\n\nAnd many more…\n\n\n\n\n\n📧 Email | 🎓 Trinity College Dublin\n\n\n\n\n2.1.2 Dr Precious Mdlongwa\n\nAuthor,\nNUST Zimbabwe\n\n\n📧 Email | 🏛️ NUST Zimbabwe",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Authors</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html",
+    "href": "1_Beginner_Level_R.html",
+    "title": "3  Beginner Level R",
+    "section": "",
+    "text": "3.1 Table of Contents",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#table-of-contents",
+    "href": "1_Beginner_Level_R.html#table-of-contents",
+    "title": "3  Beginner Level R",
+    "section": "",
+    "text": "Introduction to R\nInstalling R and RStudio\nBasic Syntax and Operations\nVariables and Data Types\nVectors\nMatrices and Arrays\nData Frames\nLists\nControl Structures\nFunctions\nBasic Plotting\nReading and Writing Data\nPractice Exercises",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#introduction-to-r",
+    "href": "1_Beginner_Level_R.html#introduction-to-r",
+    "title": "3  Beginner Level R",
+    "section": "3.2 Introduction to R",
+    "text": "3.2 Introduction to R\n\n3.2.1 What is R?\nR is a powerful programming language specifically designed for: - Statistical computing and data analysis - Data visualization and graphics - Machine learning and predictive modeling - Reproducible research and reporting\nKey Features: - ✅ Free and open-source - ✅ 18,000+ packages on CRAN - ✅ Excellent data visualization (ggplot2) - ✅ Strong statistical capabilities - ✅ Active global community - ✅ Industry standard in data science\n\n\n3.2.2 Why Learn R?\nCareer Opportunities: - Data Scientist - Statistical Analyst - Bioinformatician - Financial Analyst - Research Scientist\nIndustries Using R: - Tech (Google, Facebook, Microsoft) - Finance (banks, hedge funds) - Healthcare and pharmaceuticals - Academia and research - Government agencies",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#installing-r-and-rstudio",
+    "href": "1_Beginner_Level_R.html#installing-r-and-rstudio",
+    "title": "3  Beginner Level R",
+    "section": "3.3 Installing R and RStudio",
+    "text": "3.3 Installing R and RStudio\n\n3.3.1 Step 1: Install R\nWindows:\n1. Visit https://cran.r-project.org/\n2. Click \"Download R for Windows\" → \"base\"\n3. Download and run the .exe installer\n4. Follow installation wizard\nmacOS:\n1. Visit https://cran.r-project.org/\n2. Click \"Download R for macOS\"\n3. Download the .pkg file for your system\n4. Open and install\nLinux (Ubuntu/Debian):\nsudo apt update\nsudo apt install r-base r-base-dev\n\n\n3.3.2 Step 2: Install RStudio\n\nVisit https://posit.co/download/rstudio-desktop/\nDownload RStudio Desktop (Free)\nInstall for your operating system\n\n\n\n3.3.3 Verify Installation\n# Check R version\nR.version.string\n# Output: \"R version 4.3.0 (2023-04-21)\"\n\n# Check working directory\ngetwd()\n\n# Set working directory\nsetwd(\"/path/to/your/folder\")\n\n\n3.3.4 RStudio Interface\nFour Main Panes:\n\nSource Editor (Top-Left)\n\nWrite and edit R scripts (.R files)\nCreate R Markdown documents\nView data tables\n\nConsole (Bottom-Left)\n\nExecute R commands interactively\nView output and messages\nSee errors and warnings\n\nEnvironment/History (Top-Right)\n\nView loaded objects and variables\nBrowse command history\nImport datasets\n\nFiles/Plots/Packages/Help (Bottom-Right)\n\nNavigate project files\nView generated plots\nManage packages\nAccess documentation\n\n\nEssential Shortcuts:\n\n\n\nAction\nWindows/Linux\nmacOS\n\n\n\n\nRun line/selection\nCtrl + Enter\nCmd + Enter\n\n\nAssignment &lt;-\nAlt + -\nOption + -\n\n\nComment code\nCtrl + Shift + C\nCmd + Shift + C\n\n\nSave script\nCtrl + S\nCmd + S\n\n\nClear console\nCtrl + L\nCmd + L\n\n\nPipe %&gt;%\nCtrl + Shift + M\nCmd + Shift + M",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#basic-syntax-and-operations",
+    "href": "1_Beginner_Level_R.html#basic-syntax-and-operations",
+    "title": "3  Beginner Level R",
+    "section": "3.4 Basic Syntax and Operations",
+    "text": "3.4 Basic Syntax and Operations\n\n3.4.1 R as a Calculator\n# Arithmetic operations\n5 + 3          # Addition: 8\n10 - 4         # Subtraction: 6\n6 * 7          # Multiplication: 42\n20 / 4         # Division: 5\n2^3            # Exponentiation: 8\n2**3           # Alternative exponentiation: 8\n17 %% 5        # Modulo (remainder): 2\n17 %/% 5       # Integer division: 3\n\n# Order of operations (PEMDAS)\n2 + 3 * 4      # Result: 14\n(2 + 3) * 4    # Result: 20\n\n# Mathematical functions\nsqrt(16)       # Square root: 4\nabs(-10)       # Absolute value: 10\nlog(10)        # Natural log: 2.302585\nlog10(100)     # Base 10 log: 2\nexp(1)         # e^1: 2.718282\nsin(pi/2)      # Sine: 1\ncos(0)         # Cosine: 1\ntan(pi/4)      # Tangent: 1\nround(3.14159, 2)  # Round: 3.14\nceiling(3.2)   # Round up: 4\nfloor(3.8)     # Round down: 3\n\n\n3.4.2 Comments and Documentation\n# Single-line comment\n\n# Multiple lines of comments\n# Use # at the start of each line\n\nx &lt;- 5  # Inline comment\n\n# Good commenting practice\n# Calculate the average of test scores\nscores &lt;- c(85, 92, 78, 95, 88)\naverage_score &lt;- mean(scores)  # Use built-in mean function\n\n\n3.4.3 Getting Help\n# Access function documentation\n?mean\nhelp(mean)\n\n# Search for topics\n??\"linear regression\"\nhelp.search(\"regression\")\n\n# Get examples\nexample(mean)\n\n# View function arguments\nargs(plot)\n\n# See available methods\nmethods(plot)\n\n# Find package documentation\nhelp(package = \"dplyr\")",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#variables-and-data-types",
+    "href": "1_Beginner_Level_R.html#variables-and-data-types",
+    "title": "3  Beginner Level R",
+    "section": "3.5 Variables and Data Types",
+    "text": "3.5 Variables and Data Types\n\n3.5.1 Creating Variables\n# Assignment operator: &lt;- (preferred)\nx &lt;- 10\ny &lt;- 5\nname &lt;- \"Alice\"\n\n# Alternative: = (works but &lt;- is R convention)\nx = 10\n\n# Print variable\nprint(x)\nx  # Auto-print\n\n# Multiple assignments\na &lt;- b &lt;- c &lt;- 0\n\n# Chained operations\nresult &lt;- (x + y) * 2\n\n\n3.5.2 Variable Naming Rules\n# Valid names\nmy_var &lt;- 1\nmyVar &lt;- 2\nmy.var &lt;- 3\nmy_var_123 &lt;- 4\n.hidden &lt;- 5  # Starts with dot (hidden variable)\n\n# Invalid names (will cause errors)\n# 2var &lt;- 1        # Can't start with number\n# my-var &lt;- 2      # Hyphens not allowed\n# my var &lt;- 3      # Spaces not allowed\n# for &lt;- 4         # Reserved word\nBest Practices:\n# Use snake_case (recommended for R)\nstudent_count &lt;- 30\naverage_score &lt;- 85.5\nmax_temperature &lt;- 98.6\n\n# Be descriptive\ntotal_sales &lt;- 1000000        # Good\nts &lt;- 1000000                 # Bad (unclear)\n\n# Use meaningful names\nuser_age &lt;- 25                # Good\nx &lt;- 25                       # Bad (not descriptive)\n\n\n3.5.3 Data Types\n\n3.5.3.1 1. Numeric (Double)\nx &lt;- 10.5\nclass(x)        # \"numeric\"\ntypeof(x)       # \"double\"\nis.numeric(x)   # TRUE\n\n# Scientific notation\nlarge_num &lt;- 1.5e6  # 1,500,000\nsmall_num &lt;- 3.2e-4 # 0.00032\n\n\n3.5.3.2 2. Integer\ny &lt;- 5L         # L suffix creates integer\nclass(y)        # \"integer\"\ntypeof(y)       # \"integer\"\nis.integer(y)   # TRUE\n\n# Convert to integer\nas.integer(10.7)  # 10 (truncates)\n\n\n3.5.3.3 3. Character (String)\nname &lt;- \"John Doe\"\nclass(name)     # \"character\"\n\n# Single or double quotes\ngreeting1 &lt;- \"Hello\"\ngreeting2 &lt;- 'Hello'\n\n# String operations\npaste(\"Hello\", \"World\")           # \"Hello World\"\npaste0(\"Hello\", \"World\")          # \"HelloWorld\" (no space)\ntoupper(\"hello\")                  # \"HELLO\"\ntolower(\"HELLO\")                  # \"hello\"\nnchar(\"Hello\")                    # 5 (character count)\nsubstr(\"Hello World\", 1, 5)      # \"Hello\"\n\n\n3.5.3.4 4. Logical (Boolean)\nis_student &lt;- TRUE\nis_employed &lt;- FALSE\n\nclass(is_student)  # \"logical\"\n\n# Logical operators\nTRUE & FALSE       # AND: FALSE\nTRUE | FALSE       # OR: TRUE\n!TRUE              # NOT: FALSE\n\n# Comparison operators\n5 &gt; 3              # TRUE\n5 &lt; 3              # FALSE\n5 &gt;= 5             # TRUE\n5 == 5             # TRUE (equality)\n5 != 3             # TRUE (not equal)\n\n\n3.5.3.5 5. Complex\nz &lt;- 3 + 2i\nclass(z)           # \"complex\"\nRe(z)              # Real part: 3\nIm(z)              # Imaginary part: 2\nMod(z)             # Modulus: 3.605551\n\n\n\n3.5.4 Type Conversion\n# Convert between types\nas.numeric(\"123\")      # 123\nas.character(123)      # \"123\"\nas.integer(10.7)       # 10\nas.logical(1)          # TRUE\nas.logical(0)          # FALSE\n\n# Failed conversion\nas.numeric(\"abc\")      # NA (with warning)\n\n# Check for NA\nis.na(NA)              # TRUE\n\n\n3.5.5 Special Values\n# NA: Not Available (missing value)\nx &lt;- NA\nis.na(x)               # TRUE\n\n# NULL: Empty/undefined\ny &lt;- NULL\nis.null(y)             # TRUE\nlength(NULL)           # 0\n\n# NaN: Not a Number\nz &lt;- 0/0\nis.nan(z)              # TRUE\n\n# Inf: Infinity\nw &lt;- 1/0\nis.infinite(w)         # TRUE\n\n# Differences\nlength(NA)             # 1\nlength(NULL)           # 0\nNA + 5                 # NA\nNULL + 5               # Error",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#vectors",
+    "href": "1_Beginner_Level_R.html#vectors",
+    "title": "3  Beginner Level R",
+    "section": "3.6 Vectors",
+    "text": "3.6 Vectors\n\n3.6.1 Creating Vectors\n# Using c() function (combine/concatenate)\nnumbers &lt;- c(1, 2, 3, 4, 5)\nnames &lt;- c(\"Alice\", \"Bob\", \"Charlie\")\nlogicals &lt;- c(TRUE, FALSE, TRUE, TRUE)\n\n# Sequences\nseq1 &lt;- 1:10                    # 1 2 3 4 5 6 7 8 9 10\nseq2 &lt;- 10:1                    # Descending\nseq3 &lt;- seq(1, 10, by=2)        # 1 3 5 7 9\nseq4 &lt;- seq(0, 1, length.out=5) # 0.00 0.25 0.50 0.75 1.00\n\n# Repeated values\nrep1 &lt;- rep(1, times=5)         # 1 1 1 1 1\nrep2 &lt;- rep(c(1,2), times=3)    # 1 2 1 2 1 2\nrep3 &lt;- rep(c(1,2), each=3)     # 1 1 1 2 2 2\nrep4 &lt;- rep(1:3, each=2, times=2) # 1 1 2 2 3 3 1 1 2 2 3 3\n\n\n3.6.2 Vector Properties\nx &lt;- c(10, 20, 30, 40, 50)\n\nlength(x)              # 5\nclass(x)               # \"numeric\"\ntypeof(x)              # \"double\"\nis.vector(x)           # TRUE\n\n\n3.6.3 Vector Arithmetic\nx &lt;- c(1, 2, 3, 4, 5)\ny &lt;- c(10, 20, 30, 40, 50)\n\n# Element-wise operations\nx + y          # 11 22 33 44 55\nx - y          # -9 -18 -27 -36 -45\nx * y          # 10 40 90 160 250\nx / y          # 0.1 0.1 0.1 0.1 0.1\nx^2            # 1 4 9 16 25\n\n# Scalar operations\nx + 10         # 11 12 13 14 15\nx * 2          # 2 4 6 8 10\n\n# Vector recycling (shorter vector repeats)\nc(1, 2, 3) + c(10, 20)  # 11 22 13 (with warning)\n\n\n3.6.4 Indexing and Subsetting\nx &lt;- c(10, 20, 30, 40, 50)\n\n# Positive indexing (1-based!)\nx[1]           # 10 (first element)\nx[3]           # 30\nx[c(1, 3, 5)]  # 10 30 50\nx[1:3]         # 10 20 30\n\n# Negative indexing (exclude)\nx[-1]          # 20 30 40 50\nx[-c(1, 3)]    # 20 40 50\nx[-(1:3)]      # 40 50\n\n# Logical indexing\nx[c(TRUE, FALSE, TRUE, FALSE, TRUE)]  # 10 30 50\nx[x &gt; 25]      # 30 40 50\nx[x &gt;= 20 & x &lt;= 40]  # 20 30 40\n\n# Named vectors\nages &lt;- c(Alice=25, Bob=30, Charlie=35)\nages[\"Alice\"]                    # 25\nages[c(\"Alice\", \"Charlie\")]      # 25 35\nnames(ages)                      # \"Alice\" \"Bob\" \"Charlie\"\n\n\n3.6.5 Modifying Vectors\nx &lt;- c(10, 20, 30, 40, 50)\n\n# Replace elements\nx[3] &lt;- 99             # c(10, 20, 99, 40, 50)\nx[c(1, 5)] &lt;- 0        # Replace multiple\n\n# Append elements\nx &lt;- c(x, 60)          # Add to end\nx &lt;- c(0, x)           # Add to beginning\nx &lt;- append(x, 100, after=3)  # Insert at position\n\n# Remove elements\nx &lt;- x[-1]             # Remove first\nx &lt;- x[x != 30]        # Remove all 30s\n\n\n3.6.6 Vector Functions\nx &lt;- c(3, 7, 2, 9, 1, 5)\n\n# Basic statistics\nlength(x)      # 6\nsum(x)         # 27\nmean(x)        # 4.5\nmedian(x)      # 4\nmin(x)         # 1\nmax(x)         # 9\nrange(x)       # 1 9\nsd(x)          # Standard deviation: 2.88\nvar(x)         # Variance: 8.3\nquantile(x)    # Quartiles\n\n# Sorting\nsort(x)                        # 1 2 3 5 7 9\nsort(x, decreasing=TRUE)       # 9 7 5 3 2 1\norder(x)                       # Indices for sorting\nrank(x)                        # Ranks\nrev(x)                         # Reverse: 5 1 9 2 7 3\n\n# Unique and duplicates\ny &lt;- c(1, 2, 2, 3, 3, 3, 4)\nunique(y)                      # 1 2 3 4\nduplicated(y)                  # FALSE FALSE TRUE FALSE TRUE TRUE FALSE\ntable(y)                       # Frequency table\n\n# Cumulative functions\ncumsum(c(1,2,3,4))             # 1 3 6 10\ncumprod(c(1,2,3,4))            # 1 2 6 24\ncummin(c(3,1,4,1,5))          # 3 1 1 1 1\ncummax(c(3,1,4,1,5))          # 3 3 4 4 5\n\n\n3.6.7 Vector Operations\n# Set operations\na &lt;- c(1, 2, 3, 4, 5)\nb &lt;- c(4, 5, 6, 7, 8)\n\nunion(a, b)              # 1 2 3 4 5 6 7 8\nintersect(a, b)          # 4 5\nsetdiff(a, b)            # 1 2 3\nsetequal(a, b)           # FALSE\n\n# Element-wise comparison\nx &lt;- c(1, 2, 3)\ny &lt;- c(3, 2, 1)\nx == y                   # FALSE TRUE FALSE\nx &gt; y                    # FALSE FALSE TRUE\nall(x &gt; 0)               # TRUE (all elements)\nany(x &gt; 2)               # TRUE (at least one)\n\n# Which indices\nx &lt;- c(10, 25, 30, 15, 40)\nwhich(x &gt; 20)            # 2 3 5\nwhich.max(x)             # 5\nwhich.min(x)             # 1",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#matrices-and-arrays",
+    "href": "1_Beginner_Level_R.html#matrices-and-arrays",
+    "title": "3  Beginner Level R",
+    "section": "3.7 Matrices and Arrays",
+    "text": "3.7 Matrices and Arrays\n\n3.7.1 Creating Matrices\n# Using matrix() function\nmat1 &lt;- matrix(1:12, nrow=3, ncol=4)\n#      [,1] [,2] [,3] [,4]\n# [1,]    1    4    7   10\n# [2,]    2    5    8   11\n# [3,]    3    6    9   12\n\n# Fill by row\nmat2 &lt;- matrix(1:12, nrow=3, ncol=4, byrow=TRUE)\n#      [,1] [,2] [,3] [,4]\n# [1,]    1    2    3    4\n# [2,]    5    6    7    8\n# [3,]    9   10   11   12\n\n# Combining vectors\nmat3 &lt;- rbind(c(1,2,3), c(4,5,6))  # Row bind\nmat4 &lt;- cbind(c(1,2,3), c(4,5,6))  # Column bind\n\n# Identity matrix\ndiag(3)  # 3x3 identity matrix\n\n\n3.7.2 Matrix Operations\nA &lt;- matrix(1:4, nrow=2, ncol=2)\nB &lt;- matrix(5:8, nrow=2, ncol=2)\n\n# Element-wise operations\nA + B         # Addition\nA - B         # Subtraction\nA * B         # Element-wise multiplication\nA / B         # Element-wise division\n\n# Matrix multiplication\nA %*% B       # True matrix multiplication\n\n# Transpose\nt(A)          # Transpose\n\n# Matrix functions\ndet(A)        # Determinant\nsolve(A)      # Inverse (if invertible)\neigen(A)      # Eigenvalues and eigenvectors\n\n\n3.7.3 Matrix Indexing\nmat &lt;- matrix(1:12, nrow=3, ncol=4)\n\n# Single element\nmat[2, 3]     # Row 2, Column 3\n\n# Entire row\nmat[2, ]      # All of row 2\n\n# Entire column\nmat[, 3]      # All of column 3\n\n# Submatrix\nmat[1:2, 2:3]\n\n# Named dimensions\nrownames(mat) &lt;- c(\"A\", \"B\", \"C\")\ncolnames(mat) &lt;- c(\"W\", \"X\", \"Y\", \"Z\")\nmat[\"A\", \"X\"]\n\n\n3.7.4 Matrix Functions\nmat &lt;- matrix(1:12, nrow=3, ncol=4)\n\nnrow(mat)     # 3\nncol(mat)     # 4\ndim(mat)      # c(3, 4)\n\nrowSums(mat)  # Sum each row\ncolSums(mat)  # Sum each column\nrowMeans(mat) # Mean of each row\ncolMeans(mat) # Mean of each column\n\n# Apply function\napply(mat, 1, sum)   # Apply to rows (margin=1)\napply(mat, 2, mean)  # Apply to columns (margin=2)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#data-frames",
+    "href": "1_Beginner_Level_R.html#data-frames",
+    "title": "3  Beginner Level R",
+    "section": "3.8 Data Frames",
+    "text": "3.8 Data Frames\n\n3.8.1 Creating Data Frames\n# Using data.frame()\ndf &lt;- data.frame(\n  name = c(\"Alice\", \"Bob\", \"Charlie\", \"David\"),\n  age = c(25, 30, 35, 28),\n  salary = c(50000, 60000, 75000, 55000),\n  employed = c(TRUE, TRUE, FALSE, TRUE),\n  stringsAsFactors = FALSE  # Keep strings as character\n)\n\nprint(df)\nView(df)  # Opens in viewer pane\n\n\n3.8.2 Exploring Data Frames\n# Structure and summary\nstr(df)       # Data structure\nsummary(df)   # Statistical summary\nglimpse(df)   # dplyr alternative (if installed)\n\n# Dimensions\nnrow(df)      # Number of rows\nncol(df)      # Number of columns\ndim(df)       # Both dimensions\n\n# Column names\nnames(df)\ncolnames(df)\n\n# First/last rows\nhead(df, 3)   # First 3 rows\ntail(df, 2)   # Last 2 rows\n\n\n3.8.3 Accessing Data Frame Elements\n# Access columns\ndf$name           # $ operator (returns vector)\ndf[[\"name\"]]      # [[ ]] (returns vector)\ndf[, \"name\"]      # [ ] (returns vector)\ndf[\"name\"]        # [ ] (returns data frame)\ndf[, 1]           # By index\n\n# Multiple columns\ndf[, c(\"name\", \"age\")]\ndf[, 1:2]\n\n# Access rows\ndf[1, ]           # First row\ndf[1:2, ]         # First two rows\n\n# Specific cell\ndf[1, \"age\"]      # Row 1, age column\ndf$age[1]         # First element of age\n\n\n3.8.4 Filtering Data Frames\n# Logical subsetting\ndf[df$age &gt; 28, ]\ndf[df$employed == TRUE, ]\ndf[df$salary &gt;= 60000, ]\n\n# Multiple conditions\ndf[df$age &gt; 25 & df$employed == TRUE, ]\ndf[df$age &lt; 26 | df$age &gt; 30, ]\n\n# Using subset() function\nsubset(df, age &gt; 28)\nsubset(df, age &gt; 25 & employed == TRUE)\nsubset(df, age &gt; 28, select = c(name, salary))\n\n\n3.8.5 Modifying Data Frames\n# Add new column\ndf$bonus &lt;- df$salary * 0.1\ndf$age_group &lt;- ifelse(df$age &lt; 30, \"Young\", \"Senior\")\n\n# Modify existing column\ndf$age &lt;- df$age + 1\n\n# Add new row\nnew_row &lt;- data.frame(\n  name = \"Eve\",\n  age = 32,\n  salary = 70000,\n  employed = TRUE\n)\ndf &lt;- rbind(df, new_row)\n\n# Remove column\ndf$bonus &lt;- NULL\ndf &lt;- df[, -4]  # Remove 4th column\n\n# Remove row\ndf &lt;- df[-5, ]  # Remove 5th row\n\n\n3.8.6 Sorting Data Frames\n# Sort by one column\ndf[order(df$age), ]                    # Ascending\ndf[order(-df$age), ]                   # Descending\ndf[order(df$age, decreasing=TRUE), ]\n\n# Sort by multiple columns\ndf[order(df$employed, -df$salary), ]   # employed asc, salary desc",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#lists",
+    "href": "1_Beginner_Level_R.html#lists",
+    "title": "3  Beginner Level R",
+    "section": "3.9 Lists",
+    "text": "3.9 Lists\n\n3.9.1 Creating Lists\n# Lists can contain different types\nmy_list &lt;- list(\n  numbers = c(1, 2, 3, 4, 5),\n  name = \"John\",\n  matrix = matrix(1:4, nrow=2),\n  df = data.frame(x=1:3, y=4:6),\n  nested = list(a=1, b=2)\n)\n\nprint(my_list)\nstr(my_list)\n\n\n3.9.2 Accessing List Elements\n# Using [[ ]] returns the element\nmy_list[[1]]           # First element\nmy_list[[\"numbers\"]]   # By name\n\n# Using $ returns the element\nmy_list$numbers\n\n# Using [ ] returns a sublist\nmy_list[1]             # List containing first element\nmy_list[c(1, 3)]       # List with elements 1 and 3\n\n# Nested access\nmy_list$nested$a\nmy_list[[\"df\"]]$x\n\n\n3.9.3 Modifying Lists\n# Add elements\nmy_list$new_item &lt;- \"New value\"\nmy_list[[6]] &lt;- c(10, 20)\n\n# Remove elements\nmy_list$new_item &lt;- NULL\nmy_list[[6]] &lt;- NULL\n\n# List functions\nlength(my_list)        # Number of elements\nnames(my_list)         # Element names",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#control-structures",
+    "href": "1_Beginner_Level_R.html#control-structures",
+    "title": "3  Beginner Level R",
+    "section": "3.10 Control Structures",
+    "text": "3.10 Control Structures\n\n3.10.1 If-Else Statements\n# Basic if\nx &lt;- 10\nif (x &gt; 5) {\n  print(\"x is greater than 5\")\n}\n\n# If-else\nif (x &gt; 15) {\n  print(\"x is large\")\n} else {\n  print(\"x is not large\")\n}\n\n# If-else if-else\nscore &lt;- 75\nif (score &gt;= 90) {\n  grade &lt;- \"A\"\n} else if (score &gt;= 80) {\n  grade &lt;- \"B\"\n} else if (score &gt;= 70) {\n  grade &lt;- \"C\"\n} else if (score &gt;= 60) {\n  grade &lt;- \"D\"\n} else {\n  grade &lt;- \"F\"\n}\n\n# Vectorized ifelse\nscores &lt;- c(95, 82, 78, 65)\ngrades &lt;- ifelse(scores &gt;= 90, \"A\",\n          ifelse(scores &gt;= 80, \"B\",\n          ifelse(scores &gt;= 70, \"C\", \"F\")))\n\n\n3.10.2 For Loops\n# Basic for loop\nfor (i in 1:5) {\n  print(i)\n}\n\n# Loop over vector\nfruits &lt;- c(\"apple\", \"banana\", \"cherry\")\nfor (fruit in fruits) {\n  print(paste(\"I like\", fruit))\n}\n\n# Loop with index\nfor (i in seq_along(fruits)) {\n  print(paste(i, \":\", fruits[i]))\n}\n\n# Nested loops\nfor (i in 1:3) {\n  for (j in 1:3) {\n    print(paste(i, \"*\", j, \"=\", i*j))\n  }\n}\n\n\n3.10.3 While Loops\n# Basic while loop\ncount &lt;- 1\nwhile (count &lt;= 5) {\n  print(count)\n  count &lt;- count + 1\n}\n\n# While with condition\nx &lt;- 1\nwhile (x &lt; 100) {\n  print(x)\n  x &lt;- x * 2\n}\n\n\n3.10.4 Loop Control\n# break: exit loop\nfor (i in 1:10) {\n  if (i == 5) break\n  print(i)\n}\n\n# next: skip to next iteration\nfor (i in 1:10) {\n  if (i %% 2 == 0) next  # Skip even numbers\n  print(i)\n}",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#functions",
+    "href": "1_Beginner_Level_R.html#functions",
+    "title": "3  Beginner Level R",
+    "section": "3.11 Functions",
+    "text": "3.11 Functions\n\n3.11.1 Creating Functions\n# Basic function\ngreet &lt;- function() {\n  print(\"Hello!\")\n}\ngreet()\n\n# Function with parameters\ngreet_person &lt;- function(name) {\n  print(paste(\"Hello,\", name))\n}\ngreet_person(\"Alice\")\n\n# Function with return value\nadd_numbers &lt;- function(a, b) {\n  result &lt;- a + b\n  return(result)\n}\nsum_result &lt;- add_numbers(5, 3)\n\n# Implicit return (last expression)\nmultiply &lt;- function(a, b) {\n  a * b  # Automatically returned\n}\n\n\n3.11.2 Default Parameters\npower &lt;- function(base, exponent = 2) {\n  base^exponent\n}\n\npower(5)      # 25 (uses default)\npower(5, 3)   # 125\n\n# Multiple defaults\ngreet &lt;- function(name = \"Guest\", time = \"day\") {\n  paste(\"Good\", time, name)\n}\ngreet()                    # \"Good day Guest\"\ngreet(\"Alice\")            # \"Good day Alice\"\ngreet(\"Bob\", \"morning\")   # \"Good morning Bob\"\n\n\n3.11.3 Multiple Return Values\n# Return a list\nstats &lt;- function(x) {\n  list(\n    mean = mean(x),\n    median = median(x),\n    sd = sd(x),\n    range = range(x)\n  )\n}\n\nresult &lt;- stats(c(1, 2, 3, 4, 5))\nresult$mean    # 3\nresult$sd      # Standard deviation\n\n\n3.11.4 Function Documentation\n#' Calculate Circle Area\n#'\n#' @param radius Numeric value for circle radius\n#' @return Area of the circle\n#' @examples\n#' circle_area(5)\ncircle_area &lt;- function(radius) {\n  if (radius &lt; 0) {\n    stop(\"Radius must be positive\")\n  }\n  pi * radius^2\n}",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#basic-plotting",
+    "href": "1_Beginner_Level_R.html#basic-plotting",
+    "title": "3  Beginner Level R",
+    "section": "3.12 Basic Plotting",
+    "text": "3.12 Basic Plotting\n\n3.12.1 Scatter Plots\n# Basic scatter plot\nx &lt;- c(1, 2, 3, 4, 5)\ny &lt;- c(2, 4, 5, 4, 6)\nplot(x, y)\n\n# Customized scatter plot\nplot(x, y,\n     main = \"My Scatter Plot\",\n     xlab = \"X Axis\",\n     ylab = \"Y Axis\",\n     col = \"blue\",\n     pch = 19,    # Point type\n     cex = 1.5)   # Point size\n\n\n3.12.2 Line Plots\n# Line plot\nplot(x, y, type = \"l\", col = \"red\", lwd = 2)\n\n# Points and lines\nplot(x, y, type = \"b\", col = \"blue\")\n\n# Multiple lines\nplot(x, y, type = \"l\", col = \"blue\")\nlines(x, y*1.5, col = \"red\")\nlegend(\"topleft\", legend = c(\"Series 1\", \"Series 2\"),\n       col = c(\"blue\", \"red\"), lty = 1)\n\n\n3.12.3 Bar Plots\n# Simple bar plot\ncounts &lt;- c(5, 10, 15, 20)\nbarplot(counts)\n\n# Named bars\nnames(counts) &lt;- c(\"A\", \"B\", \"C\", \"D\")\nbarplot(counts,\n        main = \"Bar Chart\",\n        xlab = \"Category\",\n        ylab = \"Count\",\n        col = \"steelblue\")\n\n\n3.12.4 Histograms\n# Generate random data\ndata &lt;- rnorm(1000, mean = 50, sd = 10)\n\n# Histogram\nhist(data,\n     main = \"Histogram\",\n     xlab = \"Value\",\n     col = \"lightblue\",\n     breaks = 30)\n\n\n3.12.5 Box Plots\n# Box plot\ndata1 &lt;- rnorm(100, mean = 50)\ndata2 &lt;- rnorm(100, mean = 60)\ndata3 &lt;- rnorm(100, mean = 55)\n\nboxplot(data1, data2, data3,\n        names = c(\"Group A\", \"Group B\", \"Group C\"),\n        main = \"Box Plot Comparison\",\n        col = c(\"red\", \"blue\", \"green\"))\n\n\n3.12.6 Saving Plots\n# Save as PDF\npdf(\"myplot.pdf\", width = 8, height = 6)\nplot(x, y)\ndev.off()\n\n# Save as PNG\npng(\"myplot.png\", width = 800, height = 600)\nplot(x, y)\ndev.off()",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#reading-and-writing-data",
+    "href": "1_Beginner_Level_R.html#reading-and-writing-data",
+    "title": "3  Beginner Level R",
+    "section": "3.13 Reading and Writing Data",
+    "text": "3.13 Reading and Writing Data\n\n3.13.1 CSV Files\n# Read CSV\ndf &lt;- read.csv(\"data.csv\")\ndf &lt;- read.csv(\"data.csv\", header = TRUE, stringsAsFactors = FALSE)\n\n# Write CSV\nwrite.csv(df, \"output.csv\", row.names = FALSE)\n\n\n3.13.2 Text Files\n# Read delimited files\ndf &lt;- read.table(\"data.txt\", header = TRUE, sep = \"\\t\")\n\n# Write text file\nwrite.table(df, \"output.txt\", sep = \"\\t\", row.names = FALSE)\n\n\n3.13.3 Built-in Datasets\n# Load built-in datasets\ndata(mtcars)\nhead(mtcars)\n\n# See available datasets\ndata()\n\n# Common datasets\ndata(iris)\ndata(airquality)\ndata(ChickWeight)\n\n\n3.13.4 RDS Files (R Native Format)\n# Save R object\nsaveRDS(df, \"mydata.rds\")\n\n# Read R object\ndf &lt;- readRDS(\"mydata.rds\")\n\n# Save multiple objects\nsave(df, x, y, file = \"myworkspace.RData\")\n\n# Load saved objects\nload(\"myworkspace.RData\")",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#practice-exercises",
+    "href": "1_Beginner_Level_R.html#practice-exercises",
+    "title": "3  Beginner Level R",
+    "section": "3.14 Practice Exercises",
+    "text": "3.14 Practice Exercises\n\n3.14.1 Exercise 1: Vector Operations\n# Create a vector of ages\nages &lt;- c(23, 45, 67, 89, 12, 34, 56, 78)\n\n# Tasks:\n# 1. Find mean, median, and standard deviation\n# 2. Count how many ages are above 50\n# 3. Create a new vector with ages below 40\n# 4. Sort ages in descending order\n\n# Solutions:\nmean(ages)\nmedian(ages)\nsd(ages)\nsum(ages &gt; 50)\nyoung &lt;- ages[ages &lt; 40]\nsort(ages, decreasing = TRUE)\n\n\n3.14.2 Exercise 2: Data Frame Manipulation\n# Create a data frame of students\nstudents &lt;- data.frame(\n  name = c(\"Alice\", \"Bob\", \"Charlie\", \"Diana\", \"Eve\"),\n  math_score = c(85, 92, 78, 95, 88),\n  english_score = c(90, 85, 82, 91, 87),\n  age = c(20, 21, 19, 22, 20)\n)\n\n# Tasks:\n# 1. Add a column for average score\n# 2. Filter students with average &gt; 85\n# 3. Sort by math_score descending\n# 4. Find the student with highest total score\n\n# Solutions:\nstudents$avg_score &lt;- (students$math_score + students$english_score) / 2\nstudents[students$avg_score &gt; 85, ]\nstudents[order(-students$math_score), ]\nstudents$total &lt;- students$math_score + students$english_score\nstudents[which.max(students$total), ]\n\n\n3.14.3 Exercise 3: Functions\n# Write a function that:\n# 1. Takes a vector of numbers\n# 2. Removes outliers (values &gt; 2 SD from mean)\n# 3. Returns cleaned vector\n\nremove_outliers &lt;- function(x) {\n  mean_x &lt;- mean(x, na.rm = TRUE)\n  sd_x &lt;- sd(x, na.rm = TRUE)\n  lower_bound &lt;- mean_x - 2 * sd_x\n  upper_bound &lt;- mean_x + 2 * sd_x\n  x[x &gt;= lower_bound & x &lt;= upper_bound]\n}\n\n# Test\ndata &lt;- c(1, 2, 3, 4, 5, 100, 200)\nremove_outliers(data)\n\n\n3.14.4 Exercise 4: Control Structures\n# FizzBuzz: Print numbers 1-100, but:\n# - \"Fizz\" for multiples of 3\n# - \"Buzz\" for multiples of 5\n# - \"FizzBuzz\" for multiples of both\n\nfor (i in 1:100) {\n  if (i %% 15 == 0) {\n    print(\"FizzBuzz\")\n  } else if (i %% 3 == 0) {\n    print(\"Fizz\")\n  } else if (i %% 5 == 0) {\n    print(\"Buzz\")\n  } else {\n    print(i)\n  }\n}\n\n\n3.14.5 Exercise 5: Data Analysis Project\n# Use the built-in mtcars dataset\ndata(mtcars)\n\n# Tasks:\n# 1. Calculate average MPG by number of cylinders\n# 2. Find cars with MPG &gt; 25\n# 3. Create a scatter plot of MPG vs Weight\n# 4. Identify the most fuel-efficient car\n\n# Solutions:\naggregate(mpg ~ cyl, data = mtcars, FUN = mean)\nmtcars[mtcars$mpg &gt; 25, ]\nplot(mtcars$wt, mtcars$mpg,\n     xlab = \"Weight\", ylab = \"MPG\",\n     main = \"MPG vs Weight\")\nrownames(mtcars)[which.max(mtcars$mpg)]",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "1_Beginner_Level_R.html#summary-and-next-steps",
+    "href": "1_Beginner_Level_R.html#summary-and-next-steps",
+    "title": "3  Beginner Level R",
+    "section": "3.15 Summary and Next Steps",
+    "text": "3.15 Summary and Next Steps\n\n3.15.1 What You’ve Learned\n\n✅ R installation and RStudio interface\n✅ Basic syntax and data types\n✅ Vectors, matrices, data frames, and lists\n✅ Control structures (if/else, loops)\n✅ Writing functions\n✅ Basic plotting with base R\n✅ Reading and writing data files\n\n\n\n3.15.2 Next Steps\n\nPractice Daily: Code for at least 30 minutes every day\nBuild Projects: Apply concepts to real datasets\nMove to Intermediate: Continue with 2_Intermediate_Level_R.md\nJoin Communities: R4DS Slack, Stack Overflow\nRead Documentation: Use ?function frequently\n\n\n\n3.15.3 Recommended Resources\n\nBooks: “R for Data Science” by Hadley Wickham\nOnline: DataCamp, Coursera R courses\nPractice: Kaggle datasets, TidyTuesday challenges\n\n\nCongratulations! You’ve completed the Beginner Level. Move on to 2_Intermediate_Level_R.md to learn data wrangling, visualization, and advanced techniques.\nKeep coding! 🚀",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Beginner Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html",
+    "href": "2_Intermediate_Level_R.html",
+    "title": "4  Intermediate Level R",
+    "section": "",
+    "text": "4.1 Table of Contents",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#table-of-contents",
+    "href": "2_Intermediate_Level_R.html#table-of-contents",
+    "title": "4  Intermediate Level R",
+    "section": "",
+    "text": "Tidyverse Introduction\ndplyr - Data Manipulation\nggplot2 - Data Visualization\ntidyr - Data Reshaping\npurrr - Functional Programming\nAPIs and File Formats",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#tidyverse",
+    "href": "2_Intermediate_Level_R.html#tidyverse",
+    "title": "4  Intermediate Level R",
+    "section": "4.2 Tidyverse",
+    "text": "4.2 Tidyverse\n\n4.2.1 Installation and Loading\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)  # Loads: ggplot2, dplyr, tidyr, readr, purrr, tibble, stringr, forcats\n\n\n4.2.2 Tibbles vs Data Frames\n# Create tibble\ntib &lt;- tibble(\n  name = c(\"Alice\", \"Bob\", \"Charlie\"),\n  age = c(25, 30, 35),\n  salary = c(50000, 60000, 75000)\n)\n\n# Convert\nas_tibble(mtcars)\nas.data.frame(tib)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#dplyr---data-manipulation",
+    "href": "2_Intermediate_Level_R.html#dplyr---data-manipulation",
+    "title": "4  Intermediate Level R",
+    "section": "4.3 dplyr - Data Manipulation",
+    "text": "4.3 dplyr - Data Manipulation\n\n4.3.1 Core Verbs\nlibrary(dplyr)\n\n# filter() - Filter rows\nmtcars %&gt;% filter(mpg &gt; 25)\nmtcars %&gt;% filter(mpg &gt; 20 & cyl == 4)\nmtcars %&gt;% filter(cyl %in% c(4, 6))\n\n# select() - Choose columns\nmtcars %&gt;% select(mpg, cyl, hp)\nmtcars %&gt;% select(starts_with(\"c\"))\nmtcars %&gt;% select(where(is.numeric))\n\n# arrange() - Sort rows\nmtcars %&gt;% arrange(mpg)\nmtcars %&gt;% arrange(desc(mpg))\nmtcars %&gt;% arrange(cyl, desc(mpg))\n\n# mutate() - Create/modify columns\nmtcars %&gt;% mutate(\n  mpg_per_cyl = mpg / cyl,\n  efficiency = case_when(\n    mpg &gt; 25 ~ \"High\",\n    mpg &gt; 20 ~ \"Medium\",\n    TRUE ~ \"Low\"\n  )\n)\n\n# summarise() - Aggregate\nmtcars %&gt;% summarise(\n  avg_mpg = mean(mpg),\n  sd_mpg = sd(mpg),\n  n = n()\n)\n\n# group_by() - Group operations\nmtcars %&gt;%\n  group_by(cyl) %&gt;%\n  summarise(\n    count = n(),\n    avg_mpg = mean(mpg),\n    avg_hp = mean(hp)\n  )\n\n\n4.3.2 Joins\nband_members &lt;- tibble(\n  name = c(\"Mick\", \"John\", \"Paul\"),\n  band = c(\"Stones\", \"Beatles\", \"Beatles\")\n)\n\nband_instruments &lt;- tibble(\n  name = c(\"John\", \"Paul\", \"Keith\"),\n  plays = c(\"guitar\", \"bass\", \"guitar\")\n)\n\n# Types of joins\ninner_join(band_members, band_instruments, by = \"name\")\nleft_join(band_members, band_instruments, by = \"name\")\nright_join(band_members, band_instruments, by = \"name\")\nfull_join(band_members, band_instruments, by = \"name\")\nanti_join(band_members, band_instruments, by = \"name\")\nsemi_join(band_members, band_instruments, by = \"name\")\n\n\n4.3.3 Window Functions\nmtcars %&gt;%\n  mutate(\n    rank = row_number(desc(mpg)),\n    mpg_lag = lag(mpg),\n    mpg_lead = lead(mpg),\n    cumsum_mpg = cumsum(mpg)\n  )\n\n# Slicing\nslice_head(mtcars, n = 5)\nslice_max(mtcars, mpg, n = 5)\nslice_sample(mtcars, n = 10)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#ggplot2---data-visualization",
+    "href": "2_Intermediate_Level_R.html#ggplot2---data-visualization",
+    "title": "4  Intermediate Level R",
+    "section": "4.4 ggplot2 - Data Visualization",
+    "text": "4.4 ggplot2 - Data Visualization\n\n4.4.1 Basic Structure\nlibrary(ggplot2)\n\n# ggplot(data, aes(x, y)) + geom_*() + theme_*()\n\n# Scatter plot\nggplot(mtcars, aes(x = wt, y = mpg)) +\n  geom_point(size = 3, color = \"blue\")\n\n# With color by group\nggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +\n  geom_point(size = 3) +\n  geom_smooth(method = \"lm\", se = TRUE)\n\n\n4.4.2 Common Geoms\n# Line chart\nggplot(economics, aes(x = date, y = unemploy)) +\n  geom_line(color = \"blue\", size = 1)\n\n# Bar chart\nggplot(mtcars, aes(x = factor(cyl))) +\n  geom_bar(fill = \"steelblue\")\n\n# Histogram\nggplot(mtcars, aes(x = mpg)) +\n  geom_histogram(bins = 15, fill = \"lightblue\", color = \"black\")\n\n# Box plot\nggplot(mtcars, aes(x = factor(cyl), y = mpg)) +\n  geom_boxplot(fill = \"lightgreen\")\n\n# Violin plot\nggplot(mtcars, aes(x = factor(cyl), y = mpg)) +\n  geom_violin(fill = \"lightblue\") +\n  geom_boxplot(width = 0.2)\n\n\n4.4.3 Customization\nggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +\n  geom_point(size = 3) +\n  labs(\n    title = \"Fuel Efficiency vs Weight\",\n    subtitle = \"Motor Trend Car Road Tests\",\n    x = \"Weight (1000 lbs)\",\n    y = \"Miles per Gallon\",\n    color = \"Cylinders\"\n  ) +\n  scale_color_brewer(palette = \"Set1\") +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(size = 16, face = \"bold\"),\n    legend.position = \"bottom\"\n  )\n\n# Faceting\nggplot(mtcars, aes(x = wt, y = mpg)) +\n  geom_point() +\n  facet_wrap(~ cyl)\n\n# Save plot\nggsave(\"myplot.png\", width = 8, height = 6, dpi = 300)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#tidyr---data-reshaping",
+    "href": "2_Intermediate_Level_R.html#tidyr---data-reshaping",
+    "title": "4  Intermediate Level R",
+    "section": "4.5 tidyr - Data Reshaping",
+    "text": "4.5 tidyr - Data Reshaping\n\n4.5.1 Pivoting\nlibrary(tidyr)\n\n# Wide to long\nwide_data &lt;- tibble(\n  country = c(\"USA\", \"Canada\"),\n  year_2020 = c(100, 80),\n  year_2021 = c(110, 85)\n)\n\nlong_data &lt;- wide_data %&gt;%\n  pivot_longer(\n    cols = starts_with(\"year\"),\n    names_to = \"year\",\n    names_prefix = \"year_\",\n    values_to = \"value\"\n  )\n\n# Long to wide\nwide_data &lt;- long_data %&gt;%\n  pivot_wider(\n    names_from = year,\n    values_from = value\n  )\n\n\n4.5.2 Missing Data\n# Drop NAs\ndf %&gt;% drop_na()\ndf %&gt;% drop_na(mpg, cyl)\n\n# Replace NAs\ndf %&gt;% replace_na(list(mpg = 0))\n\n# Fill NAs\ndf %&gt;% fill(mpg, .direction = \"down\")\n\n\n4.5.3 Separate and Unite\n# Separate\ndf &lt;- tibble(date = c(\"2023-01-15\", \"2023-02-20\"))\ndf %&gt;% separate(date, into = c(\"year\", \"month\", \"day\"), sep = \"-\")\n\n# Unite\ndf &lt;- tibble(year = 2023, month = \"01\", day = \"15\")\ndf %&gt;% unite(\"date\", year, month, day, sep = \"-\")",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#purrr---functional-programming",
+    "href": "2_Intermediate_Level_R.html#purrr---functional-programming",
+    "title": "4  Intermediate Level R",
+    "section": "4.6 purrr - Functional Programming",
+    "text": "4.6 purrr - Functional Programming\n\n4.6.1 Map Functions\nlibrary(purrr)\n\n# map() - returns list\nmap(1:5, sqrt)\n\n# map_dbl() - returns numeric vector\nmap_dbl(1:5, sqrt)\n\n# map_chr() - returns character vector\nmap_chr(1:5, as.character)\n\n# map_lgl() - returns logical vector\nmap_lgl(1:5, ~ .x &gt; 3)\n\n# map2() - iterate over two vectors\nmap2_dbl(1:3, 4:6, ~ .x + .y)\n\n# pmap() - iterate over multiple vectors\npmap_dbl(list(1:3, 4:6, 7:9), sum)\n\n\n4.6.2 Advanced Patterns\n# keep() and discard()\nkeep(1:10, ~ .x %% 2 == 0)  # Keep even\ndiscard(1:10, ~ .x %% 2 == 0)  # Discard even\n\n# reduce() - cumulative operations\nreduce(1:5, `+`)  # Sum\nreduce(1:5, `*`)  # Product\n\n# map_if() - conditional mapping\ndf &lt;- tibble(x = 1:3, y = c(\"a\", \"b\", \"c\"))\nmap_if(df, is.numeric, ~ .x * 2)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#apis-and-file-formats",
+    "href": "2_Intermediate_Level_R.html#apis-and-file-formats",
+    "title": "4  Intermediate Level R",
+    "section": "4.7 APIs and File Formats",
+    "text": "4.7 APIs and File Formats\n\n4.7.1 JSON Data\nlibrary(jsonlite)\n\n# Parse JSON string\njson_string &lt;- '{\"name\": \"Alice\", \"age\": 25}'\ndata &lt;- fromJSON(json_string)\n\n# Read JSON file\ndata &lt;- fromJSON(\"data.json\")\n\n# Convert to JSON\ndf &lt;- data.frame(name = c(\"Alice\", \"Bob\"), age = c(25, 30))\njson &lt;- toJSON(df, pretty = TRUE)\n\n\n4.7.2 API Requests\nlibrary(httr)\n\n# GET request\nresponse &lt;- GET(\"https://api.example.com/data\")\nstatus_code(response)\ncontent(response, as = \"parsed\")\n\n# POST request\nresponse &lt;- POST(\n  \"https://api.example.com/data\",\n  body = list(name = \"Alice\", age = 25),\n  encode = \"json\"\n)\n\n# With API key\nresponse &lt;- GET(\n  \"https://api.example.com/data\",\n  add_headers(Authorization = paste(\"Bearer\", Sys.getenv(\"API_KEY\")))\n)\n\n\n4.7.3 Reading Files\n# CSV\ndf &lt;- read_csv(\"data.csv\")  # readr\ndf &lt;- read.csv(\"data.csv\")  # base R\n\n# Excel\nlibrary(readxl)\ndf &lt;- read_excel(\"data.xlsx\", sheet = \"Sheet1\")\n\n# SPSS, Stata, SAS\nlibrary(haven)\ndf &lt;- read_spss(\"data.sav\")\ndf &lt;- read_stata(\"data.dta\")\ndf &lt;- read_sas(\"data.sas7bdat\")\n\n# Parquet\nlibrary(arrow)\ndf &lt;- read_parquet(\"data.parquet\")\n\n# Database\nlibrary(DBI)\nlibrary(RSQLite)\ncon &lt;- dbConnect(SQLite(), \"database.db\")\ndf &lt;- dbReadTable(con, \"table_name\")\ndf &lt;- dbGetQuery(con, \"SELECT * FROM table_name WHERE age &gt; 25\")\ndbDisconnect(con)\n\n\n4.7.4 String Operations (stringr)\nlibrary(stringr)\n\n# Basic operations\nstr_length(\"Hello\")\nstr_to_upper(\"hello\")\nstr_to_lower(\"HELLO\")\nstr_trim(\"  hello  \")\n\n# Pattern matching\nstr_detect(\"Hello World\", \"World\")  # TRUE\nstr_count(\"banana\", \"a\")  # 3\nstr_extract(\"Phone: 123-456-7890\", \"\\\\d{3}-\\\\d{3}-\\\\d{4}\")\n\n# Manipulation\nstr_replace(\"Hello World\", \"World\", \"R\")\nstr_replace_all(\"banana\", \"a\", \"o\")\nstr_split(\"a,b,c\", \",\")\nstr_c(\"Hello\", \"World\", sep = \" \")\nstr_sub(\"Hello World\", 1, 5)  # \"Hello\"\n\n\n4.7.5 Date Operations (lubridate)\nlibrary(lubridate)\n\n# Parse dates ----\nymd(\"2023-01-15\")\nmdy(\"01/15/2023\")\ndmy(\"15-01-2023\")\nymd_hms(\"2023-01-15 14:30:00\")\n\n# Extract components\ndate &lt;- ymd(\"2023-06-15\")\nyear(date)  # 2023\nmonth(date)  # 6\nday(date)   # 15\nwday(date, label = TRUE)  # \"Thu\"\n\n# Date arithmetic\ntoday() + days(7)\ntoday() - months(2)\nnow() + hours(3)\n\n# Intervals\nint &lt;- interval(ymd(\"2023-01-01\"), ymd(\"2023-12-31\"))\ntime_length(int, \"months\")",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#practice-projects",
+    "href": "2_Intermediate_Level_R.html#practice-projects",
+    "title": "4  Intermediate Level R",
+    "section": "4.8 Practice Projects",
+    "text": "4.8 Practice Projects\n\n4.8.1 Project 1: Data Pipeline\n# Build a complete data pipeline\nlibrary(tidyverse)\n\n# 1. Load and clean data\ndf &lt;- read_csv(\"sales_data.csv\") %&gt;%\n  drop_na(customer_id, amount) %&gt;%\n  mutate(\n    date = ymd(date),\n    month = month(date, label = TRUE),\n    year = year(date),\n    category = str_to_title(category)\n  )\n\n# 2. Aggregate\nsummary_df &lt;- df %&gt;%\n  group_by(year, month, category) %&gt;%\n  summarise(\n    total_sales = sum(amount),\n    avg_sale = mean(amount),\n    n_transactions = n(),\n    .groups = \"drop\"\n  )\n\n# 3. Visualize\nggplot(summary_df, aes(x = month, y = total_sales, fill = category)) +\n  geom_col(position = \"dodge\") +\n  facet_wrap(~ year) +\n  theme_minimal() +\n  labs(title = \"Monthly Sales by Category\")\n\n\n4.8.2 Project 2: API Data Analysis\n# Fetch and analyze API data\nlibrary(httr)\nlibrary(jsonlite)\n\n# 1. Fetch data\nresponse &lt;- GET(\"https://api.coingecko.com/api/v3/coins/markets\",\n                query = list(vs_currency = \"usd\", per_page = 100))\n\ncrypto_data &lt;- content(response, as = \"parsed\") %&gt;%\n  map_df(~tibble(\n    name = .x$name,\n    symbol = .x$symbol,\n    price = .x$current_price,\n    market_cap = .x$market_cap,\n    volume = .x$total_volume\n  ))\n\n# 2. Analyze\ntop_10 &lt;- crypto_data %&gt;%\n  arrange(desc(market_cap)) %&gt;%\n  slice_head(n = 10)\n\n# 3. Visualize\nggplot(top_10, aes(x = reorder(symbol, market_cap), y = market_cap / 1e9)) +\n  geom_col(fill = \"steelblue\") +\n  coord_flip() +\n  labs(\n    title = \"Top 10 Cryptocurrencies by Market Cap\",\n    x = NULL,\n    y = \"Market Cap (Billions USD)\"\n  ) +\n  theme_minimal()\n\n\n4.8.3 Project 3: Advanced Visualization\n# Create a complex dashboard-style visualization\nlibrary(patchwork)  # For combining plots\n\n# Plot 1: Time series\np1 &lt;- ggplot(economics, aes(x = date, y = unemploy / 1000)) +\n  geom_line(color = \"blue\") +\n  labs(title = \"Unemployment Over Time\", y = \"Unemployed (thousands)\")\n\n# Plot 2: Distribution\np2 &lt;- ggplot(economics, aes(x = pce)) +\n  geom_histogram(bins = 30, fill = \"coral\") +\n  labs(title = \"Distribution of Personal Consumption\")\n\n# Plot 3: Correlation\np3 &lt;- ggplot(economics, aes(x = pce, y = pop)) +\n  geom_point(alpha = 0.5) +\n  geom_smooth(method = \"lm\") +\n  labs(title = \"Consumption vs Population\")\n\n# Combine plots\n(p1 | p2) / p3 + plot_annotation(title = \"Economic Indicators Dashboard\")",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "2_Intermediate_Level_R.html#summary",
+    "href": "2_Intermediate_Level_R.html#summary",
+    "title": "4  Intermediate Level R",
+    "section": "4.9 Summary",
+    "text": "4.9 Summary\n\n4.9.1 Key Skills Learned\n\n✅ Data manipulation with dplyr (filter, select, mutate, summarise, group_by)\n✅ Data visualization with ggplot2 (scatter, line, bar, histogram, box plots)\n✅ Data reshaping with tidyr (pivot_longer, pivot_wider)\n✅ Functional programming with purrr (map functions)\n✅ Working with strings (stringr) and dates (lubridate)\n✅ API integration and JSON handling\n✅ Reading various file formats\n\n\n\n4.9.2 Next Steps\n\nPractice: Apply these skills to real datasets (Kaggle, TidyTuesday)\nAdvance: Move to 3_Expert_Level_R.md for statistical modeling and ML\nBuild: Create data analysis projects and share on GitHub\nLearn: Explore advanced ggplot2 extensions (plotly, gganimate)\n\nContinue to Expert Level! 🚀",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intermediate Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html",
+    "href": "3_Expert_Level_R.html",
+    "title": "5  Expert Level R",
+    "section": "",
+    "text": "5.1 Table of Contents",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#table-of-contents",
+    "href": "3_Expert_Level_R.html#table-of-contents",
+    "title": "5  Expert Level R",
+    "section": "",
+    "text": "Statistical Modeling\nMachine Learning with caret\nAdvanced ML Algorithms\nModel Evaluation and Tuning\nTime Series Analysis\nR Markdown and Reproducible Research\nPerformance Optimization\nAdvanced Topics",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#statistical-modeling",
+    "href": "3_Expert_Level_R.html#statistical-modeling",
+    "title": "5  Expert Level R",
+    "section": "5.2 Statistical Modeling",
+    "text": "5.2 Statistical Modeling\n\n5.2.1 Linear Regression\n# Simple linear regression\nmodel &lt;- lm(mpg ~ wt, data = mtcars)\nsummary(model)\n\n# Multiple regression\nmodel &lt;- lm(mpg ~ wt + hp + cyl, data = mtcars)\nsummary(model)\n\n# Predictions\nnew_data &lt;- data.frame(wt = c(2.5, 3.0, 3.5), hp = c(100, 120, 140), cyl = c(4, 6, 6))\npredictions &lt;- predict(model, new_data, interval = \"confidence\")\n\n# Model diagnostics\npar(mfrow = c(2, 2))\nplot(model)\n\n# Check assumptions\nlibrary(car)\nvif(model)  # Variance Inflation Factor (multicollinearity)\ndurbinWatsonTest(model)  # Autocorrelation\nncvTest(model)  # Heteroscedasticity\n\n# Residual analysis\nresiduals &lt;- resid(model)\nshapiro.test(residuals)  # Normality test\n\n5.2.1.1 Math and Explanation\nWe observe a response \\(y_i\\) and \\(p\\) predictors \\(x_{i1},\\dots,x_{ip}\\) for \\(i = 1,\\dots,n\\). Linear regression assumes the conditional mean of \\(Y\\) is a linear function of the predictors:\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\cdots + \\beta_p x_{ip} + \\varepsilon_i,\n\\]\nor in matrix form\n\\[\n\\mathbf{y} = X\\beta + \\varepsilon,\n\\]\nwhere \\(X\\) is the \\(n \\times (p+1)\\) design matrix (including a column of ones for the intercept), \\(\\beta\\) is the vector of coefficients, and \\(\\varepsilon\\) is an error term (often modeled as \\(\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2 I)\\)).\nThe ordinary least squares (OLS) estimator chooses \\(\\hat\\beta\\) to minimize the sum of squared residuals:\n\\[\n\\hat\\beta = \\arg\\min_\\beta \\sum_{i=1}^n (y_i - \\hat y_i)^2\n            = \\arg\\min_\\beta \\lVert \\mathbf{y} - X\\beta \\rVert_2^2.\n\\]\nWhen \\(X^\\top X\\) is invertible, the minimizer has the closed form\n\\[\n\\hat\\beta = (X^\\top X)^{-1} X^\\top \\mathbf{y}.\n\\]\nThe diagnostic code (residual plots, variance inflation factor, Durbin–Watson test, tests for heteroscedasticity and normality) is checking whether the usual assumptions—linearity, independence, constant variance, and approximately normal residuals—are reasonable for this model.\n\n\n\n5.2.2 Logistic Regression\n# Binary classification\ndata(iris)\niris_binary &lt;- iris[iris$Species != \"setosa\", ]\niris_binary$Species &lt;- droplevels(iris_binary$Species)\n\nmodel &lt;- glm(Species ~ Sepal.Length + Sepal.Width, \n             data = iris_binary, \n             family = binomial(link = \"logit\"))\nsummary(model)\n\n# Predictions\npredictions &lt;- predict(model, type = \"response\")\npredicted_class &lt;- ifelse(predictions &gt; 0.5, \"virginica\", \"versicolor\")\n\n# Confusion matrix\ntable(Predicted = predicted_class, Actual = iris_binary$Species)\n\n# ROC curve and AUC\nlibrary(pROC)\nroc_obj &lt;- roc(iris_binary$Species, predictions)\nplot(roc_obj, main = \"ROC Curve\")\nauc(roc_obj)\n\n# Odds ratios\nexp(coef(model))\nexp(confint(model))\n\n5.2.2.1 Math and Explanation\nFor a binary response \\(Y \\in \\{0,1\\}\\) and predictors \\(x\\), logistic regression models the conditional probability of the positive class as\n\\[\nP(Y = 1 \\mid x) = p(x) = \\sigma(\\eta) = \\frac{1}{1 + e^{-\\eta}}, \\quad \\eta = \\beta_0 + \\beta^\\top x.\n\\]\nEquivalently, the log-odds (logit) are linear in the predictors:\n\\[\n\\log\\frac{p(x)}{1 - p(x)} = \\beta_0 + \\beta^\\top x.\n\\]\nGiven data \\((x_i, y_i)\\), \\(i = 1,\\dots,n\\), the likelihood of the parameters \\(\\beta\\) is\n\\[\nL(\\beta) = \\prod_{i=1}^n p(x_i)^{y_i} [1 - p(x_i)]^{1-y_i},\n\\]\nwith log-likelihood\n\\[\n\\ell(\\beta) = \\sum_{i=1}^n \\big[ y_i \\log p(x_i) + (1-y_i) \\log(1-p(x_i)) \\big].\n\\]\nThe fitted coefficients \\(\\hat\\beta\\) maximize \\(\\ell(\\beta)\\) (or minimize the negative log-likelihood, a cross-entropy loss). There is no closed-form solution, so numerical methods such as iteratively reweighted least squares or gradient-based optimization are used.\nEach coefficient \\(\\beta_j\\) represents the change in log-odds of \\(Y=1\\) for a one-unit increase in \\(x_j\\), holding other predictors fixed. Exponentiating gives an odds ratio \\(e^{\\beta_j}\\), which is what exp(coef(model)) and exp(confint(model)) report. The ROC curve and AUC summarize how well the predicted probabilities separate the two classes over all possible thresholds.\n\n\n\n5.2.3 Generalized Linear Models (GLM)\n# Poisson regression (count data)\nmodel_poisson &lt;- glm(count ~ factor1 + factor2, \n                     family = poisson(link = \"log\"),\n                     data = df)\n\n# Negative binomial (overdispersed count data)\nlibrary(MASS)\nmodel_nb &lt;- glm.nb(count ~ factor1 + factor2, data = df)\n\n# Gamma regression (continuous positive data)\nmodel_gamma &lt;- glm(response ~ predictor, \n                   family = Gamma(link = \"log\"),\n                   data = df)\n\n5.2.3.1 Math and Explanation\nGeneralized linear models extend linear regression to non-Gaussian response distributions from the exponential family. For observation \\(i\\) we write\n\\[\ng(\\mu_i) = \\eta_i = x_i^\\top \\beta, \\quad \\mu_i = \\mathbb{E}[Y_i \\mid x_i],\n\\]\nwhere \\(g(\\cdot)\\) is a link function and \\(\\mu_i\\) is the conditional mean of \\(Y_i\\).\nIn this code:\n\nPoisson regression assumes \\(Y_i \\sim \\text{Poisson}(\\lambda_i)\\) for count data and uses the log link \\[\\log(\\lambda_i) = x_i^\\top \\beta.\\]\nNegative binomial regression also models counts but introduces an additional dispersion parameter to handle overdispersion (variance greater than the mean), again with a log link.\nGamma regression assumes \\(Y_i\\) is positive and continuous and often uses a log link \\[\\log(\\mu_i) = x_i^\\top \\beta.\\]\n\nThe parameters \\(\\beta\\) are estimated by maximum likelihood, i.e.\n\\[\n\\hat\\beta = \\arg\\max_\\beta \\; \\ell(\\beta),\n\\]\nwhere \\(\\ell(\\beta)\\) is the log-likelihood implied by the chosen distribution and link. In practice, glm() uses iteratively reweighted least squares (IRLS) to solve this optimization by repeatedly fitting weighted least-squares regressions until convergence.\nDiagnostics for GLMs focus on whether the chosen distribution and link adequately capture the mean–variance relationship (e.g. checking residuals, deviance, and overdispersion for Poisson models).\n\n\n\n5.2.4 Mixed Effects Models\nlibrary(lme4)\n\n# Linear mixed model\nmodel &lt;- lmer(reaction ~ days + (1 + days | subject), data = sleepstudy)\nsummary(model)\n\n# Random intercept and slope\nmodel &lt;- lmer(y ~ x + (x | group), data = df)\n\n# Extract random effects\nranef(model)\nfixef(model)\n\n# Model comparison\nmodel1 &lt;- lmer(y ~ x + (1 | group), data = df)\nmodel2 &lt;- lmer(y ~ x + (1 + x | group), data = df)\nanova(model1, model2)\n\n5.2.4.1 Math and Explanation\nMixed effects (multilevel) models include both fixed effects, which are shared across all groups, and random effects, which capture group-specific deviations.\nA simple linear mixed model for observation \\(i\\) in group \\(j\\) can be written as\n\\[\ny_{ij} = \\beta_0 + \\beta^\\top x_{ij} + b_{0j} + b_j^\\top z_{ij} + \\varepsilon_{ij},\n\\]\nwhere\n\n\\(\\beta\\) are fixed-effect coefficients,\n\\(b_j\\) are random effects for group \\(j\\) (typically \\(b_j \\sim \\mathcal{N}(0, \\Sigma_b)\\)),\n\\(z_{ij}\\) selects which random effects apply to observation \\(ij\\),\n\\(\\varepsilon_{ij} \\sim \\mathcal{N}(0, \\sigma^2)\\) are residual errors.\n\nFormulas like reaction ~ days + (1 + days | subject) tell lmer() to include a fixed effect of days plus random intercepts and random slopes by subject.\nEstimation proceeds by maximizing the (restricted) marginal likelihood obtained by integrating out the random effects:\n\\[\nL(\\beta, \\Sigma_b, \\sigma^2) = \\prod_j \\int f(y_j \\mid b_j, \\beta, \\sigma^2) f(b_j \\mid \\Sigma_b)\\, db_j.\n\\]\nlme4 uses numerical methods (Laplace approximation, sparse linear algebra) to approximate this likelihood efficiently. The anova(model1, model2) call is performing a likelihood-ratio test between nested mixed-effect models to assess whether the more complex random-effect structure significantly improves model fit.\n\n\n\n5.2.5 Survival Analysis\nlibrary(survival)\n\n# Kaplan-Meier survival curve\nfit &lt;- survfit(Surv(time, status) ~ group, data = lung)\nplot(fit, col = c(\"blue\", \"red\"), \n     xlab = \"Time\", ylab = \"Survival Probability\")\nlegend(\"topright\", legend = c(\"Group 1\", \"Group 2\"), col = c(\"blue\", \"red\"), lty = 1)\n\n# Log-rank test\nsurvdiff(Surv(time, status) ~ group, data = lung)\n\n# Cox proportional hazards model\ncox_model &lt;- coxph(Surv(time, status) ~ age + sex + ph.ecog, data = lung)\nsummary(cox_model)\n\n# Hazard ratios\nexp(coef(cox_model))\nexp(confint(cox_model))\n\n5.2.5.1 Math and Explanation\nLet \\(T\\) be a time-to-event random variable. Two key functions in survival analysis are:\n\nSurvival function: \\(S(t) = P(T &gt; t)\\).\nHazard function: \\(h(t) = \\lim_{\\Delta t \\to 0} P(t \\le T &lt; t + \\Delta t \\mid T \\ge t)/\\Delta t\\).\n\nThe Kaplan–Meier estimator used by survfit() estimates \\(S(t)\\) nonparametrically by multiplying conditional survival probabilities at each observed event time.\nThe Cox proportional hazards model assumes that the hazard for subject \\(i\\) with covariates \\(x_i\\) is\n\\[\nh(t \\mid x_i) = h_0(t) \\exp(\\beta^\\top x_i),\n\\]\nwhere \\(h_0(t)\\) is an unspecified baseline hazard and \\(\\beta\\) are regression coefficients.\nInstead of a full likelihood, Cox regression maximizes the partial likelihood\n\\[\nL_p(\\beta) = \\prod_{i \\in \\mathcal{D}} \\frac{\\exp(\\beta^\\top x_i)}{\\sum_{j \\in R_i} \\exp(\\beta^\\top x_j)},\n\\]\nwhere \\(\\mathcal{D}\\) is the set of event times and \\(R_i\\) is the risk set at the time of event \\(i\\). Maximizing \\(L_p(\\beta)\\) yields estimates \\(\\hat\\beta\\), and\n\\[\n\\exp(\\beta_j)\n\\]\nis interpreted as a hazard ratio: the multiplicative change in hazard for a one-unit increase in covariate \\(x_j\\).\nThe log-rank test compares two (or more) survival curves under the null hypothesis that their hazard functions are equal over time.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#machine-learning-with-caret",
+    "href": "3_Expert_Level_R.html#machine-learning-with-caret",
+    "title": "5  Expert Level R",
+    "section": "5.3 Machine Learning with caret",
+    "text": "5.3 Machine Learning with caret\n\n5.3.1 Setup and Data Splitting\nlibrary(caret)\n\n# Split data\nset.seed(123)\ntrainIndex &lt;- createDataPartition(iris$Species, p = 0.8, list = FALSE)\ntrain_data &lt;- iris[trainIndex, ]\ntest_data &lt;- iris[-trainIndex, ]\n\n# Cross-validation setup\ntrain_control &lt;- trainControl(\n  method = \"cv\",\n  number = 10,\n  savePredictions = \"final\",\n  classProbs = TRUE,\n  summaryFunction = multiClassSummary\n)\n\n\n5.3.2 Training Models\n# Random Forest\nset.seed(123)\nrf_model &lt;- train(\n  Species ~ .,\n  data = train_data,\n  method = \"rf\",\n  trControl = train_control,\n  tuneLength = 5\n)\nprint(rf_model)\n\n# Support Vector Machine\nsvm_model &lt;- train(\n  Species ~ .,\n  data = train_data,\n  method = \"svmRadial\",\n  trControl = train_control,\n  tuneLength = 5\n)\n\n# Gradient Boosting\ngbm_model &lt;- train(\n  Species ~ .,\n  data = train_data,\n  method = \"gbm\",\n  trControl = train_control,\n  verbose = FALSE\n)\n\n# Neural Network\nnnet_model &lt;- train(\n  Species ~ .,\n  data = train_data,\n  method = \"nnet\",\n  trControl = train_control,\n  trace = FALSE\n)\n\n5.3.2.1 Math and Explanation\nAlthough caret::train() hides the underlying optimization details, each method corresponds to a specific model class and loss function:\n\nRandom Forest (method = \"rf\")\n\nAn ensemble of decision trees \\(\\{T_b(x)\\}_{b=1}^B\\) grown on bootstrap samples.\nFor classification, the prediction is the majority vote of the trees.\nEach split in a tree greedily chooses the feature and split point that maximizes decrease in node impurity (e.g. Gini index \\[\nG = \\sum_k p_k(1-p_k),\n\\] where \\(p_k\\) is the class proportion in that node).\n\nSupport Vector Machine (method = \"svmRadial\")\n\nFinds a separating surface with maximum margin. In the soft-margin formulation it solves \\[\n\\min_{w,b,\\xi} \\; \\tfrac{1}{2}\\lVert w \\rVert^2 + C \\sum_{i=1}^n \\xi_i\n\\] subject to \\[\ny_i (w^T \\phi(x_i) + b) \\ge 1 - \\xi_i, \\quad \\xi_i \\ge 0,\n\\] where \\(\\phi(\\cdot)\\) is induced by the RBF kernel and \\(C\\) controls the penalty for misclassification.\n\nGradient Boosting (method = \"gbm\")\n\nBuilds an additive model of weak learners \\[\nF_M(x) = \\sum_{m=1}^M \\gamma_m h_m(x),\n\\] where each new tree \\(h_m\\) is fit to approximate the negative gradient of the loss with respect to the current predictions.\nThis is a stagewise functional gradient descent procedure that iteratively reduces training loss.\n\nNeural Network (method = \"nnet\")\n\nTypically a single hidden layer with non-linear activation: \\[\nh = \\sigma(W^{(1)} x + b^{(1)}), \\quad \\hat y = f(W^{(2)} h + b^{(2)}),\n\\] where \\(\\sigma\\) is an activation (e.g. logistic, ReLU) and \\(f\\) is softmax (classification) or identity (regression).\nTraining minimizes a loss such as cross-entropy using gradient descent and backpropagation.\n\n\ncaret handles resampling (cross-validation), hyperparameter tuning, and calling the appropriate underlying algorithms, but the optimization for each model follows these mathematical objectives.\n\n\n\n5.3.3 Predictions and Evaluation\n# Make predictions\nrf_pred &lt;- predict(rf_model, test_data)\nsvm_pred &lt;- predict(svm_model, test_data)\n\n# Confusion Matrix\nconfusionMatrix(rf_pred, test_data$Species)\n\n# Multiple metrics\npostResample(rf_pred, test_data$Species)\n\n# Variable importance\nvarImp(rf_model)\nplot(varImp(rf_model), top = 10)\n\n\n5.3.4 Model Comparison\n# Compare multiple models\nresults &lt;- resamples(list(\n  RF = rf_model,\n  SVM = svm_model,\n  GBM = gbm_model,\n  NNET = nnet_model\n))\n\nsummary(results)\ndotplot(results)\nbwplot(results)\n\n# Statistical test\ndiff_results &lt;- diff(results)\nsummary(diff_results)",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#advanced-ml-algorithms",
+    "href": "3_Expert_Level_R.html#advanced-ml-algorithms",
+    "title": "5  Expert Level R",
+    "section": "5.4 Advanced ML Algorithms",
+    "text": "5.4 Advanced ML Algorithms\n\n5.4.1 XGBoost\nlibrary(xgboost)\n\n# Prepare data\ntrain_matrix &lt;- as.matrix(train_data[, -5])\ntrain_label &lt;- as.numeric(train_data$Species) - 1\ntest_matrix &lt;- as.matrix(test_data[, -5])\n\n# Create DMatrix\ndtrain &lt;- xgb.DMatrix(data = train_matrix, label = train_label)\ndtest &lt;- xgb.DMatrix(data = test_matrix)\n\n# Set parameters\nparams &lt;- list(\n  objective = \"multi:softmax\",\n  num_class = 3,\n  max_depth = 6,\n  eta = 0.3,\n  subsample = 0.8,\n  colsample_bytree = 0.8\n)\n\n# Train model\nxgb_model &lt;- xgb.train(\n  params = params,\n  data = dtrain,\n  nrounds = 100,\n  watchlist = list(train = dtrain),\n  early_stopping_rounds = 10,\n  verbose = 0\n)\n\n# Predictions\npredictions &lt;- predict(xgb_model, dtest)\n\n# Feature importance\nimportance &lt;- xgb.importance(model = xgb_model)\nxgb.plot.importance(importance, top_n = 10)\n\n5.4.1.1 Math and Explanation\nXGBoost fits an additive ensemble of decision trees:\n\\[\n\\hat y_i = \\sum_{k=1}^K f_k(x_i), \\quad f_k \\in \\mathcal{F},\n\\]\nwhere each \\(f_k\\) is a regression tree that assigns a constant score to each leaf region.\nFor a loss function \\(l(y_i, \\hat y_i)\\), it minimizes the regularized objective\n\\[\n\\mathcal{L} = \\sum_{i=1}^n l\\big(y_i, \\hat y_i\\big)\n            + \\sum_{k=1}^K \\Omega(f_k),\n\\]\nwith tree complexity penalty\n\\[\n\\Omega(f) = \\gamma T + \\tfrac{1}{2} \\lambda \\lVert w \\rVert^2,\n\\]\nwhere \\(T\\) is the number of leaves and \\(w\\) are the leaf scores. At each boosting iteration, XGBoost uses a second-order Taylor expansion of the loss around the current predictions to compute optimal leaf weights and select splits, giving a fast approximation to gradient-boosted trees with built-in regularization.\nHyperparameters such as max_depth, eta (learning rate), subsample, and colsample_bytree control how complex each tree can be and how strongly the ensemble is regularized.\n\n\n\n5.4.2 Random Forest (ranger)\nlibrary(ranger)\n\n# Fast random forest\nrf_fast &lt;- ranger(\n  Species ~ .,\n  data = train_data,\n  num.trees = 500,\n  importance = \"impurity\",\n  probability = TRUE\n)\n\n# Predictions\npred &lt;- predict(rf_fast, test_data)$predictions\n\n# Variable importance\nimportance(rf_fast)\n\n5.4.2.1 Math and Explanation\nThe ranger model is a fast implementation of the same random forest idea used earlier: many decision trees are grown on bootstrap samples of the data, and predictions are aggregated.\nIf \\(T_b(x)\\) denotes the prediction of tree \\(b\\), then for classification the forest prediction is typically\n\\[\n\\hat y = \\text{mode}\\{T_1(x), T_2(x), \\dots, T_B(x)\\},\n\\]\nand for regression it is the average. Each tree is built by recursively selecting splits that maximize the reduction in node impurity (e.g. Gini index for classification) while only considering a random subset of predictors at each node.\nThis combination of bagging (bootstrap aggregation) and random feature selection reduces variance and decorrelates individual trees, leading to strong predictive performance without overfitting as badly as a single deep tree. The importance scores from importance(rf_fast) summarize how much each variable contributes to reducing impurity across the forest.\n\n\n\n5.4.3 Deep Learning with keras\nlibrary(keras)\n\n# Prepare data\nx_train &lt;- as.matrix(train_data[, -5])\ny_train &lt;- to_categorical(as.numeric(train_data$Species) - 1, 3)\nx_test &lt;- as.matrix(test_data[, -5])\n\n# Build model\nmodel &lt;- keras_model_sequential() %&gt;%\n  layer_dense(units = 64, activation = \"relu\", input_shape = ncol(x_train)) %&gt;%\n  layer_dropout(rate = 0.2) %&gt;%\n  layer_dense(units = 32, activation = \"relu\") %&gt;%\n  layer_dropout(rate = 0.2) %&gt;%\n  layer_dense(units = 3, activation = \"softmax\")\n\n# Compile\nmodel %&gt;% compile(\n  loss = \"categorical_crossentropy\",\n  optimizer = optimizer_adam(lr = 0.001),\n  metrics = c(\"accuracy\")\n)\n\n# Train\nhistory &lt;- model %&gt;% fit(\n  x_train, y_train,\n  epochs = 100,\n  batch_size = 16,\n  validation_split = 0.2,\n  verbose = 0\n)\n\n# Plot training history\nplot(history)\n\n# Predictions\npredictions &lt;- model %&gt;% predict(x_test)\npredicted_class &lt;- max.col(predictions) - 1\n\n5.4.3.1 Math and Explanation\nThe keras example builds a fully connected neural network with two hidden layers. For an input vector \\(x\\), weights \\(W^{(1)}, W^{(2)}, W^{(3)}\\) and biases \\(b^{(1)}, b^{(2)}, b^{(3)}\\), the forward pass is\n\\[\nh^{(1)} = \\text{ReLU}(W^{(1)} x + b^{(1)}),\\\\\nh^{(2)} = \\text{ReLU}(W^{(2)} h^{(1)} + b^{(2)}),\\\\\nz = W^{(3)} h^{(2)} + b^{(3)},\\\\\n\\hat y = \\text{softmax}(z),\n\\]\nwhere ReLU is the rectified linear unit activation and softmax converts logits \\(z\\) into class probabilities.\nFor multi-class classification with one-hot targets \\(y_i\\), the loss is categorical cross-entropy\n\\[\n\\mathcal{L} = - \\sum_{i=1}^n \\sum_{k=1}^K y_{ik} \\log \\hat y_{ik},\n\\]\nwhich is minimized using stochastic gradient descent (or a variant like Adam, as used here). Gradients of the loss with respect to all weights and biases are computed efficiently by backpropagation.\nThe dropout layers randomly zero out a fraction of hidden units during training, which acts as a regularizer by preventing co-adaptation of features and approximating an ensemble of many thinned networks.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#model-evaluation-and-tuning",
+    "href": "3_Expert_Level_R.html#model-evaluation-and-tuning",
+    "title": "5  Expert Level R",
+    "section": "5.5 Model Evaluation and Tuning",
+    "text": "5.5 Model Evaluation and Tuning\n\n5.5.1 Hyperparameter Tuning\n# Grid search\ngrid &lt;- expand.grid(\n  mtry = c(2, 3, 4),\n  splitrule = c(\"gini\", \"extratrees\"),\n  min.node.size = c(1, 5, 10)\n)\n\nmodel &lt;- train(\n  Species ~ .,\n  data = train_data,\n  method = \"ranger\",\n  trControl = train_control,\n  tuneGrid = grid\n)\n\n# Random search\nmodel &lt;- train(\n  Species ~ .,\n  data = train_data,\n  method = \"ranger\",\n  trControl = train_control,\n  tuneLength = 20,\n  search = \"random\"\n)\n\n# Best parameters\nmodel$bestTune\n\n\n5.5.2 Cross-Validation Strategies\n# K-fold CV\ncv_control &lt;- trainControl(method = \"cv\", number = 10)\n\n# Repeated K-fold\ncv_control &lt;- trainControl(method = \"repeatedcv\", number = 10, repeats = 3)\n\n# Leave-one-out CV\nloo_control &lt;- trainControl(method = \"LOOCV\")\n\n# Time series CV\nts_control &lt;- trainControl(method = \"timeslice\",\n                           initialWindow = 100,\n                           horizon = 10,\n                           fixedWindow = FALSE)\n\n# Custom CV\nfolds &lt;- createFolds(train_data$Species, k = 5)\ncustom_control &lt;- trainControl(method = \"cv\", index = folds)\n\n\n5.5.3 Feature Selection\n# Recursive feature elimination\ncontrol &lt;- rfeControl(functions = rfFuncs, method = \"cv\", number = 10)\nresults &lt;- rfe(\n  train_data[, -5],\n  train_data$Species,\n  sizes = c(1:4),\n  rfeControl = control\n)\nprint(results)\npredictors(results)\nplot(results, type = c(\"g\", \"o\"))\n\n# Boruta (all-relevant feature selection)\nlibrary(Boruta)\nboruta_result &lt;- Boruta(Species ~ ., data = train_data, doTrace = 2)\nprint(boruta_result)\nplot(boruta_result)\ngetSelectedAttributes(boruta_result, withTentative = FALSE)\n\n\n5.5.4 Ensemble Methods\n# Stacking\nlibrary(caretEnsemble)\n\n# Train multiple models\nmodel_list &lt;- caretList(\n  Species ~ .,\n  data = train_data,\n  trControl = train_control,\n  methodList = c(\"rf\", \"glm\", \"knn\")\n)\n\n# Stack models\nstack_model &lt;- caretStack(\n  model_list,\n  method = \"glm\",\n  metric = \"Accuracy\",\n  trControl = trainControl(\n    method = \"cv\",\n    number = 10,\n    savePredictions = \"final\",\n    classProbs = TRUE\n  )\n)\n\n# Predictions\nstack_pred &lt;- predict(stack_model, test_data)",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#time-series-analysis",
+    "href": "3_Expert_Level_R.html#time-series-analysis",
+    "title": "5  Expert Level R",
+    "section": "5.6 Time Series Analysis",
+    "text": "5.6 Time Series Analysis\n\n5.6.1 Basic Time Series\n# Create time series\nts_data &lt;- ts(AirPassengers, start = c(1949, 1), frequency = 12)\n\n# Decomposition\ndecomp &lt;- decompose(ts_data)\nplot(decomp)\n\n# STL decomposition\nstl_result &lt;- stl(ts_data, s.window = \"periodic\")\nplot(stl_result)\n\n\n5.6.2 ARIMA Models\nlibrary(forecast)\n\n# Automatic ARIMA\nfit &lt;- auto.arima(ts_data)\nsummary(fit)\n\n# Check residuals\ncheckresiduals(fit)\n\n# Forecast\nforecast_result &lt;- forecast(fit, h = 24)\nplot(forecast_result)\n\n# Manual ARIMA\nfit_manual &lt;- arima(ts_data, order = c(1, 1, 1), seasonal = list(order = c(1, 1, 1)))\n\n# Model diagnostics\ntsdiag(fit_manual)\n\n5.6.2.1 Math and Explanation\nAn \\(\\text{ARIMA}(p,d,q)\\) model combines autoregressive (AR), integration (I), and moving-average (MA) components. Applied to the differenced series\n\\[\nw_t = (1 - B)^d y_t,\n\\]\nwhere \\(B\\) is the backshift operator (\\(B y_t = y_{t-1}\\)), the general form is\n\\[\n\\phi(B) w_t = \\theta(B) \\varepsilon_t,\n\\]\nwith AR and MA polynomials\n\\[\n\\phi(B) = 1 - \\phi_1 B - \\cdots - \\phi_p B^p, \\qquad\n\\theta(B) = 1 + \\theta_1 B + \\cdots + \\theta_q B^q,\n\\]\nand innovations \\(\\varepsilon_t \\sim \\mathcal{N}(0, \\sigma^2)\\).\nThe parameters \\((\\phi_i, \\theta_j, d)\\) are typically estimated by maximum likelihood, which numerically maximizes the probability of the observed time series under the model. auto.arima() searches over candidate \\((p,d,q)\\) values using criteria such as AICc, while checkresiduals() and tsdiag() help verify that the residuals behave like white noise (no remaining structure).\n\n\n\n5.6.3 Exponential Smoothing\n# Simple exponential smoothing\nfit_ses &lt;- ses(ts_data, h = 12)\n\n# Holt's method (trend)\nfit_holt &lt;- holt(ts_data, h = 12)\n\n# Holt-Winters (trend + seasonality)\nfit_hw &lt;- hw(ts_data, seasonal = \"multiplicative\", h = 24)\n\n# ETS (Error, Trend, Seasonal)\nfit_ets &lt;- ets(ts_data)\nforecast_ets &lt;- forecast(fit_ets, h = 24)\nplot(forecast_ets)\n\n5.6.3.1 Math and Explanation\nExponential smoothing methods describe a time series in terms of recursively updated components for level, trend, and (optionally) seasonality.\nFor example, simple exponential smoothing (no trend or seasonality) uses\n\\[\n\\ell_t = \\alpha y_t + (1-\\alpha)\\, \\ell_{t-1}, \\quad\n\\hat y_{t+1} = \\ell_t,\n\\]\nwhere \\(\\alpha \\in (0,1)\\) is the smoothing parameter and \\(\\ell_t\\) is the smoothed level.\nHolt’s method adds a trend component \\(b_t\\) and Holt–Winters adds seasonal components (additive or multiplicative). The ets() function chooses among a family of Error–Trend–Seasonal (ETS) state-space models and estimates the smoothing parameters by maximizing the likelihood of one-step-ahead forecast errors.\n\n\n\n5.6.4 Prophet (Facebook)\nlibrary(prophet)\n\n# Prepare data\ndf &lt;- data.frame(\n  ds = seq(as.Date(\"2020-01-01\"), by = \"day\", length.out = 365),\n  y = rnorm(365, mean = 100, sd = 10)\n)\n\n# Fit model\nm &lt;- prophet(df)\n\n# Make future dataframe\nfuture &lt;- make_future_dataframe(m, periods = 90)\n\n# Forecast\nforecast &lt;- predict(m, future)\n\n# Plot\nplot(m, forecast)\nprophet_plot_components(m, forecast)\n\n5.6.4.1 Math and Explanation\nProphet models a time series as a sum of interpretable components\n\\[\ny(t) = g(t) + s(t) + h(t) + \\varepsilon_t,\n\\]\nwhere\n\n\\(g(t)\\) is a piecewise linear or logistic trend with changepoints,\n\\(s(t)\\) is a seasonal component (e.g. yearly, weekly) represented by Fourier series,\n\\(h(t)\\) captures holiday or event effects,\n\\(\\varepsilon_t\\) is an error term.\n\nProphet uses a Bayesian/state-space formulation with priors that encourage smooth trends and reasonable seasonal patterns. Fitting m &lt;- prophet(df) estimates the parameters of these components (trend slopes, changepoints, seasonal amplitudes, holiday effects), and prophet_plot_components() visualizes each component separately so you can interpret how trend, seasonality, and holidays contribute to the observed series.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#r-markdown-and-reproducible-research",
+    "href": "3_Expert_Level_R.html#r-markdown-and-reproducible-research",
+    "title": "5  Expert Level R",
+    "section": "5.7 R Markdown and Reproducible Research",
+    "text": "5.7 R Markdown and Reproducible Research\n\n5.7.1 Basic R Markdown\n---\ntitle: \"My Analysis\"\nauthor: \"Your Name\"\ndate: \"`r Sys.Date()`\"\noutput: html_document\n---\n\n## Introduction\n\nThis is an R Markdown document.\n\n```r\n# chunk: setup, include=FALSE\nknitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)\nlibrary(tidyverse)",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#data-analysis",
+    "href": "3_Expert_Level_R.html#data-analysis",
+    "title": "5  Expert Level R",
+    "section": "5.8 Data Analysis",
+    "text": "5.8 Data Analysis\n# chunk: load-data\ndata(mtcars)\nsummary(mtcars)",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#visualization",
+    "href": "3_Expert_Level_R.html#visualization",
+    "title": "5  Expert Level R",
+    "section": "5.9 Visualization",
+    "text": "5.9 Visualization\n# chunk: plot, fig.width=8, fig.height=6\nggplot(mtcars, aes(x = wt, y = mpg)) +\n  geom_point() +\n  theme_minimal()",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#conclusion",
+    "href": "3_Expert_Level_R.html#conclusion",
+    "title": "5  Expert Level R",
+    "section": "5.10 Conclusion",
+    "text": "5.10 Conclusion\nResults show…\n\n### Advanced R Markdown Features\n\n```r\n# Parameterized reports\n---\ntitle: \"Parameterized Report\"\noutput: html_document\nparams:\n  year: 2023\n  country: \"USA\"\n---\n\n# Inline code\nThe analysis covers data from `r params$year` in `r params$country`.\n\n# Caching\n```r\n# chunk: expensive-computation, cache=TRUE\nresult &lt;- very_long_computation()",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#performance-optimization",
+    "href": "3_Expert_Level_R.html#performance-optimization",
+    "title": "5  Expert Level R",
+    "section": "8.1 Performance Optimization",
+    "text": "8.1 Performance Optimization\n\n8.1.1 Profiling Code\n# Profile code execution\nlibrary(profvis)\n\nprofvis({\n  data &lt;- data.frame(x = rnorm(10000), y = rnorm(10000))\n  model &lt;- lm(y ~ x, data = data)\n  predictions &lt;- predict(model, data)\n})\n\n# Benchmark functions\nlibrary(microbenchmark)\n\nmicrobenchmark(\n  base = apply(matrix(1:1000000, ncol = 100), 1, sum),\n  rowSums = rowSums(matrix(1:1000000, ncol = 100)),\n  times = 100\n)\n\n\n8.1.2 Vectorization\n# Slow: loop\nresult &lt;- numeric(10000)\nfor (i in 1:10000) {\n  result[i] &lt;- i^2\n}\n\n# Fast: vectorized\nresult &lt;- (1:10000)^2\n\n# Using apply family\nresult &lt;- sapply(1:10000, function(x) x^2)\n\n# Even faster: built-in functions\nresult &lt;- (1:10000)^2\n\n\n8.1.3 Parallel Processing\nlibrary(parallel)\n\n# Detect cores\ndetectCores()\n\n# Parallel lapply\ncl &lt;- makeCluster(4)\nresult &lt;- parLapply(cl, 1:1000, function(x) x^2)\nstopCluster(cl)\n\n# foreach with doParallel\nlibrary(doParallel)\nregisterDoParallel(cores = 4)\n\nresult &lt;- foreach(i = 1:1000, .combine = c) %dopar% {\n  i^2\n}\n\n# Parallel caret training\ncl &lt;- makeCluster(4)\nregisterDoParallel(cl)\n\nmodel &lt;- train(\n  Species ~ .,\n  data = iris,\n  method = \"rf\",\n  trControl = trainControl(method = \"cv\", number = 10, allowParallel = TRUE)\n)\n\nstopCluster(cl)\n\n\n8.1.4 data.table for Speed\nlibrary(data.table)\n\n# Create data.table\ndt &lt;- as.data.table(mtcars)\n\n# Fast aggregation\ndt[, .(avg_mpg = mean(mpg)), by = cyl]\n\n# Fast joins\ndt1 &lt;- data.table(id = 1:1000000, value = rnorm(1000000))\ndt2 &lt;- data.table(id = 1:1000000, category = sample(letters, 1000000, replace = TRUE))\nsetkey(dt1, id)\nsetkey(dt2, id)\nresult &lt;- dt1[dt2]  # Fast join\n\n# Update by reference\ndt[, new_col := mpg * 2]",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#advanced-topics",
+    "href": "3_Expert_Level_R.html#advanced-topics",
+    "title": "5  Expert Level R",
+    "section": "8.2 Advanced Topics",
+    "text": "8.2 Advanced Topics\n\n8.2.1 Custom Functions and Debugging\n# Function with error handling\nsafe_divide &lt;- function(x, y) {\n  tryCatch({\n    if (y == 0) stop(\"Division by zero\")\n    result &lt;- x / y\n    return(result)\n  }, error = function(e) {\n    message(\"Error: \", e$message)\n    return(NA)\n  }, warning = function(w) {\n    message(\"Warning: \", w$message)\n  })\n}\n\n# Debugging\ndebug(my_function)  # Enter debug mode\ndebugonce(my_function)  # Debug once\nundebug(my_function)  # Exit debug mode\n\n# Browser\nmy_function &lt;- function(x) {\n  y &lt;- x * 2\n  browser()  # Pause execution\n  z &lt;- y + 1\n  return(z)\n}\n\n# Assertions\nstopifnot(x &gt; 0)\nassertthat::assert_that(is.numeric(x))\n\n\n8.2.2 S3 and S4 Classes\n# S3 class\nperson &lt;- list(name = \"Alice\", age = 25)\nclass(person) &lt;- \"Person\"\n\nprint.Person &lt;- function(x) {\n  cat(\"Person:\", x$name, \"Age:\", x$age, \"\\n\")\n}\n\n# S4 class\nsetClass(\"Employee\",\n  slots = list(\n    name = \"character\",\n    age = \"numeric\",\n    salary = \"numeric\"\n  )\n)\n\nemp &lt;- new(\"Employee\", name = \"Bob\", age = 30, salary = 50000)\n\n# Methods\nsetGeneric(\"getSalary\", function(obj) standardGeneric(\"getSalary\"))\nsetMethod(\"getSalary\", \"Employee\", function(obj) obj@salary)\n\n\n8.2.3 Writing Packages\n# Create package structure\nusethis::create_package(\"mypackage\")\n\n# Add function\nusethis::use_r(\"my_function\")\n\n# Add documentation with roxygen2\n#' Add Two Numbers\n#'\n#' @param x A number\n#' @param y A number\n#' @return The sum of x and y\n#' @export\n#' @examples\n#' add_numbers(2, 3)\nadd_numbers &lt;- function(x, y) {\n  x + y\n}\n\n# Generate documentation\ndevtools::document()\n\n# Add tests\nusethis::use_test(\"my_function\")\n\n# Check package\ndevtools::check()\n\n# Install\ndevtools::install()",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#practice-projects",
+    "href": "3_Expert_Level_R.html#practice-projects",
+    "title": "5  Expert Level R",
+    "section": "8.3 Practice Projects",
+    "text": "8.3 Practice Projects\n\n8.3.1 Project 1: Predictive Modeling Pipeline\nlibrary(tidyverse)\nlibrary(caret)\n\n# 1. Load and prepare data\ndata(iris)\nset.seed(123)\n\n# 2. Split data\ntrainIndex &lt;- createDataPartition(iris$Species, p = 0.8, list = FALSE)\ntrain_data &lt;- iris[trainIndex, ]\ntest_data &lt;- iris[-trainIndex, ]\n\n# 3. Preprocessing\npreprocess_params &lt;- preProcess(train_data[, -5], method = c(\"center\", \"scale\"))\ntrain_processed &lt;- predict(preprocess_params, train_data[, -5])\ntest_processed &lt;- predict(preprocess_params, test_data[, -5])\n\n# 4. Train multiple models\nmodels &lt;- list(\n  rf = train(Species ~ ., data = train_data, method = \"rf\"),\n  svm = train(Species ~ ., data = train_data, method = \"svmRadial\"),\n  gbm = train(Species ~ ., data = train_data, method = \"gbm\", verbose = FALSE)\n)\n\n# 5. Evaluate\nresults &lt;- lapply(models, function(m) {\n  pred &lt;- predict(m, test_data)\n  confusionMatrix(pred, test_data$Species)\n})\n\n# 6. Select best model\naccuracies &lt;- sapply(results, function(r) r$overall[\"Accuracy\"])\nbest_model &lt;- models[[which.max(accuracies)]]\n\n# 7. Save model\nsaveRDS(best_model, \"best_model.rds\")\n\n\n8.3.2 Project 2: Time Series Forecasting\nlibrary(forecast)\nlibrary(tidyverse)\n\n# 1. Load data\nts_data &lt;- ts(AirPassengers, start = c(1949, 1), frequency = 12)\n\n# 2. Split train/test\ntrain &lt;- window(ts_data, end = c(1958, 12))\ntest &lt;- window(ts_data, start = c(1959, 1))\n\n# 3. Fit multiple models\nmodels &lt;- list(\n  arima = auto.arima(train),\n  ets = ets(train),\n  tbats = tbats(train)\n)\n\n# 4. Forecast\nforecasts &lt;- lapply(models, forecast, h = length(test))\n\n# 5. Evaluate\naccuracy_results &lt;- lapply(forecasts, function(f) {\n  accuracy(f, test)\n})\n\n# 6. Visualize\npar(mfrow = c(2, 2))\nfor (i in seq_along(forecasts)) {\n  plot(forecasts[[i]], main = names(forecasts)[i])\n  lines(test, col = \"red\")\n}",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "3_Expert_Level_R.html#summary",
+    "href": "3_Expert_Level_R.html#summary",
+    "title": "5  Expert Level R",
+    "section": "8.4 Summary",
+    "text": "8.4 Summary\n\n8.4.1 Skills Mastered\n\n✅ Statistical modeling (linear, logistic, GLM, mixed models)\n✅ Machine learning with caret and advanced algorithms\n✅ Model evaluation, tuning, and ensemble methods\n✅ Time series analysis and forecasting\n✅ R Markdown for reproducible research\n✅ Performance optimization and parallel processing\n✅ Advanced R programming concepts\n\n\n\n8.4.2 Next Steps\n\nBuild: Create end-to-end ML projects\nExplore: Shiny apps (4_Shiny_Apps_in_R.md)\nDevelop: R packages and developer tools\nPublish: Share analyses on RPubs, GitHub\n\nContinue to Shiny Apps! 🚀",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expert Level R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html",
+    "href": "4_Shiny_Apps_in_R.html",
+    "title": "6  Shiny Apps in R",
+    "section": "",
+    "text": "6.1 Table of Contents",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#table-of-contents",
+    "href": "4_Shiny_Apps_in_R.html#table-of-contents",
+    "title": "6  Shiny Apps in R",
+    "section": "",
+    "text": "Introduction to Shiny\nBasic App Structure\nUI Components\nServer Logic and Reactivity\nLayouts and Themes\nInteractive Outputs\nAdvanced Reactivity\nShiny Modules\nDeployment\nBest Practices",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#introduction-to-shiny",
+    "href": "4_Shiny_Apps_in_R.html#introduction-to-shiny",
+    "title": "6  Shiny Apps in R",
+    "section": "6.2 Introduction to Shiny",
+    "text": "6.2 Introduction to Shiny\n\n6.2.1 What is Shiny?\nShiny is an R package that makes it easy to build interactive web applications directly from R without requiring HTML, CSS, or JavaScript knowledge.\nKey Features: - ✅ Reactive programming model - ✅ Rich UI components - ✅ Easy deployment - ✅ Integration with R packages - ✅ Real-time interactivity\n\n\n6.2.2 Installation\n# Install Shiny\ninstall.packages(\"shiny\")\n\n# Load library\nlibrary(shiny)\n\n# Run example app\nrunExample(\"01_hello\")",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#basic-app-structure",
+    "href": "4_Shiny_Apps_in_R.html#basic-app-structure",
+    "title": "6  Shiny Apps in R",
+    "section": "6.3 Basic App Structure",
+    "text": "6.3 Basic App Structure\n\n6.3.1 Minimal Shiny App\nlibrary(shiny)\n\n# Define UI\nui &lt;- fluidPage(\n  titlePanel(\"My First Shiny App\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      sliderInput(\"num\", \"Choose a number:\", \n                  min = 1, max = 100, value = 50)\n    ),\n    \n    mainPanel(\n      textOutput(\"result\")\n    )\n  )\n)\n\n# Define server\nserver &lt;- function(input, output, session) {\n  output$result &lt;- renderText({\n    paste(\"You selected:\", input$num)\n  })\n}\n\n# Run app\nshinyApp(ui = ui, server = server)\n\n\n6.3.2 File Structure\nSingle-file app (app.R):\n# app.R\nlibrary(shiny)\n\nui &lt;- fluidPage(\n  # UI code\n)\n\nserver &lt;- function(input, output, session) {\n  # Server code\n}\n\nshinyApp(ui, server)\nTwo-file app:\n# ui.R\nlibrary(shiny)\n\nfluidPage(\n  # UI code\n)\n\n# server.R\nlibrary(shiny)\n\nfunction(input, output, session) {\n  # Server code\n}",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#ui-components",
+    "href": "4_Shiny_Apps_in_R.html#ui-components",
+    "title": "6  Shiny Apps in R",
+    "section": "6.4 UI Components",
+    "text": "6.4 UI Components\n\n6.4.1 Input Widgets\nui &lt;- fluidPage(\n  # Text input\n  textInput(\"name\", \"Enter your name:\", value = \"\"),\n  \n  # Numeric input\n  numericInput(\"age\", \"Enter your age:\", value = 25, min = 0, max = 120),\n  \n  # Slider\n  sliderInput(\"height\", \"Height (cm):\", min = 100, max = 250, value = 170),\n  \n  # Range slider\n  sliderInput(\"range\", \"Select range:\", min = 0, max = 100, value = c(25, 75)),\n  \n  # Checkbox\n  checkboxInput(\"subscribe\", \"Subscribe to newsletter\", value = FALSE),\n  \n  # Checkbox group\n  checkboxGroupInput(\"interests\", \"Interests:\",\n                     choices = c(\"Sports\", \"Music\", \"Reading\", \"Travel\")),\n  \n  # Radio buttons\n  radioButtons(\"gender\", \"Gender:\",\n               choices = c(\"Male\", \"Female\", \"Other\")),\n  \n  # Select dropdown\n  selectInput(\"country\", \"Country:\",\n              choices = c(\"USA\", \"Canada\", \"UK\", \"Australia\")),\n  \n  # Multiple select\n  selectInput(\"languages\", \"Languages:\",\n              choices = c(\"R\", \"Python\", \"Julia\", \"SQL\"),\n              multiple = TRUE),\n  \n  # Date input\n  dateInput(\"birth_date\", \"Birth Date:\", value = \"2000-01-01\"),\n  \n  # Date range\n  dateRangeInput(\"date_range\", \"Select date range:\"),\n  \n  # File upload\n  fileInput(\"file\", \"Upload CSV file:\", accept = c(\".csv\")),\n  \n  # Action button\n  actionButton(\"submit\", \"Submit\", class = \"btn-primary\"),\n  \n  # Download button\n  downloadButton(\"download\", \"Download Data\")\n)\n\n\n6.4.2 Output Widgets\nui &lt;- fluidPage(\n  # Text output\n  textOutput(\"text\"),\n  verbatimTextOutput(\"code\"),\n  \n  # Table output\n  tableOutput(\"table\"),\n  dataTableOutput(\"datatable\"),\n  \n  # Plot output\n  plotOutput(\"plot\"),\n  \n  # UI output (dynamic UI)\n  uiOutput(\"dynamic_ui\"),\n  \n  # HTML output\n  htmlOutput(\"html\")\n)",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#server-logic-and-reactivity",
+    "href": "4_Shiny_Apps_in_R.html#server-logic-and-reactivity",
+    "title": "6  Shiny Apps in R",
+    "section": "6.5 Server Logic and Reactivity",
+    "text": "6.5 Server Logic and Reactivity\n\n6.5.1 Basic Reactivity\nserver &lt;- function(input, output, session) {\n  \n  # Render text\n  output$text &lt;- renderText({\n    paste(\"Hello,\", input$name)\n  })\n  \n  # Render table\n  output$table &lt;- renderTable({\n    head(mtcars, input$rows)\n  })\n  \n  # Render plot\n  output$plot &lt;- renderPlot({\n    hist(rnorm(input$n), main = \"Random Normal Distribution\")\n  })\n  \n  # Render data table (interactive)\n  output$datatable &lt;- renderDataTable({\n    mtcars\n  })\n}\n\n\n6.5.2 Reactive Expressions\nserver &lt;- function(input, output, session) {\n  \n  # Reactive expression (cached)\n  filtered_data &lt;- reactive({\n    mtcars[mtcars$cyl == input$cyl, ]\n  })\n  \n  # Use reactive expression\n  output$plot &lt;- renderPlot({\n    hist(filtered_data()$mpg)\n  })\n  \n  output$summary &lt;- renderPrint({\n    summary(filtered_data())\n  })\n}\n\n\n6.5.3 Observers and Events\nserver &lt;- function(input, output, session) {\n  \n  # Observer (runs automatically)\n  observe({\n    print(paste(\"Slider value:\", input$num))\n  })\n  \n  # observeEvent (runs on specific event)\n  observeEvent(input$submit, {\n    showNotification(\"Form submitted!\", type = \"message\")\n  })\n  \n  # eventReactive (creates reactive value)\n  data &lt;- eventReactive(input$load, {\n    read.csv(input$file$datapath)\n  })\n  \n  output$table &lt;- renderTable({\n    data()\n  })\n}\n\n\n6.5.4 Reactive Values\nserver &lt;- function(input, output, session) {\n  \n  # Create reactive values\n  values &lt;- reactiveValues(\n    count = 0,\n    data = NULL\n  )\n  \n  # Update reactive values\n  observeEvent(input$increment, {\n    values$count &lt;- values$count + 1\n  })\n  \n  observeEvent(input$load, {\n    values$data &lt;- read.csv(input$file$datapath)\n  })\n  \n  # Use reactive values\n  output$count &lt;- renderText({\n    values$count\n  })\n}",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#layouts-and-themes",
+    "href": "4_Shiny_Apps_in_R.html#layouts-and-themes",
+    "title": "6  Shiny Apps in R",
+    "section": "6.6 Layouts and Themes",
+    "text": "6.6 Layouts and Themes\n\n6.6.1 Sidebar Layout\nui &lt;- fluidPage(\n  titlePanel(\"My App\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      # Inputs\n      sliderInput(\"num\", \"Number:\", 1, 100, 50)\n    ),\n    \n    mainPanel(\n      # Outputs\n      plotOutput(\"plot\")\n    )\n  )\n)\n\n\n6.6.2 Tabset Layout\nui &lt;- fluidPage(\n  titlePanel(\"Tabbed Interface\"),\n  \n  tabsetPanel(\n    tabPanel(\"Plot\", plotOutput(\"plot\")),\n    tabPanel(\"Summary\", verbatimTextOutput(\"summary\")),\n    tabPanel(\"Table\", tableOutput(\"table\")),\n    tabPanel(\"About\", includeMarkdown(\"about.md\"))\n  )\n)\n\n\n6.6.3 Navigation Bar\nui &lt;- navbarPage(\n  \"My App\",\n  \n  tabPanel(\"Home\",\n    h1(\"Welcome\"),\n    p(\"This is the home page.\")\n  ),\n  \n  tabPanel(\"Analysis\",\n    sidebarLayout(\n      sidebarPanel(sliderInput(\"n\", \"N:\", 1, 100, 50)),\n      mainPanel(plotOutput(\"plot\"))\n    )\n  ),\n  \n  tabPanel(\"Data\",\n    dataTableOutput(\"table\")\n  ),\n  \n  navbarMenu(\"More\",\n    tabPanel(\"Sub-page 1\"),\n    tabPanel(\"Sub-page 2\")\n  )\n)\n\n\n6.6.4 Dashboard Layout\nlibrary(shinydashboard)\n\nui &lt;- dashboardPage(\n  dashboardHeader(title = \"My Dashboard\"),\n  \n  dashboardSidebar(\n    sidebarMenu(\n      menuItem(\"Dashboard\", tabName = \"dashboard\", icon = icon(\"dashboard\")),\n      menuItem(\"Data\", tabName = \"data\", icon = icon(\"table\")),\n      menuItem(\"Settings\", tabName = \"settings\", icon = icon(\"cog\"))\n    )\n  ),\n  \n  dashboardBody(\n    tabItems(\n      tabItem(tabName = \"dashboard\",\n        fluidRow(\n          valueBox(123, \"Total Sales\", icon = icon(\"dollar\"), color = \"green\"),\n          valueBox(456, \"Customers\", icon = icon(\"users\"), color = \"blue\"),\n          valueBox(789, \"Products\", icon = icon(\"box\"), color = \"yellow\")\n        ),\n        fluidRow(\n          box(title = \"Plot\", plotOutput(\"plot\"), width = 6),\n          box(title = \"Summary\", verbatimTextOutput(\"summary\"), width = 6)\n        )\n      ),\n      \n      tabItem(tabName = \"data\",\n        dataTableOutput(\"table\")\n      )\n    )\n  )\n)\n\n\n6.6.5 Themes\nlibrary(shinythemes)\n\nui &lt;- fluidPage(\n  theme = shinytheme(\"flatly\"),  # or cerulean, cosmo, darkly, etc.\n  \n  titlePanel(\"Themed App\"),\n  \n  # Rest of UI\n)\n\n# Custom CSS\nui &lt;- fluidPage(\n  tags$head(\n    tags$style(HTML(\"\n      .title { color: #007bff; }\n      .sidebar { background-color: #f8f9fa; }\n    \"))\n  ),\n  \n  # Rest of UI\n)",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#interactive-outputs",
+    "href": "4_Shiny_Apps_in_R.html#interactive-outputs",
+    "title": "6  Shiny Apps in R",
+    "section": "6.7 Interactive Outputs",
+    "text": "6.7 Interactive Outputs\n\n6.7.1 Plotly (Interactive Plots)\nlibrary(plotly)\n\nserver &lt;- function(input, output, session) {\n  output$plot &lt;- renderPlotly({\n    p &lt;- ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +\n      geom_point() +\n      theme_minimal()\n    \n    ggplotly(p)\n  })\n}\n\nui &lt;- fluidPage(\n  plotlyOutput(\"plot\")\n)\n\n\n6.7.2 DT (Interactive Tables)\nlibrary(DT)\n\nserver &lt;- function(input, output, session) {\n  output$table &lt;- renderDataTable({\n    datatable(mtcars, \n              filter = 'top',\n              options = list(\n                pageLength = 10,\n                searching = TRUE,\n                ordering = TRUE\n              ))\n  })\n}\n\nui &lt;- fluidPage(\n  dataTableOutput(\"table\")\n)\n\n\n6.7.3 Leaflet (Interactive Maps)\nlibrary(leaflet)\n\nserver &lt;- function(input, output, session) {\n  output$map &lt;- renderLeaflet({\n    leaflet() %&gt;%\n      addTiles() %&gt;%\n      addMarkers(lng = -122.4194, lat = 37.7749, \n                 popup = \"San Francisco\")\n  })\n}\n\nui &lt;- fluidPage(\n  leafletOutput(\"map\")\n)",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#advanced-reactivity",
+    "href": "4_Shiny_Apps_in_R.html#advanced-reactivity",
+    "title": "6  Shiny Apps in R",
+    "section": "6.8 Advanced Reactivity",
+    "text": "6.8 Advanced Reactivity\n\n6.8.1 Isolate and Debounce\nserver &lt;- function(input, output, session) {\n  \n  # Isolate - prevent reactivity\n  output$text &lt;- renderText({\n    input$button  # Trigger on button click\n    isolate({\n      paste(\"Value:\", input$slider)  # Don't react to slider changes\n    })\n  })\n  \n  # Debounce - delay reactivity\n  debounced_value &lt;- debounce(reactive(input$text), 1000)  # 1 second delay\n  \n  output$result &lt;- renderText({\n    debounced_value()\n  })\n}\n\n\n6.8.2 Validation\nserver &lt;- function(input, output, session) {\n  \n  output$plot &lt;- renderPlot({\n    # Validate input\n    validate(\n      need(input$n &gt; 0, \"Please select a positive number\"),\n      need(input$n &lt;= 1000, \"Number too large\")\n    )\n    \n    hist(rnorm(input$n))\n  })\n}\n\n\n6.8.3 Progress Indicators\nserver &lt;- function(input, output, session) {\n  \n  observeEvent(input$run, {\n    withProgress(message = 'Processing...', value = 0, {\n      for (i in 1:10) {\n        incProgress(1/10, detail = paste(\"Step\", i))\n        Sys.sleep(0.5)\n      }\n    })\n    \n    showNotification(\"Processing complete!\", type = \"message\")\n  })\n}\n\n\n6.8.4 Modal Dialogs\nserver &lt;- function(input, output, session) {\n  \n  observeEvent(input$show_modal, {\n    showModal(modalDialog(\n      title = \"Important Message\",\n      \"Are you sure you want to continue?\",\n      footer = tagList(\n        modalButton(\"Cancel\"),\n        actionButton(\"confirm\", \"Confirm\")\n      )\n    ))\n  })\n  \n  observeEvent(input$confirm, {\n    removeModal()\n    showNotification(\"Confirmed!\", type = \"message\")\n  })\n}",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#shiny-modules",
+    "href": "4_Shiny_Apps_in_R.html#shiny-modules",
+    "title": "6  Shiny Apps in R",
+    "section": "6.9 Shiny Modules",
+    "text": "6.9 Shiny Modules\n\n6.9.1 Creating a Module\n# Module UI function\nhistogramUI &lt;- function(id) {\n  ns &lt;- NS(id)\n  \n  tagList(\n    sliderInput(ns(\"bins\"), \"Number of bins:\", 1, 50, 30),\n    plotOutput(ns(\"plot\"))\n  )\n}\n\n# Module server function\nhistogramServer &lt;- function(id, data) {\n  moduleServer(id, function(input, output, session) {\n    output$plot &lt;- renderPlot({\n      hist(data(), breaks = input$bins, main = \"Histogram\")\n    })\n  })\n}\n\n\n6.9.2 Using Modules\nui &lt;- fluidPage(\n  titlePanel(\"Modular App\"),\n  \n  tabsetPanel(\n    tabPanel(\"Dataset 1\", histogramUI(\"hist1\")),\n    tabPanel(\"Dataset 2\", histogramUI(\"hist2\"))\n  )\n)\n\nserver &lt;- function(input, output, session) {\n  data1 &lt;- reactive(rnorm(100))\n  data2 &lt;- reactive(rnorm(100, mean = 10))\n  \n  histogramServer(\"hist1\", data1)\n  histogramServer(\"hist2\", data2)\n}\n\nshinyApp(ui, server)",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#deployment",
+    "href": "4_Shiny_Apps_in_R.html#deployment",
+    "title": "6  Shiny Apps in R",
+    "section": "6.10 Deployment",
+    "text": "6.10 Deployment\n\n6.10.1 shinyapps.io\n# Install rsconnect\ninstall.packages(\"rsconnect\")\n\n# Set up account\nlibrary(rsconnect)\nsetAccountInfo(\n  name = \"your-account-name\",\n  token = \"your-token\",\n  secret = \"your-secret\"\n)\n\n# Deploy\nrsconnect::deployApp(appDir = \"path/to/app\")\n\n# Update app\nrsconnect::deployApp(appDir = \"path/to/app\", forceUpdate = TRUE)\n\n\n6.10.2 Shiny Server (Self-hosted)\n# Install on Ubuntu\nsudo apt-get install gdebi-core\nwget https://download3.rstudio.org/ubuntu-18.04/x86_64/shiny-server-1.5.18.987-amd64.deb\nsudo gdebi shiny-server-1.5.18.987-amd64.deb\n\n# App location\n/srv/shiny-server/\n\n# Configuration\n/etc/shiny-server/shiny-server.conf\n\n\n6.10.3 Docker\n# Dockerfile\nFROM rocker/shiny:latest\n\n# Install R packages\nRUN R -e \"install.packages(c('shiny', 'tidyverse', 'plotly'))\"\n\n# Copy app files\nCOPY app.R /srv/shiny-server/\n\n# Expose port\nEXPOSE 3838\n\n# Run app\nCMD [\"/usr/bin/shiny-server\"]\n# Build and run\ndocker build -t my-shiny-app .\ndocker run -p 3838:3838 my-shiny-app",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#best-practices",
+    "href": "4_Shiny_Apps_in_R.html#best-practices",
+    "title": "6  Shiny Apps in R",
+    "section": "6.11 Best Practices",
+    "text": "6.11 Best Practices\n\n6.11.1 Performance Optimization\n# 1. Use reactive expressions for expensive computations\nfiltered_data &lt;- reactive({\n  # Expensive operation\n  large_dataset %&gt;% filter(category == input$category)\n})\n\n# 2. Cache results\nlibrary(memoise)\nexpensive_function &lt;- memoise(function(x) {\n  Sys.sleep(2)  # Simulate expensive operation\n  x * 2\n})\n\n# 3. Use async for long-running tasks\nlibrary(promises)\nlibrary(future)\nplan(multisession)\n\noutput$result &lt;- renderText({\n  future({\n    # Long-running computation\n    slow_function()\n  }) %...&gt;% {\n    paste(\"Result:\", .)\n  }\n})\n\n# 4. Limit reactive updates\ndebounce(reactive(input$text), 1000)\n\n\n6.11.2 Code Organization\n# Project structure\n# my_app/\n# ├── app.R (or ui.R + server.R)\n# ├── R/\n# │   ├── modules.R\n# │   ├── utils.R\n# │   └── data_processing.R\n# ├── data/\n# │   └── dataset.csv\n# ├── www/\n# │   ├── styles.css\n# │   └── logo.png\n# └── README.md\n\n# Source helper functions\nsource(\"R/utils.R\")\nsource(\"R/modules.R\")\n\n\n6.11.3 Security\n# 1. Validate user input\nserver &lt;- function(input, output, session) {\n  safe_input &lt;- reactive({\n    validate(need(is.numeric(input$value), \"Must be numeric\"))\n    validate(need(input$value &gt; 0, \"Must be positive\"))\n    input$value\n  })\n}\n\n# 2. Use environment variables for secrets\napi_key &lt;- Sys.getenv(\"API_KEY\")\n\n# 3. Sanitize file uploads\nobserveEvent(input$file, {\n  validate(need(tools::file_ext(input$file$name) == \"csv\", \"Only CSV files\"))\n})\n\n# 4. Set session timeout\noptions(shiny.maxRequestSize = 30*1024^2)  # 30 MB limit",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#complete-example-app",
+    "href": "4_Shiny_Apps_in_R.html#complete-example-app",
+    "title": "6  Shiny Apps in R",
+    "section": "6.12 Complete Example App",
+    "text": "6.12 Complete Example App\nlibrary(shiny)\nlibrary(tidyverse)\nlibrary(plotly)\nlibrary(DT)\n\nui &lt;- navbarPage(\n  \"Data Explorer\",\n  theme = shinythemes::shinytheme(\"flatly\"),\n  \n  tabPanel(\"Data\",\n    sidebarLayout(\n      sidebarPanel(\n        fileInput(\"file\", \"Upload CSV\", accept = \".csv\"),\n        hr(),\n        uiOutput(\"variable_selector\")\n      ),\n      mainPanel(\n        dataTableOutput(\"data_table\")\n      )\n    )\n  ),\n  \n  tabPanel(\"Visualize\",\n    sidebarLayout(\n      sidebarPanel(\n        selectInput(\"x_var\", \"X Variable:\", choices = NULL),\n        selectInput(\"y_var\", \"Y Variable:\", choices = NULL),\n        selectInput(\"color_var\", \"Color by:\", choices = NULL)\n      ),\n      mainPanel(\n        plotlyOutput(\"scatter_plot\", height = \"600px\")\n      )\n    )\n  ),\n  \n  tabPanel(\"Summary\",\n    verbatimTextOutput(\"summary\")\n  )\n)\n\nserver &lt;- function(input, output, session) {\n  \n  # Load data\n  data &lt;- reactive({\n    req(input$file)\n    read.csv(input$file$datapath)\n  })\n  \n  # Update variable selectors\n  observe({\n    req(data())\n    vars &lt;- names(data())\n    numeric_vars &lt;- names(select(data(), where(is.numeric)))\n    \n    updateSelectInput(session, \"x_var\", choices = numeric_vars)\n    updateSelectInput(session, \"y_var\", choices = numeric_vars)\n    updateSelectInput(session, \"color_var\", choices = vars)\n  })\n  \n  # Data table\n  output$data_table &lt;- renderDataTable({\n    req(data())\n    datatable(data(), filter = 'top', options = list(pageLength = 25))\n  })\n  \n  # Scatter plot\n  output$scatter_plot &lt;- renderPlotly({\n    req(data(), input$x_var, input$y_var)\n    \n    p &lt;- ggplot(data(), aes_string(x = input$x_var, y = input$y_var, \n                                    color = input$color_var)) +\n      geom_point(size = 3, alpha = 0.6) +\n      theme_minimal() +\n      labs(title = paste(input$y_var, \"vs\", input$x_var))\n    \n    ggplotly(p)\n  })\n  \n  # Summary\n  output$summary &lt;- renderPrint({\n    req(data())\n    summary(data())\n  })\n}\n\nshinyApp(ui, server)",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "4_Shiny_Apps_in_R.html#summary",
+    "href": "4_Shiny_Apps_in_R.html#summary",
+    "title": "6  Shiny Apps in R",
+    "section": "6.13 Summary",
+    "text": "6.13 Summary\n\n6.13.1 Skills Learned\n\n✅ Shiny app structure (UI/Server)\n✅ Input and output widgets\n✅ Reactive programming\n✅ Layouts and themes\n✅ Interactive visualizations\n✅ Shiny modules for reusability\n✅ Deployment strategies\n✅ Best practices and optimization\n\n\n\n6.13.2 Next Steps\n\nBuild: Create your own interactive dashboard\nExplore: shinydashboard, shinyWidgets, shinyjs packages\nDeploy: Share your app on shinyapps.io\nLearn: Move to 5_Modules_and_Functions.md for software engineering\n\n\n\n6.13.3 Resources\n\nShiny Gallery\nMastering Shiny Book\nShiny Cheat Sheet\n\nContinue to Modules & Functions! 🚀",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Shiny Apps in R</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html",
+    "href": "5_Modules_and_Functions.html",
+    "title": "7  Modules and Functions",
+    "section": "",
+    "text": "7.1 Table of Contents",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#table-of-contents",
+    "href": "5_Modules_and_Functions.html#table-of-contents",
+    "title": "7  Modules and Functions",
+    "section": "",
+    "text": "Writing Robust Functions\nFunction Design Principles\nError Handling\nFunctional Programming\nS3 and S4 Object Systems\nPackage Structure\nTesting with testthat\nDebugging Strategies\nCode Organization\nBest Practices",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#writing-robust-functions",
+    "href": "5_Modules_and_Functions.html#writing-robust-functions",
+    "title": "7  Modules and Functions",
+    "section": "7.2 Writing Robust Functions",
+    "text": "7.2 Writing Robust Functions\n\n7.2.1 Basic Function Structure\n# Simple function\ngreet &lt;- function(name) {\n  paste(\"Hello,\", name)\n}\n\n# Function with default arguments\npower &lt;- function(x, exponent = 2) {\n  x^exponent\n}\n\n# Function with multiple returns\ncalculate_stats &lt;- function(x) {\n  list(\n    mean = mean(x),\n    median = median(x),\n    sd = sd(x),\n    range = range(x)\n  )\n}\n\n# Function with validation\nsafe_divide &lt;- function(x, y) {\n  if (!is.numeric(x) || !is.numeric(y)) {\n    stop(\"Both arguments must be numeric\")\n  }\n  if (y == 0) {\n    warning(\"Division by zero, returning Inf\")\n    return(Inf)\n  }\n  x / y\n}\n\n\n7.2.2 Documentation with roxygen2\n#' Calculate Circle Area\n#'\n#' This function calculates the area of a circle given its radius.\n#'\n#' @param radius Numeric value representing the circle's radius (must be positive)\n#' @return Numeric value representing the circle's area\n#' @export\n#' @examples\n#' circle_area(5)\n#' circle_area(10)\n#' @seealso \\code{\\link{circle_circumference}}\ncircle_area &lt;- function(radius) {\n  if (radius &lt; 0) {\n    stop(\"Radius must be non-negative\")\n  }\n  pi * radius^2\n}\n\n#' @describeIn circle_area Calculate circle circumference\n#' @export\ncircle_circumference &lt;- function(radius) {\n  if (radius &lt; 0) {\n    stop(\"Radius must be non-negative\")\n  }\n  2 * pi * radius\n}\n\n\n7.2.3 Input Validation\nlibrary(assertthat)\n\n# Using assertthat\nanalyze_data &lt;- function(data, column) {\n  assert_that(is.data.frame(data))\n  assert_that(is.string(column))\n  assert_that(column %in% names(data))\n  \n  summary(data[[column]])\n}\n\n# Using stopifnot\nanalyze_data2 &lt;- function(data, column) {\n  stopifnot(\n    is.data.frame(data),\n    is.character(column),\n    length(column) == 1,\n    column %in% names(data)\n  )\n  \n  summary(data[[column]])\n}\n\n# Custom validation\nvalidate_age &lt;- function(age) {\n  if (!is.numeric(age)) {\n    stop(\"Age must be numeric\", call. = FALSE)\n  }\n  if (age &lt; 0 || age &gt; 150) {\n    stop(\"Age must be between 0 and 150\", call. = FALSE)\n  }\n  TRUE\n}",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#function-design-principles",
+    "href": "5_Modules_and_Functions.html#function-design-principles",
+    "title": "7  Modules and Functions",
+    "section": "7.3 Function Design Principles",
+    "text": "7.3 Function Design Principles\n\n7.3.1 Single Responsibility Principle\n# Bad: Function does too many things\nprocess_data &lt;- function(file) {\n  data &lt;- read.csv(file)\n  data &lt;- data[complete.cases(data), ]\n  data$new_col &lt;- data$col1 * data$col2\n  model &lt;- lm(y ~ x, data = data)\n  plot(data$x, data$y)\n  return(model)\n}\n\n# Good: Separate functions for each task\nload_data &lt;- function(file) {\n  read.csv(file)\n}\n\nclean_data &lt;- function(data) {\n  data[complete.cases(data), ]\n}\n\ntransform_data &lt;- function(data) {\n  data$new_col &lt;- data$col1 * data$col2\n  data\n}\n\nfit_model &lt;- function(data) {\n  lm(y ~ x, data = data)\n}\n\nplot_data &lt;- function(data) {\n  plot(data$x, data$y)\n}\n\n# Use pipeline\nprocess_data &lt;- function(file) {\n  load_data(file) %&gt;%\n    clean_data() %&gt;%\n    transform_data() %&gt;%\n    fit_model()\n}\n\n\n7.3.2 Pure Functions\n# Pure function (no side effects, same input = same output)\ncalculate_total &lt;- function(prices, tax_rate = 0.1) {\n  prices * (1 + tax_rate)\n}\n\n# Impure function (has side effects)\ncounter &lt;- 0\nincrement_counter &lt;- function() {\n  counter &lt;&lt;- counter + 1  # Modifies global state\n  counter\n}\n\n# Better: Return value instead of modifying global state\nincrement &lt;- function(x) {\n  x + 1\n}\n\n\n7.3.3 Function Composition\n# Compose functions\nadd_one &lt;- function(x) x + 1\nmultiply_by_two &lt;- function(x) x * 2\nsquare &lt;- function(x) x^2\n\n# Manual composition\nresult &lt;- square(multiply_by_two(add_one(5)))  # ((5+1)*2)^2 = 144\n\n# Using pipe\nlibrary(magrittr)\nresult &lt;- 5 %&gt;% add_one() %&gt;% multiply_by_two() %&gt;% square()\n\n# Function factory\nmake_multiplier &lt;- function(n) {\n  function(x) x * n\n}\n\nmultiply_by_three &lt;- make_multiplier(3)\nmultiply_by_five &lt;- make_multiplier(5)\n\nmultiply_by_three(10)  # 30\nmultiply_by_five(10)   # 50",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#error-handling",
+    "href": "5_Modules_and_Functions.html#error-handling",
+    "title": "7  Modules and Functions",
+    "section": "7.4 Error Handling",
+    "text": "7.4 Error Handling\n\n7.4.1 tryCatch\n# Basic tryCatch\nsafe_log &lt;- function(x) {\n  tryCatch(\n    {\n      log(x)\n    },\n    error = function(e) {\n      message(\"Error: \", e$message)\n      return(NA)\n    },\n    warning = function(w) {\n      message(\"Warning: \", w$message)\n      return(log(x))\n    }\n  )\n}\n\nsafe_log(-1)  # Warning, returns NaN\nsafe_log(\"a\") # Error, returns NA\n\n# Advanced error handling\nread_data_safely &lt;- function(file) {\n  tryCatch(\n    {\n      data &lt;- read.csv(file)\n      message(\"Successfully loaded \", nrow(data), \" rows\")\n      return(data)\n    },\n    error = function(e) {\n      stop(\"Failed to read file: \", e$message, call. = FALSE)\n    },\n    warning = function(w) {\n      message(\"Warning occurred: \", w$message)\n      return(NULL)\n    },\n    finally = {\n      message(\"Read operation completed\")\n    }\n  )\n}\n\n\n7.4.2 Custom Error Classes\n# Define custom error\nvalidation_error &lt;- function(message, field = NULL) {\n  err &lt;- list(\n    message = message,\n    field = field,\n    call = sys.call(-1)\n  )\n  class(err) &lt;- c(\"validation_error\", \"error\", \"condition\")\n  err\n}\n\n# Use custom error\nvalidate_user &lt;- function(user) {\n  if (!\"name\" %in% names(user)) {\n    stop(validation_error(\"Name is required\", field = \"name\"))\n  }\n  if (!\"age\" %in% names(user)) {\n    stop(validation_error(\"Age is required\", field = \"age\"))\n  }\n  if (user$age &lt; 0) {\n    stop(validation_error(\"Age must be positive\", field = \"age\"))\n  }\n  TRUE\n}\n\n# Handle custom error\ntryCatch(\n  validate_user(list(name = \"Alice\", age = -5)),\n  validation_error = function(e) {\n    message(\"Validation failed in field '\", e$field, \"': \", e$message)\n  }\n)\n\n\n7.4.3 purrr’s safely and possibly\nlibrary(purrr)\n\n# safely() returns list(result, error)\nsafe_log &lt;- safely(log)\nsafe_log(10)   # $result = 2.302585, $error = NULL\nsafe_log(\"a\")  # $result = NULL, $error = &lt;error&gt;\n\n# Use with map\nresults &lt;- map(list(10, -1, \"a\"), safe_log)\nresults &lt;- transpose(results)\nresults$result  # List of results\nresults$error   # List of errors\n\n# possibly() returns default value on error\nsafe_log2 &lt;- possibly(log, otherwise = NA)\nsafe_log2(10)  # 2.302585\nsafe_log2(\"a\") # NA\n\n# quietly() captures messages, warnings, and output\nquiet_log &lt;- quietly(log)\nquiet_log(-1)",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#functional-programming",
+    "href": "5_Modules_and_Functions.html#functional-programming",
+    "title": "7  Modules and Functions",
+    "section": "7.5 Functional Programming",
+    "text": "7.5 Functional Programming\n\n7.5.1 Higher-Order Functions\n# Functions that take functions as arguments\napply_twice &lt;- function(f, x) {\n  f(f(x))\n}\n\napply_twice(sqrt, 256)  # sqrt(sqrt(256)) = 4\n\n# Functions that return functions\nmake_power &lt;- function(n) {\n  function(x) x^n\n}\n\nsquare &lt;- make_power(2)\ncube &lt;- make_power(3)\n\nsquare(5)  # 25\ncube(5)    # 125\n\n\n7.5.2 Closures\n# Closure: function + environment\nmake_counter &lt;- function() {\n  count &lt;- 0\n  \n  list(\n    increment = function() {\n      count &lt;&lt;- count + 1\n      count\n    },\n    decrement = function() {\n      count &lt;&lt;- count - 1\n      count\n    },\n    get = function() {\n      count\n    },\n    reset = function() {\n      count &lt;&lt;- 0\n    }\n  )\n}\n\ncounter &lt;- make_counter()\ncounter$increment()  # 1\ncounter$increment()  # 2\ncounter$get()        # 2\ncounter$decrement()  # 1\ncounter$reset()      # 0\n\n\n7.5.3 Map, Reduce, Filter\nlibrary(purrr)\n\n# Map: apply function to each element\nnumbers &lt;- 1:5\nmap_dbl(numbers, ~ .x^2)  # c(1, 4, 9, 16, 25)\n\n# Reduce: combine elements\nreduce(numbers, `+`)   # 15 (sum)\nreduce(numbers, `*`)   # 120 (product)\n\n# Accumulate: cumulative reduce\naccumulate(numbers, `+`)  # c(1, 3, 6, 10, 15)\n\n# Filter (keep/discard)\nkeep(numbers, ~ .x %% 2 == 0)     # c(2, 4)\ndiscard(numbers, ~ .x %% 2 == 0)  # c(1, 3, 5)\n\n# Predicate functions\nevery(numbers, ~ .x &gt; 0)   # TRUE\nsome(numbers, ~ .x &gt; 3)    # TRUE\nnone(numbers, ~ .x &gt; 10)   # TRUE",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#s3-and-s4-object-systems",
+    "href": "5_Modules_and_Functions.html#s3-and-s4-object-systems",
+    "title": "7  Modules and Functions",
+    "section": "7.6 S3 and S4 Object Systems",
+    "text": "7.6 S3 and S4 Object Systems\n\n7.6.1 S3 Classes (Simple)\n# Create S3 object\nperson &lt;- function(name, age) {\n  structure(\n    list(name = name, age = age),\n    class = \"person\"\n  )\n}\n\n# Create instance\nalice &lt;- person(\"Alice\", 25)\nclass(alice)  # \"person\"\n\n# Generic function\nprint.person &lt;- function(x, ...) {\n  cat(\"Person:\", x$name, \"(Age:\", x$age, \")\\n\")\n}\n\nprint(alice)  # Uses print.person method\n\n# Additional methods\nsummary.person &lt;- function(object, ...) {\n  cat(\"Name:\", object$name, \"\\n\")\n  cat(\"Age:\", object$age, \"\\n\")\n  cat(\"Adult:\", object$age &gt;= 18, \"\\n\")\n}\n\n# Validator\nvalidate_person &lt;- function(x) {\n  if (!is.character(x$name) || length(x$name) != 1) {\n    stop(\"name must be a single string\")\n  }\n  if (!is.numeric(x$age) || length(x$age) != 1 || x$age &lt; 0) {\n    stop(\"age must be a single positive number\")\n  }\n  x\n}\n\nperson &lt;- function(name, age) {\n  x &lt;- structure(\n    list(name = name, age = age),\n    class = \"person\"\n  )\n  validate_person(x)\n}\n\n\n7.6.2 S4 Classes (Formal)\n# Define S4 class\nsetClass(\"Employee\",\n  slots = c(\n    name = \"character\",\n    age = \"numeric\",\n    salary = \"numeric\",\n    department = \"character\"\n  ),\n  prototype = list(\n    name = NA_character_,\n    age = NA_real_,\n    salary = NA_real_,\n    department = NA_character_\n  )\n)\n\n# Create instance\nemp &lt;- new(\"Employee\",\n  name = \"Bob\",\n  age = 30,\n  salary = 50000,\n  department = \"Engineering\"\n)\n\n# Accessor methods\nsetGeneric(\"getName\", function(obj) standardGeneric(\"getName\"))\nsetMethod(\"getName\", \"Employee\", function(obj) obj@name)\n\nsetGeneric(\"getSalary\", function(obj) standardGeneric(\"getSalary\"))\nsetMethod(\"getSalary\", \"Employee\", function(obj) obj@salary)\n\n# Show method\nsetMethod(\"show\", \"Employee\", function(object) {\n  cat(\"Employee:\", object@name, \"\\n\")\n  cat(\"Age:\", object@age, \"\\n\")\n  cat(\"Salary: $\", object@salary, \"\\n\")\n  cat(\"Department:\", object@department, \"\\n\")\n})\n\n# Validation\nsetValidity(\"Employee\", function(object) {\n  if (object@age &lt; 18) {\n    return(\"Age must be at least 18\")\n  }\n  if (object@salary &lt; 0) {\n    return(\"Salary must be positive\")\n  }\n  TRUE\n})",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#package-structure",
+    "href": "5_Modules_and_Functions.html#package-structure",
+    "title": "7  Modules and Functions",
+    "section": "7.7 Package Structure",
+    "text": "7.7 Package Structure\n\n7.7.1 Basic Package Layout\n# Create package\nlibrary(usethis)\ncreate_package(\"mypackage\")\n\n# Package structure:\n# mypackage/\n# ├── R/                  # R code\n# │   ├── functions.R\n# │   └── utils.R\n# ├── man/                # Documentation\n# ├── tests/              # Tests\n# │   └── testthat/\n# ├── data/               # Data files\n# ├── vignettes/          # Long-form documentation\n# ├── DESCRIPTION         # Package metadata\n# ├── NAMESPACE           # Exports\n# └── README.md           # README\n\n\n7.7.2 DESCRIPTION File\nPackage: mypackage\nTitle: My Awesome Package\nVersion: 0.1.0\nAuthors@R: person(\"Your\", \"Name\", email = \"you@example.com\",\n                  role = c(\"aut\", \"cre\"))\nDescription: This package does amazing things with data.\nLicense: MIT + file LICENSE\nEncoding: UTF-8\nLazyData: true\nRoxygen: list(markdown = TRUE)\nRoxygenNote: 7.2.0\nImports:\n    dplyr (&gt;= 1.0.0),\n    ggplot2\nSuggests:\n    testthat (&gt;= 3.0.0),\n    knitr,\n    rmarkdown\nVignetteBuilder: knitr\n\n\n7.7.3 Adding Functions\n# Create new function file\nuse_r(\"my_function\")\n\n# In R/my_function.R\n#' My Function\n#'\n#' @param x A numeric vector\n#' @return The mean of x\n#' @export\nmy_function &lt;- function(x) {\n  mean(x, na.rm = TRUE)\n}\n\n# Generate documentation\ndevtools::document()\n\n# Load package for testing\ndevtools::load_all()",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#testing-with-testthat",
+    "href": "5_Modules_and_Functions.html#testing-with-testthat",
+    "title": "7  Modules and Functions",
+    "section": "7.8 Testing with testthat",
+    "text": "7.8 Testing with testthat\n\n7.8.1 Setup Testing\n# Setup testthat\nusethis::use_testthat()\n\n# Create test file\nusethis::use_test(\"my_function\")\n\n\n7.8.2 Writing Tests\n# tests/testthat/test-my_function.R\nlibrary(testthat)\n\ntest_that(\"my_function calculates mean correctly\", {\n  expect_equal(my_function(c(1, 2, 3)), 2)\n  expect_equal(my_function(c(10, 20, 30)), 20)\n})\n\ntest_that(\"my_function handles NA values\", {\n  expect_equal(my_function(c(1, NA, 3)), 2)\n  expect_false(is.na(my_function(c(NA, NA, NA))))\n})\n\ntest_that(\"my_function validates input\", {\n  expect_error(my_function(\"not numeric\"))\n  expect_error(my_function(NULL))\n})\n\ntest_that(\"my_function handles edge cases\", {\n  expect_equal(my_function(c()), NaN)\n  expect_equal(my_function(5), 5)\n})\n\n\n7.8.3 Common Expectations\n# Equality\nexpect_equal(2 + 2, 4)\nexpect_identical(2L, 2L)\nexpect_equivalent(c(a = 1), 1)  # Ignores attributes\n\n# Comparison\nexpect_gt(5, 3)   # Greater than\nexpect_lt(3, 5)   # Less than\nexpect_gte(5, 5)  # Greater than or equal\nexpect_lte(3, 5)  # Less than or equal\n\n# Types\nexpect_type(\"hello\", \"character\")\nexpect_s3_class(lm(y ~ x, data = df), \"lm\")\nexpect_s4_class(obj, \"Employee\")\n\n# Logical\nexpect_true(2 &gt; 1)\nexpect_false(2 &lt; 1)\n\n# Errors and warnings\nexpect_error(log(\"a\"))\nexpect_warning(log(-1))\nexpect_message(message(\"hello\"))\nexpect_silent(2 + 2)\n\n# Matching\nexpect_match(\"hello world\", \"world\")\nexpect_match(\"test123\", \"\\\\d+\")  # Regex\n\n# Length\nexpect_length(1:5, 5)\nexpect_named(c(a = 1, b = 2), c(\"a\", \"b\"))\n\n\n7.8.4 Testing Best Practices\n# Arrange-Act-Assert pattern\ntest_that(\"calculate_total adds tax correctly\", {\n  # Arrange\n  price &lt;- 100\n  tax_rate &lt;- 0.1\n  \n  # Act\n  result &lt;- calculate_total(price, tax_rate)\n  \n  # Assert\n  expect_equal(result, 110)\n})\n\n# Test fixtures\ntest_that(\"function works with sample data\", {\n  # Load test data\n  test_data &lt;- read.csv(\"tests/testthat/fixtures/sample_data.csv\")\n  \n  result &lt;- my_analysis(test_data)\n  \n  expect_equal(nrow(result), 100)\n})\n\n# Snapshot testing\ntest_that(\"output matches snapshot\", {\n  expect_snapshot(my_complex_function(data))\n})",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#debugging-strategies",
+    "href": "5_Modules_and_Functions.html#debugging-strategies",
+    "title": "7  Modules and Functions",
+    "section": "7.9 Debugging Strategies",
+    "text": "7.9 Debugging Strategies\n\n7.9.1 Basic Debugging Tools\n# Print debugging\nmy_function &lt;- function(x) {\n  print(paste(\"x =\", x))  # Debug print\n  result &lt;- x * 2\n  print(paste(\"result =\", result))  # Debug print\n  result\n}\n\n# browser() - interactive debugger\nmy_function &lt;- function(x) {\n  y &lt;- x * 2\n  browser()  # Execution stops here\n  z &lt;- y + 1\n  z\n}\n\n# Commands in browser:\n# n - next line\n# s - step into function\n# c - continue execution\n# Q - quit\n# ls() - list variables\n\n\n7.9.2 Advanced Debugging\n# debug() - debug entire function\ndebug(my_function)\nmy_function(5)  # Enters debugger\nundebug(my_function)\n\n# debugonce() - debug once\ndebugonce(my_function)\n\n# trace() - add code to function\ntrace(mean, quote(print(x)))\nmean(1:5)  # Prints x before calculating\nuntrace(mean)\n\n# recover() - debug on error\noptions(error = recover)\nmy_buggy_function()  # Opens debugger on error\noptions(error = NULL)  # Reset\n\n\n7.9.3 Profiling\n# Profile code\nlibrary(profvis)\n\nprofvis({\n  data &lt;- data.frame(x = rnorm(10000), y = rnorm(10000))\n  model &lt;- lm(y ~ x, data = data)\n  predictions &lt;- predict(model, data)\n})\n\n# Benchmark functions\nlibrary(microbenchmark)\n\nmicrobenchmark(\n  base = apply(matrix(1:1000000, ncol = 100), 1, sum),\n  optimized = rowSums(matrix(1:1000000, ncol = 100)),\n  times = 100\n)",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#code-organization",
+    "href": "5_Modules_and_Functions.html#code-organization",
+    "title": "7  Modules and Functions",
+    "section": "7.10 Code Organization",
+    "text": "7.10 Code Organization\n\n7.10.1 Project Structure\n# Recommended structure\n# project/\n# ├── R/                 # R code\n# │   ├── 01_load_data.R\n# │   ├── 02_clean_data.R\n# │   ├── 03_analyze.R\n# │   └── utils.R\n# ├── data/              # Data files\n# │   ├── raw/\n# │   └── processed/\n# ├── output/            # Results\n# │   ├── figures/\n# │   └── tables/\n# ├── tests/             # Tests\n# ├── docs/              # Documentation\n# ├── config.R           # Configuration\n# ├── main.R             # Main script\n# └── README.md\n\n\n7.10.2 Sourcing Files\n# Source all R files in directory\nsource_files &lt;- list.files(\"R\", pattern = \"\\\\.R$\", full.names = TRUE)\ninvisible(lapply(source_files, source))\n\n# Or use a package\nlibrary(here)\nsource(here(\"R\", \"utils.R\"))",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#best-practices",
+    "href": "5_Modules_and_Functions.html#best-practices",
+    "title": "7  Modules and Functions",
+    "section": "7.11 Best Practices",
+    "text": "7.11 Best Practices\n\n7.11.1 Code Style\n# Use styler for automatic formatting\nlibrary(styler)\nstyle_file(\"R/my_file.R\")\nstyle_dir(\"R/\")\n\n# Check style with lintr\nlibrary(lintr)\nlint(\"R/my_file.R\")\n\n\n7.11.2 Performance Tips\n# Pre-allocate vectors\n# Slow\nresult &lt;- c()\nfor (i in 1:10000) {\n  result &lt;- c(result, i^2)\n}\n\n# Fast\nresult &lt;- numeric(10000)\nfor (i in 1:10000) {\n  result[i] &lt;- i^2\n}\n\n# Best: vectorize\nresult &lt;- (1:10000)^2\n\n# Use appropriate data structures\n# Slow: repeated subsetting\nfor (i in 1:nrow(df)) {\n  df[i, \"new_col\"] &lt;- df[i, \"old_col\"] * 2\n}\n\n# Fast: vectorized\ndf$new_col &lt;- df$old_col * 2",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "5_Modules_and_Functions.html#summary",
+    "href": "5_Modules_and_Functions.html#summary",
+    "title": "7  Modules and Functions",
+    "section": "7.12 Summary",
+    "text": "7.12 Summary\n\n7.12.1 Skills Learned\n\n✅ Writing robust, documented functions\n✅ Error handling and validation\n✅ Functional programming patterns\n✅ S3 and S4 object systems\n✅ Package structure and development\n✅ Comprehensive testing with testthat\n✅ Debugging and profiling\n✅ Code organization and style\n\n\n\n7.12.2 Next Steps\n\nPractice: Write your own R package\nTest: Achieve 80%+ code coverage\nShare: Publish on GitHub or CRAN\nLearn: Continue with 6_R_Developer_Tools.md\n\nContinue to Developer Tools! 🚀",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Modules and Functions</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html",
+    "href": "6_R_Developer_Tools.html",
+    "title": "8  R Developer Tools",
+    "section": "",
+    "text": "8.1 Table of Contents",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#table-of-contents",
+    "href": "6_R_Developer_Tools.html#table-of-contents",
+    "title": "8  R Developer Tools",
+    "section": "",
+    "text": "R Package Development\nDocumentation with roxygen2\nVersion Control with Git\nGitHub Workflows\nContinuous Integration/Deployment\nCode Profiling and Optimization\nPackage Distribution\nDevelopment Tools\nCode Quality\nBest Practices",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#r-package-development",
+    "href": "6_R_Developer_Tools.html#r-package-development",
+    "title": "8  R Developer Tools",
+    "section": "8.2 R Package Development",
+    "text": "8.2 R Package Development\n\n8.2.1 Creating a Package\n# Install development tools\ninstall.packages(c(\"devtools\", \"usethis\", \"roxygen2\", \"testthat\"))\n\nlibrary(usethis)\nlibrary(devtools)\n\n# Create new package\ncreate_package(\"~/mypackage\")\n\n# Package structure created:\n# mypackage/\n# ├── R/\n# ├── DESCRIPTION\n# ├── NAMESPACE\n# └── mypackage.Rproj\n\n\n8.2.2 DESCRIPTION File\nPackage: mypackage\nType: Package\nTitle: My Awesome R Package\nVersion: 0.1.0\nAuthor: Your Name &lt;your.email@example.com&gt;\nMaintainer: Your Name &lt;your.email@example.com&gt;\nDescription: This package provides tools for data analysis and visualization.\n    It includes functions for data cleaning, transformation, and statistical modeling.\nLicense: MIT + file LICENSE\nEncoding: UTF-8\nLazyData: true\nRoxygen: list(markdown = TRUE)\nRoxygenNote: 7.2.3\nImports:\n    dplyr (&gt;= 1.0.0),\n    ggplot2 (&gt;= 3.3.0),\n    magrittr\nSuggests:\n    testthat (&gt;= 3.0.0),\n    knitr,\n    rmarkdown,\n    covr\nDepends: R (&gt;= 4.0.0)\nVignetteBuilder: knitr\nURL: https://github.com/username/mypackage\nBugReports: https://github.com/username/mypackage/issues\n\n\n8.2.3 Adding Functions\n# Create new R file\nuse_r(\"data_processing\")\n\n# R/data_processing.R\n#' Clean Data\n#'\n#' Remove missing values and duplicates from a data frame\n#'\n#' @param data A data frame to clean\n#' @param columns Character vector of column names to check for NAs\n#' @return A cleaned data frame\n#' @export\n#' @examples\n#' df &lt;- data.frame(x = c(1, 2, NA, 4), y = c(\"a\", \"b\", \"b\", \"c\"))\n#' clean_data(df, c(\"x\"))\nclean_data &lt;- function(data, columns = NULL) {\n  if (!is.data.frame(data)) {\n    stop(\"data must be a data frame\")\n  }\n  \n  if (is.null(columns)) {\n    columns &lt;- names(data)\n  }\n  \n  # Remove rows with NA in specified columns\n  data &lt;- data[complete.cases(data[, columns]), ]\n  \n  # Remove duplicates\n  data &lt;- unique(data)\n  \n  return(data)\n}\n\n\n8.2.4 Adding Data\n# Add internal data (available only to package functions)\nuse_data_raw(\"prep_data\")\n\n# data-raw/prep_data.R\nmy_data &lt;- data.frame(\n  x = 1:100,\n  y = rnorm(100)\n)\n\nusethis::use_data(my_data, internal = TRUE)\n\n# Add external data (available to users)\nusethis::use_data(my_data, overwrite = TRUE)\n\n# Document data\n# R/data.R\n#' Sample Dataset\n#'\n#' A dataset containing sample data for demonstration\n#'\n#' @format A data frame with 100 rows and 2 variables:\n#' \\describe{\n#'   \\item{x}{Numeric values from 1 to 100}\n#'   \\item{y}{Random normal values}\n#' }\n#' @source Generated for package demonstration\n\"my_data\"\n\n\n8.2.5 Package Dependencies\n# Add to Imports (required)\nuse_package(\"dplyr\")\nuse_package(\"ggplot2\", min_version = \"3.3.0\")\n\n# Add to Suggests (optional)\nuse_package(\"testthat\", type = \"Suggests\")\n\n# Import specific functions\n#' @importFrom dplyr filter mutate\n#' @importFrom magrittr %&gt;%\n\n# Import entire package\n#' @import ggplot2",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#documentation-with-roxygen2",
+    "href": "6_R_Developer_Tools.html#documentation-with-roxygen2",
+    "title": "8  R Developer Tools",
+    "section": "8.3 Documentation with roxygen2",
+    "text": "8.3 Documentation with roxygen2\n\n8.3.1 Function Documentation\n#' Calculate Summary Statistics\n#'\n#' This function calculates various summary statistics for a numeric vector.\n#' It handles missing values and provides multiple measures of central tendency\n#' and dispersion.\n#'\n#' @param x A numeric vector\n#' @param na.rm Logical; if TRUE, missing values are removed before computation\n#' @param trim Numeric; fraction (0 to 0.5) of observations to trim from each end\n#' @param digits Integer; number of decimal places to round to\n#'\n#' @return A named list containing:\n#'   \\item{mean}{Arithmetic mean}\n#'   \\item{median}{Median value}\n#'   \\item{sd}{Standard deviation}\n#'   \\item{min}{Minimum value}\n#'   \\item{max}{Maximum value}\n#'   \\item{n}{Number of observations}\n#'\n#' @export\n#' @examples\n#' # Basic usage\n#' x &lt;- c(1, 2, 3, 4, 5, NA)\n#' summary_stats(x, na.rm = TRUE)\n#'\n#' # With trimming\n#' summary_stats(x, na.rm = TRUE, trim = 0.1)\n#'\n#' @seealso \\code{\\link{mean}}, \\code{\\link{median}}, \\code{\\link{sd}}\n#' @family statistical functions\nsummary_stats &lt;- function(x, na.rm = FALSE, trim = 0, digits = 2) {\n  if (!is.numeric(x)) {\n    stop(\"x must be numeric\")\n  }\n  \n  result &lt;- list(\n    mean = round(mean(x, na.rm = na.rm, trim = trim), digits),\n    median = round(median(x, na.rm = na.rm), digits),\n    sd = round(sd(x, na.rm = na.rm), digits),\n    min = min(x, na.rm = na.rm),\n    max = max(x, na.rm = na.rm),\n    n = if (na.rm) sum(!is.na(x)) else length(x)\n  )\n  \n  return(result)\n}\n\n\n8.3.2 Building Documentation\n# Generate documentation from roxygen comments\ndevtools::document()\n\n# Check documentation\ndevtools::check_man()\n\n# Preview help page\n?summary_stats\n\n\n8.3.3 Vignettes\n# Create vignette\nuse_vignette(\"introduction\")\n\n# vignettes/introduction.Rmd\n---\ntitle: \"Introduction to mypackage\"\nauthor: \"Your Name\"\ndate: \"`r Sys.Date()`\"\noutput: rmarkdown::html_vignette\nvignette: &gt;\n  %\\VignetteIndexEntry{Introduction to mypackage}\n  %\\VignetteEngine{knitr::rmarkdown}\n  %\\VignetteEncoding{UTF-8}\n---\n\n```r\n# chunk: setup, include = FALSE\nknitr::opts_chunk$set(\n  collapse = TRUE,\n  comment = \"#&gt;\"\n)\nlibrary(mypackage)",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#overview",
+    "href": "6_R_Developer_Tools.html#overview",
+    "title": "8  R Developer Tools",
+    "section": "8.4 Overview",
+    "text": "8.4 Overview\nThis package provides tools for…",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#installation",
+    "href": "6_R_Developer_Tools.html#installation",
+    "title": "8  R Developer Tools",
+    "section": "8.5 Installation",
+    "text": "8.5 Installation\n# chunk: eval=FALSE (installation)\ndevtools::install_github(\"username/mypackage\")",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#basic-usage",
+    "href": "6_R_Developer_Tools.html#basic-usage",
+    "title": "8  R Developer Tools",
+    "section": "8.6 Basic Usage",
+    "text": "8.6 Basic Usage\n# chunk: basic-usage\ndata &lt;- data.frame(x = 1:10, y = rnorm(10))\nresult &lt;- clean_data(data)",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#version-control-with-git",
+    "href": "6_R_Developer_Tools.html#version-control-with-git",
+    "title": "8  R Developer Tools",
+    "section": "9.1 Version Control with Git",
+    "text": "9.1 Version Control with Git\n\n9.1.1 Setup Git Repository\n# Initialize git\ngit init\n\n# Configure user\ngit config user.name \"Your Name\"\ngit config user.email \"your.email@example.com\"\n\n# Create .gitignore\n# R approach\nuse_git()\n\n# Add .gitignore entries\nuse_git_ignore(c(\"*.Rproj\", \".Rhistory\", \".RData\"))\n\n\n9.1.2 Basic Git Workflow\n# Check status\ngit status\n\n# Stage files\ngit add R/my_function.R\ngit add .  # Stage all changes\n\n# Commit\ngit commit -m \"Add data processing function\"\n\n# View history\ngit log --oneline\n\n# Create branch\ngit checkout -b feature/new-analysis\n\n# Switch branches\ngit checkout main\n\n# Merge branch\ngit merge feature/new-analysis\n\n# Delete branch\ngit branch -d feature/new-analysis\n\n\n9.1.3 .gitignore for R\n# History files\n.Rhistory\n.Rapp.history\n\n# Session Data files\n.RData\n\n# User-specific files\n.Ruserdata\n\n# RStudio files\n.Rproj.user/\n*.Rproj\n\n# OAuth2 token\n.httr-oauth\n\n# knitr and R markdown\n*.utf8.md\n*.knit.md\n\n# Temporary files\n*~\n*.swp\n*.swo\n\n# Output files\n*.pdf\n*.html\n\n# Data files (if large)\ndata/raw/*\n!data/raw/.gitkeep",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#github-workflows",
+    "href": "6_R_Developer_Tools.html#github-workflows",
+    "title": "8  R Developer Tools",
+    "section": "9.2 GitHub Workflows",
+    "text": "9.2 GitHub Workflows\n\n9.2.1 Create GitHub Repository\n# Create GitHub repo from R\nuse_github()\n\n# Or manually:\n# 1. Create repo on GitHub\n# 2. Add remote\ngit remote add origin https://github.com/username/mypackage.git\ngit push -u origin main\n\n\n9.2.2 README\n# Create README\nuse_readme_rmd()\n\n# README.Rmd\n---\noutput: github_document\n---\n\n# mypackage\n\n&lt;!-- badges: start --&gt;\n[![R-CMD-check](https://github.com/username/mypackage/workflows/R-CMD-check/badge.svg)](https://github.com/username/mypackage/actions)\n[![Codecov](https://codecov.io/gh/username/mypackage/branch/main/graph/badge.svg)](https://codecov.io/gh/username/mypackage)\n&lt;!-- badges: end --&gt;\n\nThe goal of mypackage is to...\n\n## Installation\n\n```r\n# chunk: eval=FALSE (development version)\n# Development version\ndevtools::install_github(\"username/mypackage\")",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#example",
+    "href": "6_R_Developer_Tools.html#example",
+    "title": "8  R Developer Tools",
+    "section": "9.3 Example",
+    "text": "9.3 Example\n# chunk: example\nlibrary(mypackage)\ndata &lt;- data.frame(x = 1:10, y = rnorm(10))\nresult &lt;- clean_data(data)",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#continuous-integrationdeployment",
+    "href": "6_R_Developer_Tools.html#continuous-integrationdeployment",
+    "title": "8  R Developer Tools",
+    "section": "10.1 Continuous Integration/Deployment",
+    "text": "10.1 Continuous Integration/Deployment\n\n10.1.1 GitHub Actions - R CMD Check\n# Setup GitHub Actions\nuse_github_action_check_standard()\n\n# .github/workflows/R-CMD-check.yaml\nname: R-CMD-check\n\non:\n  push:\n    branches: [main, master]\n  pull_request:\n    branches: [main, master]\n\njobs:\n  R-CMD-check:\n    runs-on: ${{ matrix.config.os }}\n\n    name: ${{ matrix.config.os }} (${{ matrix.config.r }})\n\n    strategy:\n      fail-fast: false\n      matrix:\n        config:\n          - {os: macos-latest,   r: 'release'}\n          - {os: windows-latest, r: 'release'}\n          - {os: ubuntu-latest,   r: 'devel'}\n          - {os: ubuntu-latest,   r: 'release'}\n          - {os: ubuntu-latest,   r: 'oldrel-1'}\n\n    steps:\n      - uses: actions/checkout@v3\n\n      - uses: r-lib/actions/setup-r@v2\n        with:\n          r-version: ${{ matrix.config.r }}\n\n      - uses: r-lib/actions/setup-pandoc@v2\n\n      - uses: r-lib/actions/setup-r-dependencies@v2\n        with:\n          extra-packages: any::rcmdcheck\n          needs: check\n\n      - uses: r-lib/actions/check-r-package@v2\n\n\n10.1.2 Code Coverage\n# Setup code coverage\nuse_github_action(\"test-coverage\")\nuse_coverage()\n\n# Run locally\nlibrary(covr)\npackage_coverage()\n\n# View report\nreport()\n\n\n10.1.3 Automatic pkgdown Deployment\n# Setup automatic website deployment\nuse_github_action(\"pkgdown\")\n\n# Website will be built and deployed on push to main",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#code-profiling-and-optimization",
+    "href": "6_R_Developer_Tools.html#code-profiling-and-optimization",
+    "title": "8  R Developer Tools",
+    "section": "10.2 Code Profiling and Optimization",
+    "text": "10.2 Code Profiling and Optimization\n\n10.2.1 Profiling with profvis\nlibrary(profvis)\n\n# Profile code\nprofvis({\n  data &lt;- data.frame(\n    x = rnorm(100000),\n    y = rnorm(100000)\n  )\n  \n  # Slow approach\n  result &lt;- numeric(nrow(data))\n  for (i in 1:nrow(data)) {\n    result[i] &lt;- data$x[i] + data$y[i]\n  }\n  \n  # Fast approach\n  result2 &lt;- data$x + data$y\n})\n\n\n10.2.2 Benchmarking\nlibrary(bench)\n\n# Compare implementations\nresults &lt;- mark(\n  loop = {\n    result &lt;- numeric(10000)\n    for (i in 1:10000) result[i] &lt;- i^2\n  },\n  vectorized = {\n    result &lt;- (1:10000)^2\n  },\n  check = FALSE,\n  iterations = 100\n)\n\nprint(results)\nplot(results)\n\n\n10.2.3 Memory Profiling\n# Check object size\nobject.size(large_data)\nformat(object.size(large_data), units = \"MB\")\n\n# Profile memory\nlibrary(profmem)\n\np &lt;- profmem({\n  x &lt;- numeric(1e6)\n  y &lt;- rnorm(1e6)\n  z &lt;- x + y\n})\n\nprint(p)\ntotal(p)\n\n\n10.2.4 Optimization Strategies\n# 1. Vectorization\n# Bad\nsum_squares_slow &lt;- function(x) {\n  total &lt;- 0\n  for (i in seq_along(x)) {\n    total &lt;- total + x[i]^2\n  }\n  total\n}\n\n# Good\nsum_squares_fast &lt;- function(x) {\n  sum(x^2)\n}\n\n# 2. Pre-allocation\n# Bad\ngrow_vector &lt;- function(n) {\n  result &lt;- c()\n  for (i in 1:n) {\n    result &lt;- c(result, i^2)\n  }\n  result\n}\n\n# Good\npreallocate_vector &lt;- function(n) {\n  result &lt;- numeric(n)\n  for (i in 1:n) {\n    result[i] &lt;- i^2\n  }\n  result\n}\n\n# 3. Use efficient data structures\nlibrary(data.table)\ndt &lt;- as.data.table(large_df)  # Fast operations\n\n# 4. Parallel processing\nlibrary(parallel)\ncl &lt;- makeCluster(detectCores() - 1)\nresults &lt;- parLapply(cl, data_list, expensive_function)\nstopCluster(cl)",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#package-distribution",
+    "href": "6_R_Developer_Tools.html#package-distribution",
+    "title": "8  R Developer Tools",
+    "section": "10.3 Package Distribution",
+    "text": "10.3 Package Distribution\n\n10.3.1 CRAN Submission\n# Check package thoroughly\ndevtools::check()\n\n# Check on multiple R versions\ndevtools::check_rhub()\ndevtools::check_win_devel()\ndevtools::check_mac_release()\n\n# Build package\ndevtools::build()\n\n# Submit to CRAN\ndevtools::submit_cran()\n\n\n10.3.2 CRAN Release Checklist\n# 1. Update version number\nuse_version()\n\n# 2. Update NEWS.md\nuse_news_md()\n\n# 3. Run checks\ndevtools::check()\ndevtools::check_rhub()\ndevtools::check_win_devel()\n\n# 4. Update cran-comments.md\nuse_cran_comments()\n\n# 5. Build package\ndevtools::build()\n\n# 6. Submit\ndevtools::submit_cran()\n\n\n10.3.3 R-universe (Alternative)\n# Easy distribution without CRAN submission\n# Setup at https://r-universe.dev\n\n# Users install with:\ninstall.packages(\"mypackage\", repos = \"https://username.r-universe.dev\")",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#development-tools",
+    "href": "6_R_Developer_Tools.html#development-tools",
+    "title": "8  R Developer Tools",
+    "section": "10.4 Development Tools",
+    "text": "10.4 Development Tools\n\n10.4.1 RStudio Addins\n# Create addin\nuse_addin(\"insert_pipe\")\n\n# inst/rstudio/addins.dcf\nName: Insert Pipe\nDescription: Inserts %&gt;% at cursor\nBinding: insert_pipe\nInteractive: false\n\n# R/addins.R\ninsert_pipe &lt;- function() {\n  rstudioapi::insertText(\" %&gt;% \")\n}\n\n\n10.4.2 Custom RStudio Snippets\n# Edit snippets\nusethis::edit_rstudio_snippets()\n\n# Add custom snippets:\nsnippet fun\n    ${1:name} &lt;- function(${2:args}) {\n        ${0}\n    }\n\nsnippet test\n    test_that(\"${1:description}\", {\n        ${0}\n    })\n\n\n10.4.3 Pre-commit Hooks\n# Setup pre-commit hooks\nlibrary(precommit)\nuse_precommit()\n\n# .pre-commit-config.yaml\nrepos:\n-   repo: https://github.com/lorenzwalthert/precommit\n    rev: v0.3.2\n    hooks:\n    -   id: style-files\n    -   id: roxygenize\n    -   id: use-tidy-description\n    -   id: spell-check\n    -   id: lintr\n    -   id: readme-rmd-rendered\n    -   id: parsable-R\n    -   id: no-browser-statement",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#code-quality",
+    "href": "6_R_Developer_Tools.html#code-quality",
+    "title": "8  R Developer Tools",
+    "section": "10.5 Code Quality",
+    "text": "10.5 Code Quality\n\n10.5.1 Static Code Analysis\n# lintr - code style checking\nlibrary(lintr)\nlint_package()\nlint(\"R/my_function.R\")\n\n# Custom linters\nmy_linters &lt;- linters_with_defaults(\n  line_length_linter(120),\n  object_name_linter(\"snake_case\")\n)\n\nlint_package(linters = my_linters)\n\n\n10.5.2 Code Formatting\n# styler - automatic formatting\nlibrary(styler)\n\n# Format file\nstyle_file(\"R/my_function.R\")\n\n# Format package\nstyle_pkg()\n\n# Format with custom style\nstyle_pkg(scope = \"line_breaks\")\n\n\n10.5.3 Spell Checking\n# Check spelling\nlibrary(spelling)\nspell_check_package()\n\n# Update wordlist\nupdate_wordlist()\n\n# Add to .aspell file\nuse_spell_check()",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#best-practices",
+    "href": "6_R_Developer_Tools.html#best-practices",
+    "title": "8  R Developer Tools",
+    "section": "10.6 Best Practices",
+    "text": "10.6 Best Practices\n\n10.6.1 Package Development Workflow\n# 1. Write function\nuse_r(\"my_function\")\n\n# 2. Load all functions\nload_all()  # or Ctrl+Shift+L\n\n# 3. Test interactively\nmy_function(test_data)\n\n# 4. Write tests\nuse_test(\"my_function\")\n\n# 5. Run tests\ntest()  # or Ctrl+Shift+T\n\n# 6. Document\ndocument()  # or Ctrl+Shift+D\n\n# 7. Check package\ncheck()  # or Ctrl+Shift+E\n\n# 8. Install\ninstall()\n\n\n10.6.2 Semantic Versioning\n# Version format: MAJOR.MINOR.PATCH\n# 1.0.0 -&gt; 1.0.1 (patch: bug fixes)\n# 1.0.1 -&gt; 1.1.0 (minor: new features, backward compatible)\n# 1.1.0 -&gt; 2.0.0 (major: breaking changes)\n\n# Update version\nuse_version(\"patch\")\nuse_version(\"minor\")\nuse_version(\"major\")\n\n\n10.6.3 NEWS.md\n# mypackage 0.2.0\n\n## New features\n\n* Added `new_function()` for advanced analysis (#15)\n* Support for tibbles in `clean_data()` (#18)\n\n## Bug fixes\n\n* Fixed issue with NA handling in `summary_stats()` (#12)\n* Corrected documentation for `transform_data()` (#14)\n\n## Breaking changes\n\n* Renamed `old_function()` to `new_function()`\n* Changed default behavior of `clean_data()`\n\n# mypackage 0.1.0\n\n* Initial CRAN release\n\n\n10.6.4 Code Review Checklist\n# Before committing:\n# Functions are documented\n# Tests are written and passing\n# Code is formatted (styler)\n# No linter warnings\n# Package checks pass\n# NEWS.md is updated\n# Version number is bumped\n# Examples run correctly\n# Vignettes build\n# No browser() or debug statements",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#complete-package-example",
+    "href": "6_R_Developer_Tools.html#complete-package-example",
+    "title": "8  R Developer Tools",
+    "section": "10.7 Complete Package Example",
+    "text": "10.7 Complete Package Example\n\n10.7.1 Final Package Structure\nmypackage/\n├── .github/\n│   └── workflows/\n│       ├── R-CMD-check.yaml\n│       ├── test-coverage.yaml\n│       └── pkgdown.yaml\n├── R/\n│   ├── data_processing.R\n│   ├── visualization.R\n│   ├── utils.R\n│   └── mypackage-package.R\n├── man/\n│   ├── clean_data.Rd\n│   └── mypackage-package.Rd\n├── tests/\n│   ├── testthat.R\n│   └── testthat/\n│       ├── test-data_processing.R\n│       └── test-visualization.R\n├── vignettes/\n│   └── introduction.Rmd\n├── data/\n│   └── sample_data.rda\n├── data-raw/\n│   └── prep_data.R\n├── .gitignore\n├── .Rbuildignore\n├── DESCRIPTION\n├── LICENSE\n├── LICENSE.md\n├── NAMESPACE\n├── NEWS.md\n├── README.md\n├── README.Rmd\n├── cran-comments.md\n└── mypackage.Rproj",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "6_R_Developer_Tools.html#summary",
+    "href": "6_R_Developer_Tools.html#summary",
+    "title": "8  R Developer Tools",
+    "section": "10.8 Summary",
+    "text": "10.8 Summary\n\n10.8.1 Skills Mastered\n\nR package development from scratch\nComprehensive documentation with roxygen2\nVersion control with Git and GitHub\nCI/CD pipelines with GitHub Actions\nCode profiling and optimization\nPackage distribution (CRAN, GitHub, R-universe)\nCode quality tools (lintr, styler, spelling)\nProfessional development workflow\n\n\n\n10.8.2 Resources\n\nR Packages Book by Hadley Wickham\nWriting R Extensions (Official)\nusethis Documentation\ndevtools Documentation\nGitHub Actions for R\n\n\n\n10.8.3 Next Steps\n\nBuild: Create your first R package\nTest: Achieve 100% test coverage\nShare: Publish on GitHub and CRAN\nContribute: Contribute to open-source R packages\nTeach: Share your knowledge with the R community\n\n\nCongratulations!\nYou’ve completed the entire R Programming course! You now have the skills to: - Write professional R code - Build data science projects - Create interactive applications - Develop and distribute R packages - Apply best practices in production environments\nKeep coding, keep learning, and contribute to the R community!",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>R Developer Tools</span>"
+    ]
+  },
+  {
+    "objectID": "appendix_resources.html",
+    "href": "appendix_resources.html",
+    "title": "Appendix A — Code & Data Resources",
+    "section": "",
+    "text": "A.1 R Scripts\nThis appendix lists the standalone R scripts and datasets that accompany the book. You can open these files directly in your IDE, or source/load them from R.\nThe following .R files live in the project root:",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Code & Data Resources</span>"
+    ]
+  },
+  {
+    "objectID": "appendix_resources.html#r-scripts",
+    "href": "appendix_resources.html#r-scripts",
+    "title": "Appendix A — Code & Data Resources",
+    "section": "",
+    "text": "Intros.R\nStatistical_Modeling.R\ndata Exploration.R\ndata_pipeline.R\ndlyr.R\nggplot.R\nmixture_normal.R\nsome_examples.R\n\n\nA.1.1 Using the scripts\n# From within the project root\nsource(\"Intros.R\")\nsource(\"Statistical_Modeling.R\")\n# ...and so on for other scripts\nYou can copy relevant functions or code chunks from these scripts into your own analysis projects.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Code & Data Resources</span>"
+    ]
+  },
+  {
+    "objectID": "appendix_resources.html#datasets",
+    "href": "appendix_resources.html#datasets",
+    "title": "Appendix A — Code & Data Resources",
+    "section": "A.2 Datasets",
+    "text": "A.2 Datasets\nAll example datasets are stored in the datasets/ folder:\n\ndatasets/_f733a70b3d11467ca6c77f726ac01bd2_C1_M3_L1_Finance_insurance_data.csv\ndatasets/health_bioinformatics.json\ndatasets/system_design.xlsx\n\n\nA.2.1 Loading the datasets in R\n# CSV data (finance/insurance)\nfinance_data &lt;- read.csv(\n  \"datasets/_f733a70b3d11467ca6c77f726ac01bd2_C1_M3_L1_Finance_insurance_data.csv\",\n  stringsAsFactors = FALSE\n)\n\n# JSON data (health / bioinformatics)\nlibrary(jsonlite)\nhealth_data &lt;- fromJSON(\"datasets/health_bioinformatics.json\")\n\n# Excel data (system design)\nlibrary(readxl)\nsystem_design &lt;- read_excel(\"datasets/system_design.xlsx\")\nThese data files are used throughout the course for demonstrations and exercises. Feel free to explore them interactively as you read the chapters.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Code & Data Resources</span>"
+    ]
+  }
+]

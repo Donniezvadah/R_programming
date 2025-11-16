@@ -868,21 +868,24 @@ output: html_document
 
 This is an R Markdown document.
 
-```{r setup, include=FALSE}
+```r
+# chunk: setup, include=FALSE
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
 ```
 
 ## Data Analysis
 
-```{r load-data}
+```r
+# chunk: load-data
 data(mtcars)
 summary(mtcars)
 ```
 
 ## Visualization
 
-```{r plot, fig.width=8, fig.height=6}
+```r
+# chunk: plot, fig.width=8, fig.height=6
 ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point() +
   theme_minimal()
@@ -909,22 +912,26 @@ params:
 The analysis covers data from `r params$year` in `r params$country`.
 
 # Caching
-```{r expensive-computation, cache=TRUE}
+```r
+# chunk: expensive-computation, cache=TRUE
 result <- very_long_computation()
 ```
 
 # Child documents
-```{r child='analysis-section.Rmd'}
+```r
+# chunk: child='analysis-section.Rmd'
 ```
 
 # Tables with kable
-```{r}
+```r
+# chunk: r (kable example)
 library(knitr)
 kable(head(mtcars), caption = "Motor Trend Cars")
 ```
 
 # Interactive tables
-```{r}
+```r
+# chunk: r (DT example)
 library(DT)
 datatable(mtcars, filter = 'top')
 ```

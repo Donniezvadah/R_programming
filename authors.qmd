@@ -1,0 +1,46 @@
+---
+title: "Authors"
+echo: false
+---
+
+## Course Authors
+
+:::{.module-grid}
+
+---
+
+:::{.module-card .author-card}
+### Donnie
+<div class="author-title">PhD Student, Trinity College Dublin</div>
+
+:::{.callout-important collapse="true"}
+## My Background
+
+1. **BSc in Operations Research and Statistics**, NUST (2019–2023)  
+2. **MSc in Mathematical Sciences**, AIMS South Africa (2025)  
+3. **GRIPS Program Certificate**, Japan (2025)  
+4. **PhD Candidate**, Trinity College Dublin (Computer Science & Statistics)  
+5. Highly active in tutoring and mentorship  
+6. And many more...
+:::
+
+<div class="author-links">
+📧 [Email](mailto:not@now.ie) | 🎓 [Trinity College Dublin](https://www.tcd.ie)
+</div>
+
+:::
+
+---
+
+:::{.module-card .author-card}
+### Dr Precious Mdlongwa
+<div class="author-title">Author,  
+<a href="https://www.nust.ac.zw/fas/index.php/en/our-staff/staff/ms-precious-mdlongwa">NUST Zimbabwe</a></div>
+
+<div class="author-links">
+📧 [Email](mailto:precious.mdlongwa@nust.ac.zw) | 🏛️ [NUST Zimbabwe](https://www.nust.ac.zw)
+</div>
+
+:::
+
+:::

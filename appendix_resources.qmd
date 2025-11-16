@@ -1,0 +1,57 @@
+---
+title: "Code & Data Resources"
+---
+
+This appendix lists the standalone **R scripts** and **datasets** that accompany the book. You can open these files directly in your IDE, or source/load them from R.
+
+## R Scripts
+
+The following `.R` files live in the project root:
+
+- `Intros.R`
+- `Statistical_Modeling.R`
+- `data Exploration.R`
+- `data_pipeline.R`
+- `dlyr.R`
+- `ggplot.R`
+- `mixture_normal.R`
+- `some_examples.R`
+
+### Using the scripts
+
+```r
+# From within the project root
+source("Intros.R")
+source("Statistical_Modeling.R")
+# ...and so on for other scripts
+```
+
+You can copy relevant functions or code chunks from these scripts into your own analysis projects.
+
+## Datasets
+
+All example datasets are stored in the `datasets/` folder:
+
+- `datasets/_f733a70b3d11467ca6c77f726ac01bd2_C1_M3_L1_Finance_insurance_data.csv`
+- `datasets/health_bioinformatics.json`
+- `datasets/system_design.xlsx`
+
+### Loading the datasets in R
+
+```r
+# CSV data (finance/insurance)
+finance_data <- read.csv(
+  "datasets/_f733a70b3d11467ca6c77f726ac01bd2_C1_M3_L1_Finance_insurance_data.csv",
+  stringsAsFactors = FALSE
+)
+
+# JSON data (health / bioinformatics)
+library(jsonlite)
+health_data <- fromJSON("datasets/health_bioinformatics.json")
+
+# Excel data (system design)
+library(readxl)
+system_design <- read_excel("datasets/system_design.xlsx")
+```
+
+These data files are used throughout the course for demonstrations and exercises. Feel free to explore them interactively as you read the chapters.
