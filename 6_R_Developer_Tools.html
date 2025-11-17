@@ -322,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">R Developer Tools</span></h1>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">R Developer Tools</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -1245,6 +1245,8 @@ use_apache_license()</code></pre>
 <p>Keep coding, keep learning, and contribute to the R community!</p>
 
 
+<!-- -->
+
 </section>
 </section>
 </section>
@@ -1320,6 +1322,57 @@ use_apache_license()</code></pre>
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -1666,7 +1719,995 @@ use_apache_license()</code></pre>
         <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Time Series Analysis and Forecasting of Air Passengers</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
-</nav>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># R Developer Tools</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Table of Contents</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="co">[</span><span class="ot">R Package Development</span><span class="co">](#r-package-development)</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="co">[</span><span class="ot">Documentation with roxygen2</span><span class="co">](#documentation-with-roxygen2)</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="co">[</span><span class="ot">Version Control with Git</span><span class="co">](#version-control-with-git)</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span><span class="co">[</span><span class="ot">GitHub Workflows</span><span class="co">](#github-workflows)</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span><span class="co">[</span><span class="ot">Continuous Integration/Deployment</span><span class="co">](#continuous-integration-deployment)</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span><span class="co">[</span><span class="ot">Code Profiling and Optimization</span><span class="co">](#code-profiling-and-optimization)</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span><span class="co">[</span><span class="ot">Package Distribution</span><span class="co">](#package-distribution)</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span><span class="co">[</span><span class="ot">Development Tools</span><span class="co">](#development-tools)</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span><span class="co">[</span><span class="ot">Code Quality</span><span class="co">](#code-quality)</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span><span class="co">[</span><span class="ot">Best Practices</span><span class="co">](#best-practices)</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## R Package Development</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### Creating a Package</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Install development tools</span></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"devtools"</span>, <span class="st">"usethis"</span>, <span class="st">"roxygen2"</span>, <span class="st">"testthat"</span>))</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usethis)</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new package</span></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a><span class="fu">create_package</span>(<span class="st">"~/mypackage"</span>)</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Package structure created:</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a><span class="co"># mypackage/</span></span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── R/</span></span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── DESCRIPTION</span></span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── NAMESPACE</span></span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a><span class="co"># └── mypackage.Rproj</span></span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### DESCRIPTION File</span></span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a><span class="fu">Package</span><span class="kw">:</span><span class="at"> mypackage</span></span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a><span class="fu">Type</span><span class="kw">:</span><span class="at"> Package</span></span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a><span class="fu">Title</span><span class="kw">:</span><span class="at"> My Awesome R Package</span></span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a><span class="fu">Version</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.1.0</span></span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a><span class="fu">Author</span><span class="kw">:</span><span class="at"> Your Name &lt;your.email@example.com&gt;</span></span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a><span class="fu">Maintainer</span><span class="kw">:</span><span class="at"> Your Name &lt;your.email@example.com&gt;</span></span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a><span class="fu">Description</span><span class="kw">:</span><span class="at"> This package provides tools for data analysis and visualization.</span></span>
+<span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>It<span class="at"> </span>includes<span class="at"> </span>functions<span class="at"> </span>for<span class="at"> </span>data<span class="at"> </span>cleaning,<span class="at"> </span>transformation,<span class="at"> </span>and<span class="at"> </span>statistical<span class="at"> </span>modeling.</span>
+<span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a><span class="fu">License</span><span class="kw">:</span><span class="at"> MIT + file LICENSE</span></span>
+<span id="cb41-51"><a href="#cb41-51" aria-hidden="true" tabindex="-1"></a><span class="fu">Encoding</span><span class="kw">:</span><span class="at"> UTF-8</span></span>
+<span id="cb41-52"><a href="#cb41-52" aria-hidden="true" tabindex="-1"></a><span class="fu">LazyData</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb41-53"><a href="#cb41-53" aria-hidden="true" tabindex="-1"></a><span class="fu">Roxygen</span><span class="kw">:</span><span class="at"> list(markdown = TRUE)</span></span>
+<span id="cb41-54"><a href="#cb41-54" aria-hidden="true" tabindex="-1"></a><span class="fu">RoxygenNote</span><span class="kw">:</span><span class="at"> </span><span class="fl">7.2.3</span></span>
+<span id="cb41-55"><a href="#cb41-55" aria-hidden="true" tabindex="-1"></a><span class="fu">Imports</span><span class="kw">:</span></span>
+<span id="cb41-56"><a href="#cb41-56" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>dplyr<span class="at"> </span>(&gt;=<span class="at"> </span>1.0.0),</span>
+<span id="cb41-57"><a href="#cb41-57" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>ggplot2<span class="at"> </span>(&gt;=<span class="at"> </span>3.3.0),</span>
+<span id="cb41-58"><a href="#cb41-58" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>magrittr</span>
+<span id="cb41-59"><a href="#cb41-59" aria-hidden="true" tabindex="-1"></a><span class="fu">Suggests</span><span class="kw">:</span></span>
+<span id="cb41-60"><a href="#cb41-60" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>testthat<span class="at"> </span>(&gt;=<span class="at"> </span>3.0.0),</span>
+<span id="cb41-61"><a href="#cb41-61" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>knitr,</span>
+<span id="cb41-62"><a href="#cb41-62" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>rmarkdown,</span>
+<span id="cb41-63"><a href="#cb41-63" aria-hidden="true" tabindex="-1"></a><span class="at">    </span>covr</span>
+<span id="cb41-64"><a href="#cb41-64" aria-hidden="true" tabindex="-1"></a><span class="fu">Depends</span><span class="kw">:</span><span class="at"> R (&gt;= 4.0.0)</span></span>
+<span id="cb41-65"><a href="#cb41-65" aria-hidden="true" tabindex="-1"></a><span class="fu">VignetteBuilder</span><span class="kw">:</span><span class="at"> knitr</span></span>
+<span id="cb41-66"><a href="#cb41-66" aria-hidden="true" tabindex="-1"></a><span class="fu">URL</span><span class="kw">:</span><span class="at"> https://github.com/username/mypackage</span></span>
+<span id="cb41-67"><a href="#cb41-67" aria-hidden="true" tabindex="-1"></a><span class="fu">BugReports</span><span class="kw">:</span><span class="at"> https://github.com/username/mypackage/issues</span></span>
+<span id="cb41-68"><a href="#cb41-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-69"><a href="#cb41-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-70"><a href="#cb41-70" aria-hidden="true" tabindex="-1"></a><span class="fu">### Adding Functions</span></span>
+<span id="cb41-71"><a href="#cb41-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-72"><a href="#cb41-72" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-73"><a href="#cb41-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new R file</span></span>
+<span id="cb41-74"><a href="#cb41-74" aria-hidden="true" tabindex="-1"></a><span class="fu">use_r</span>(<span class="st">"data_processing"</span>)</span>
+<span id="cb41-75"><a href="#cb41-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-76"><a href="#cb41-76" aria-hidden="true" tabindex="-1"></a><span class="co"># R/data_processing.R</span></span>
+<span id="cb41-77"><a href="#cb41-77" aria-hidden="true" tabindex="-1"></a><span class="co">#' Clean Data</span></span>
+<span id="cb41-78"><a href="#cb41-78" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-79"><a href="#cb41-79" aria-hidden="true" tabindex="-1"></a><span class="co">#' Remove missing values and duplicates from a data frame</span></span>
+<span id="cb41-80"><a href="#cb41-80" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-81"><a href="#cb41-81" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param data A data frame to clean</span></span>
+<span id="cb41-82"><a href="#cb41-82" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param columns Character vector of column names to check for NAs</span></span>
+<span id="cb41-83"><a href="#cb41-83" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return A cleaned data frame</span></span>
+<span id="cb41-84"><a href="#cb41-84" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb41-85"><a href="#cb41-85" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb41-86"><a href="#cb41-86" aria-hidden="true" tabindex="-1"></a><span class="co">#' df &lt;- data.frame(x = c(1, 2, NA, 4), y = c("a", "b", "b", "c"))</span></span>
+<span id="cb41-87"><a href="#cb41-87" aria-hidden="true" tabindex="-1"></a><span class="co">#' clean_data(df, c("x"))</span></span>
+<span id="cb41-88"><a href="#cb41-88" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">columns =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb41-89"><a href="#cb41-89" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(data)) {</span>
+<span id="cb41-90"><a href="#cb41-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"data must be a data frame"</span>)</span>
+<span id="cb41-91"><a href="#cb41-91" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-92"><a href="#cb41-92" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-93"><a href="#cb41-93" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(columns)) {</span>
+<span id="cb41-94"><a href="#cb41-94" aria-hidden="true" tabindex="-1"></a>    columns <span class="ot">&lt;-</span> <span class="fu">names</span>(data)</span>
+<span id="cb41-95"><a href="#cb41-95" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-96"><a href="#cb41-96" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-97"><a href="#cb41-97" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove rows with NA in specified columns</span></span>
+<span id="cb41-98"><a href="#cb41-98" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> data[<span class="fu">complete.cases</span>(data[, columns]), ]</span>
+<span id="cb41-99"><a href="#cb41-99" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-100"><a href="#cb41-100" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove duplicates</span></span>
+<span id="cb41-101"><a href="#cb41-101" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">unique</span>(data)</span>
+<span id="cb41-102"><a href="#cb41-102" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-103"><a href="#cb41-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
+<span id="cb41-104"><a href="#cb41-104" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-105"><a href="#cb41-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-106"><a href="#cb41-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-107"><a href="#cb41-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### Adding Data</span></span>
+<span id="cb41-108"><a href="#cb41-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-109"><a href="#cb41-109" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-110"><a href="#cb41-110" aria-hidden="true" tabindex="-1"></a><span class="co"># Add internal data (available only to package functions)</span></span>
+<span id="cb41-111"><a href="#cb41-111" aria-hidden="true" tabindex="-1"></a><span class="fu">use_data_raw</span>(<span class="st">"prep_data"</span>)</span>
+<span id="cb41-112"><a href="#cb41-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-113"><a href="#cb41-113" aria-hidden="true" tabindex="-1"></a><span class="co"># data-raw/prep_data.R</span></span>
+<span id="cb41-114"><a href="#cb41-114" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb41-115"><a href="#cb41-115" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb41-116"><a href="#cb41-116" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb41-117"><a href="#cb41-117" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-118"><a href="#cb41-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-119"><a href="#cb41-119" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_data</span>(my_data, <span class="at">internal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb41-120"><a href="#cb41-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-121"><a href="#cb41-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Add external data (available to users)</span></span>
+<span id="cb41-122"><a href="#cb41-122" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_data</span>(my_data, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb41-123"><a href="#cb41-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-124"><a href="#cb41-124" aria-hidden="true" tabindex="-1"></a><span class="co"># Document data</span></span>
+<span id="cb41-125"><a href="#cb41-125" aria-hidden="true" tabindex="-1"></a><span class="co"># R/data.R</span></span>
+<span id="cb41-126"><a href="#cb41-126" aria-hidden="true" tabindex="-1"></a><span class="co">#' Sample Dataset</span></span>
+<span id="cb41-127"><a href="#cb41-127" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-128"><a href="#cb41-128" aria-hidden="true" tabindex="-1"></a><span class="co">#' A dataset containing sample data for demonstration</span></span>
+<span id="cb41-129"><a href="#cb41-129" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-130"><a href="#cb41-130" aria-hidden="true" tabindex="-1"></a><span class="co">#' @format A data frame with 100 rows and 2 variables:</span></span>
+<span id="cb41-131"><a href="#cb41-131" aria-hidden="true" tabindex="-1"></a><span class="co">#' \describe{</span></span>
+<span id="cb41-132"><a href="#cb41-132" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{x}{Numeric values from 1 to 100}</span></span>
+<span id="cb41-133"><a href="#cb41-133" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{y}{Random normal values}</span></span>
+<span id="cb41-134"><a href="#cb41-134" aria-hidden="true" tabindex="-1"></a><span class="co">#' }</span></span>
+<span id="cb41-135"><a href="#cb41-135" aria-hidden="true" tabindex="-1"></a><span class="co">#' @source Generated for package demonstration</span></span>
+<span id="cb41-136"><a href="#cb41-136" aria-hidden="true" tabindex="-1"></a><span class="st">"my_data"</span></span>
+<span id="cb41-137"><a href="#cb41-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-138"><a href="#cb41-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-139"><a href="#cb41-139" aria-hidden="true" tabindex="-1"></a><span class="fu">### Package Dependencies</span></span>
+<span id="cb41-140"><a href="#cb41-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-141"><a href="#cb41-141" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-142"><a href="#cb41-142" aria-hidden="true" tabindex="-1"></a><span class="co"># Add to Imports (required)</span></span>
+<span id="cb41-143"><a href="#cb41-143" aria-hidden="true" tabindex="-1"></a><span class="fu">use_package</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb41-144"><a href="#cb41-144" aria-hidden="true" tabindex="-1"></a><span class="fu">use_package</span>(<span class="st">"ggplot2"</span>, <span class="at">min_version =</span> <span class="st">"3.3.0"</span>)</span>
+<span id="cb41-145"><a href="#cb41-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-146"><a href="#cb41-146" aria-hidden="true" tabindex="-1"></a><span class="co"># Add to Suggests (optional)</span></span>
+<span id="cb41-147"><a href="#cb41-147" aria-hidden="true" tabindex="-1"></a><span class="fu">use_package</span>(<span class="st">"testthat"</span>, <span class="at">type =</span> <span class="st">"Suggests"</span>)</span>
+<span id="cb41-148"><a href="#cb41-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-149"><a href="#cb41-149" aria-hidden="true" tabindex="-1"></a><span class="co"># Import specific functions</span></span>
+<span id="cb41-150"><a href="#cb41-150" aria-hidden="true" tabindex="-1"></a><span class="co">#' @importFrom dplyr filter mutate</span></span>
+<span id="cb41-151"><a href="#cb41-151" aria-hidden="true" tabindex="-1"></a><span class="co">#' @importFrom magrittr %&gt;%</span></span>
+<span id="cb41-152"><a href="#cb41-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-153"><a href="#cb41-153" aria-hidden="true" tabindex="-1"></a><span class="co"># Import entire package</span></span>
+<span id="cb41-154"><a href="#cb41-154" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import ggplot2</span></span>
+<span id="cb41-155"><a href="#cb41-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-156"><a href="#cb41-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-157"><a href="#cb41-157" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-158"><a href="#cb41-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-159"><a href="#cb41-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Documentation with roxygen2</span></span>
+<span id="cb41-160"><a href="#cb41-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-161"><a href="#cb41-161" aria-hidden="true" tabindex="-1"></a><span class="fu">### Function Documentation</span></span>
+<span id="cb41-162"><a href="#cb41-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-163"><a href="#cb41-163" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-164"><a href="#cb41-164" aria-hidden="true" tabindex="-1"></a><span class="co">#' Calculate Summary Statistics</span></span>
+<span id="cb41-165"><a href="#cb41-165" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-166"><a href="#cb41-166" aria-hidden="true" tabindex="-1"></a><span class="co">#' This function calculates various summary statistics for a numeric vector.</span></span>
+<span id="cb41-167"><a href="#cb41-167" aria-hidden="true" tabindex="-1"></a><span class="co">#' It handles missing values and provides multiple measures of central tendency</span></span>
+<span id="cb41-168"><a href="#cb41-168" aria-hidden="true" tabindex="-1"></a><span class="co">#' and dispersion.</span></span>
+<span id="cb41-169"><a href="#cb41-169" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-170"><a href="#cb41-170" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param x A numeric vector</span></span>
+<span id="cb41-171"><a href="#cb41-171" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param na.rm Logical; if TRUE, missing values are removed before computation</span></span>
+<span id="cb41-172"><a href="#cb41-172" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param trim Numeric; fraction (0 to 0.5) of observations to trim from each end</span></span>
+<span id="cb41-173"><a href="#cb41-173" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param digits Integer; number of decimal places to round to</span></span>
+<span id="cb41-174"><a href="#cb41-174" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-175"><a href="#cb41-175" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return A named list containing:</span></span>
+<span id="cb41-176"><a href="#cb41-176" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{mean}{Arithmetic mean}</span></span>
+<span id="cb41-177"><a href="#cb41-177" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{median}{Median value}</span></span>
+<span id="cb41-178"><a href="#cb41-178" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{sd}{Standard deviation}</span></span>
+<span id="cb41-179"><a href="#cb41-179" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{min}{Minimum value}</span></span>
+<span id="cb41-180"><a href="#cb41-180" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{max}{Maximum value}</span></span>
+<span id="cb41-181"><a href="#cb41-181" aria-hidden="true" tabindex="-1"></a><span class="co">#'   \item{n}{Number of observations}</span></span>
+<span id="cb41-182"><a href="#cb41-182" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-183"><a href="#cb41-183" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb41-184"><a href="#cb41-184" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb41-185"><a href="#cb41-185" aria-hidden="true" tabindex="-1"></a><span class="co">#' # Basic usage</span></span>
+<span id="cb41-186"><a href="#cb41-186" aria-hidden="true" tabindex="-1"></a><span class="co">#' x &lt;- c(1, 2, 3, 4, 5, NA)</span></span>
+<span id="cb41-187"><a href="#cb41-187" aria-hidden="true" tabindex="-1"></a><span class="co">#' summary_stats(x, na.rm = TRUE)</span></span>
+<span id="cb41-188"><a href="#cb41-188" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-189"><a href="#cb41-189" aria-hidden="true" tabindex="-1"></a><span class="co">#' # With trimming</span></span>
+<span id="cb41-190"><a href="#cb41-190" aria-hidden="true" tabindex="-1"></a><span class="co">#' summary_stats(x, na.rm = TRUE, trim = 0.1)</span></span>
+<span id="cb41-191"><a href="#cb41-191" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb41-192"><a href="#cb41-192" aria-hidden="true" tabindex="-1"></a><span class="co">#' @seealso \code{\link{mean}}, \code{\link{median}}, \code{\link{sd}}</span></span>
+<span id="cb41-193"><a href="#cb41-193" aria-hidden="true" tabindex="-1"></a><span class="co">#' @family statistical functions</span></span>
+<span id="cb41-194"><a href="#cb41-194" aria-hidden="true" tabindex="-1"></a>summary_stats <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">na.rm =</span> <span class="cn">FALSE</span>, <span class="at">trim =</span> <span class="dv">0</span>, <span class="at">digits =</span> <span class="dv">2</span>) {</span>
+<span id="cb41-195"><a href="#cb41-195" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb41-196"><a href="#cb41-196" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"x must be numeric"</span>)</span>
+<span id="cb41-197"><a href="#cb41-197" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-198"><a href="#cb41-198" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-199"><a href="#cb41-199" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb41-200"><a href="#cb41-200" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(x, <span class="at">na.rm =</span> na.rm, <span class="at">trim =</span> trim), digits),</span>
+<span id="cb41-201"><a href="#cb41-201" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">round</span>(<span class="fu">median</span>(x, <span class="at">na.rm =</span> na.rm), digits),</span>
+<span id="cb41-202"><a href="#cb41-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">round</span>(<span class="fu">sd</span>(x, <span class="at">na.rm =</span> na.rm), digits),</span>
+<span id="cb41-203"><a href="#cb41-203" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(x, <span class="at">na.rm =</span> na.rm),</span>
+<span id="cb41-204"><a href="#cb41-204" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(x, <span class="at">na.rm =</span> na.rm),</span>
+<span id="cb41-205"><a href="#cb41-205" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="cf">if</span> (na.rm) <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x)) <span class="cf">else</span> <span class="fu">length</span>(x)</span>
+<span id="cb41-206"><a href="#cb41-206" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-207"><a href="#cb41-207" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-208"><a href="#cb41-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb41-209"><a href="#cb41-209" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-210"><a href="#cb41-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-211"><a href="#cb41-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-212"><a href="#cb41-212" aria-hidden="true" tabindex="-1"></a><span class="fu">### Building Documentation</span></span>
+<span id="cb41-213"><a href="#cb41-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-214"><a href="#cb41-214" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-215"><a href="#cb41-215" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate documentation from roxygen comments</span></span>
+<span id="cb41-216"><a href="#cb41-216" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">document</span>()</span>
+<span id="cb41-217"><a href="#cb41-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-218"><a href="#cb41-218" aria-hidden="true" tabindex="-1"></a><span class="co"># Check documentation</span></span>
+<span id="cb41-219"><a href="#cb41-219" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check_man</span>()</span>
+<span id="cb41-220"><a href="#cb41-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-221"><a href="#cb41-221" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview help page</span></span>
+<span id="cb41-222"><a href="#cb41-222" aria-hidden="true" tabindex="-1"></a>?summary_stats</span>
+<span id="cb41-223"><a href="#cb41-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-224"><a href="#cb41-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-225"><a href="#cb41-225" aria-hidden="true" tabindex="-1"></a><span class="fu">### Vignettes</span></span>
+<span id="cb41-226"><a href="#cb41-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-227"><a href="#cb41-227" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-228"><a href="#cb41-228" aria-hidden="true" tabindex="-1"></a><span class="co"># Create vignette</span></span>
+<span id="cb41-229"><a href="#cb41-229" aria-hidden="true" tabindex="-1"></a><span class="fu">use_vignette</span>(<span class="st">"introduction"</span>)</span>
+<span id="cb41-230"><a href="#cb41-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-231"><a href="#cb41-231" aria-hidden="true" tabindex="-1"></a><span class="co"># vignettes/introduction.Rmd</span></span>
+<span id="cb41-232"><a href="#cb41-232" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb41-233"><a href="#cb41-233" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">"Introduction to mypackage"</span></span>
+<span id="cb41-234"><a href="#cb41-234" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">"Your Name"</span></span>
+<span id="cb41-235"><a href="#cb41-235" aria-hidden="true" tabindex="-1"></a>date<span class="sc">:</span> <span class="st">"`r Sys.Date()`"</span></span>
+<span id="cb41-236"><a href="#cb41-236" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> rmarkdown<span class="sc">::</span>html_vignette</span>
+<span id="cb41-237"><a href="#cb41-237" aria-hidden="true" tabindex="-1"></a>vignette<span class="sc">:</span> <span class="er">&gt;</span></span>
+<span id="cb41-238"><a href="#cb41-238" aria-hidden="true" tabindex="-1"></a>  %\VignetteIndexEntry{Introduction to mypackage}</span>
+<span id="cb41-239"><a href="#cb41-239" aria-hidden="true" tabindex="-1"></a>  %\VignetteEngine{knitr<span class="sc">::</span>rmarkdown}</span>
+<span id="cb41-240"><a href="#cb41-240" aria-hidden="true" tabindex="-1"></a>  %\VignetteEncoding{UTF<span class="dv">-8</span>}</span>
+<span id="cb41-241"><a href="#cb41-241" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb41-242"><a href="#cb41-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-243"><a href="#cb41-243" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">r</span></span>
+<span id="cb41-244"><a href="#cb41-244" aria-hidden="true" tabindex="-1"></a><span class="at"># chunk: setup, include = FALSE</span></span>
+<span id="cb41-245"><a href="#cb41-245" aria-hidden="true" tabindex="-1"></a><span class="at">knitr::opts_chunk$set(</span></span>
+<span id="cb41-246"><a href="#cb41-246" aria-hidden="true" tabindex="-1"></a><span class="at">  collapse = TRUE,</span></span>
+<span id="cb41-247"><a href="#cb41-247" aria-hidden="true" tabindex="-1"></a><span class="at">  comment = "#&gt;"</span></span>
+<span id="cb41-248"><a href="#cb41-248" aria-hidden="true" tabindex="-1"></a><span class="at">)</span></span>
+<span id="cb41-249"><a href="#cb41-249" aria-hidden="true" tabindex="-1"></a><span class="at">library(mypackage)</span></span>
+<span id="cb41-250"><a href="#cb41-250" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb41-251"><a href="#cb41-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-252"><a href="#cb41-252" aria-hidden="true" tabindex="-1"></a><span class="do">## Overview</span></span>
+<span id="cb41-253"><a href="#cb41-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-254"><a href="#cb41-254" aria-hidden="true" tabindex="-1"></a>This package provides tools for...</span>
+<span id="cb41-255"><a href="#cb41-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-256"><a href="#cb41-256" aria-hidden="true" tabindex="-1"></a><span class="do">## Installation</span></span>
+<span id="cb41-257"><a href="#cb41-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-258"><a href="#cb41-258" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">r</span></span>
+<span id="cb41-259"><a href="#cb41-259" aria-hidden="true" tabindex="-1"></a><span class="at"># chunk: eval=FALSE (installation)</span></span>
+<span id="cb41-260"><a href="#cb41-260" aria-hidden="true" tabindex="-1"></a><span class="at">devtools::install_github("username/mypackage")</span></span>
+<span id="cb41-261"><a href="#cb41-261" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb41-262"><a href="#cb41-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-263"><a href="#cb41-263" aria-hidden="true" tabindex="-1"></a><span class="do">## Basic Usage</span></span>
+<span id="cb41-264"><a href="#cb41-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-265"><a href="#cb41-265" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">r</span></span>
+<span id="cb41-266"><a href="#cb41-266" aria-hidden="true" tabindex="-1"></a><span class="at"># chunk: basic-usage</span></span>
+<span id="cb41-267"><a href="#cb41-267" aria-hidden="true" tabindex="-1"></a><span class="at">data &lt;- data.frame(x = 1:10, y = rnorm(10))</span></span>
+<span id="cb41-268"><a href="#cb41-268" aria-hidden="true" tabindex="-1"></a><span class="at">result &lt;- clean_data(data)</span></span>
+<span id="cb41-269"><a href="#cb41-269" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb41-270"><a href="#cb41-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-271"><a href="#cb41-271" aria-hidden="true" tabindex="-1"></a><span class="co"># Build vignettes</span></span>
+<span id="cb41-272"><a href="#cb41-272" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">build_vignettes</span>()</span>
+<span id="cb41-273"><a href="#cb41-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-274"><a href="#cb41-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-275"><a href="#cb41-275" aria-hidden="true" tabindex="-1"></a><span class="fu">### Package Website with pkgdown</span></span>
+<span id="cb41-276"><a href="#cb41-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-277"><a href="#cb41-277" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-278"><a href="#cb41-278" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup pkgdown</span></span>
+<span id="cb41-279"><a href="#cb41-279" aria-hidden="true" tabindex="-1"></a><span class="fu">use_pkgdown</span>()</span>
+<span id="cb41-280"><a href="#cb41-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-281"><a href="#cb41-281" aria-hidden="true" tabindex="-1"></a><span class="co"># Build website</span></span>
+<span id="cb41-282"><a href="#cb41-282" aria-hidden="true" tabindex="-1"></a>pkgdown<span class="sc">::</span><span class="fu">build_site</span>()</span>
+<span id="cb41-283"><a href="#cb41-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-284"><a href="#cb41-284" aria-hidden="true" tabindex="-1"></a><span class="co"># Deploy to GitHub Pages</span></span>
+<span id="cb41-285"><a href="#cb41-285" aria-hidden="true" tabindex="-1"></a><span class="fu">use_pkgdown_github_pages</span>()</span>
+<span id="cb41-286"><a href="#cb41-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-287"><a href="#cb41-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-288"><a href="#cb41-288" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-289"><a href="#cb41-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-290"><a href="#cb41-290" aria-hidden="true" tabindex="-1"></a><span class="fu">## Version Control with Git</span></span>
+<span id="cb41-291"><a href="#cb41-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-292"><a href="#cb41-292" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setup Git Repository</span></span>
+<span id="cb41-293"><a href="#cb41-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-294"><a href="#cb41-294" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb41-295"><a href="#cb41-295" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize git</span></span>
+<span id="cb41-296"><a href="#cb41-296" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb41-297"><a href="#cb41-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-298"><a href="#cb41-298" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure user</span></span>
+<span id="cb41-299"><a href="#cb41-299" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.name <span class="st">"Your Name"</span></span>
+<span id="cb41-300"><a href="#cb41-300" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.email <span class="st">"your.email@example.com"</span></span>
+<span id="cb41-301"><a href="#cb41-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-302"><a href="#cb41-302" aria-hidden="true" tabindex="-1"></a><span class="co"># Create .gitignore</span></span>
+<span id="cb41-303"><a href="#cb41-303" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-304"><a href="#cb41-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-305"><a href="#cb41-305" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-306"><a href="#cb41-306" aria-hidden="true" tabindex="-1"></a><span class="co"># R approach</span></span>
+<span id="cb41-307"><a href="#cb41-307" aria-hidden="true" tabindex="-1"></a><span class="fu">use_git</span>()</span>
+<span id="cb41-308"><a href="#cb41-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-309"><a href="#cb41-309" aria-hidden="true" tabindex="-1"></a><span class="co"># Add .gitignore entries</span></span>
+<span id="cb41-310"><a href="#cb41-310" aria-hidden="true" tabindex="-1"></a><span class="fu">use_git_ignore</span>(<span class="fu">c</span>(<span class="st">"*.Rproj"</span>, <span class="st">".Rhistory"</span>, <span class="st">".RData"</span>))</span>
+<span id="cb41-311"><a href="#cb41-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-312"><a href="#cb41-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-313"><a href="#cb41-313" aria-hidden="true" tabindex="-1"></a><span class="fu">### Basic Git Workflow</span></span>
+<span id="cb41-314"><a href="#cb41-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-315"><a href="#cb41-315" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb41-316"><a href="#cb41-316" aria-hidden="true" tabindex="-1"></a><span class="co"># Check status</span></span>
+<span id="cb41-317"><a href="#cb41-317" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb41-318"><a href="#cb41-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-319"><a href="#cb41-319" aria-hidden="true" tabindex="-1"></a><span class="co"># Stage files</span></span>
+<span id="cb41-320"><a href="#cb41-320" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add R/my_function.R</span>
+<span id="cb41-321"><a href="#cb41-321" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .  <span class="co"># Stage all changes</span></span>
+<span id="cb41-322"><a href="#cb41-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-323"><a href="#cb41-323" aria-hidden="true" tabindex="-1"></a><span class="co"># Commit</span></span>
+<span id="cb41-324"><a href="#cb41-324" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add data processing function"</span></span>
+<span id="cb41-325"><a href="#cb41-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-326"><a href="#cb41-326" aria-hidden="true" tabindex="-1"></a><span class="co"># View history</span></span>
+<span id="cb41-327"><a href="#cb41-327" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span></span>
+<span id="cb41-328"><a href="#cb41-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-329"><a href="#cb41-329" aria-hidden="true" tabindex="-1"></a><span class="co"># Create branch</span></span>
+<span id="cb41-330"><a href="#cb41-330" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> feature/new-analysis</span>
+<span id="cb41-331"><a href="#cb41-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-332"><a href="#cb41-332" aria-hidden="true" tabindex="-1"></a><span class="co"># Switch branches</span></span>
+<span id="cb41-333"><a href="#cb41-333" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
+<span id="cb41-334"><a href="#cb41-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-335"><a href="#cb41-335" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge branch</span></span>
+<span id="cb41-336"><a href="#cb41-336" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge feature/new-analysis</span>
+<span id="cb41-337"><a href="#cb41-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-338"><a href="#cb41-338" aria-hidden="true" tabindex="-1"></a><span class="co"># Delete branch</span></span>
+<span id="cb41-339"><a href="#cb41-339" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-d</span> feature/new-analysis</span>
+<span id="cb41-340"><a href="#cb41-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-341"><a href="#cb41-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-342"><a href="#cb41-342" aria-hidden="true" tabindex="-1"></a><span class="fu">### .gitignore for R</span></span>
+<span id="cb41-343"><a href="#cb41-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-344"><a href="#cb41-344" aria-hidden="true" tabindex="-1"></a><span class="in">```gitignore</span></span>
+<span id="cb41-345"><a href="#cb41-345" aria-hidden="true" tabindex="-1"></a><span class="in"># History files</span></span>
+<span id="cb41-346"><a href="#cb41-346" aria-hidden="true" tabindex="-1"></a><span class="in">.Rhistory</span></span>
+<span id="cb41-347"><a href="#cb41-347" aria-hidden="true" tabindex="-1"></a><span class="in">.Rapp.history</span></span>
+<span id="cb41-348"><a href="#cb41-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-349"><a href="#cb41-349" aria-hidden="true" tabindex="-1"></a><span class="in"># Session Data files</span></span>
+<span id="cb41-350"><a href="#cb41-350" aria-hidden="true" tabindex="-1"></a><span class="in">.RData</span></span>
+<span id="cb41-351"><a href="#cb41-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-352"><a href="#cb41-352" aria-hidden="true" tabindex="-1"></a><span class="in"># User-specific files</span></span>
+<span id="cb41-353"><a href="#cb41-353" aria-hidden="true" tabindex="-1"></a><span class="in">.Ruserdata</span></span>
+<span id="cb41-354"><a href="#cb41-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-355"><a href="#cb41-355" aria-hidden="true" tabindex="-1"></a><span class="in"># RStudio files</span></span>
+<span id="cb41-356"><a href="#cb41-356" aria-hidden="true" tabindex="-1"></a><span class="in">.Rproj.user/</span></span>
+<span id="cb41-357"><a href="#cb41-357" aria-hidden="true" tabindex="-1"></a><span class="in">*.Rproj</span></span>
+<span id="cb41-358"><a href="#cb41-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-359"><a href="#cb41-359" aria-hidden="true" tabindex="-1"></a><span class="in"># OAuth2 token</span></span>
+<span id="cb41-360"><a href="#cb41-360" aria-hidden="true" tabindex="-1"></a><span class="in">.httr-oauth</span></span>
+<span id="cb41-361"><a href="#cb41-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-362"><a href="#cb41-362" aria-hidden="true" tabindex="-1"></a><span class="in"># knitr and R markdown</span></span>
+<span id="cb41-363"><a href="#cb41-363" aria-hidden="true" tabindex="-1"></a><span class="in">*.utf8.md</span></span>
+<span id="cb41-364"><a href="#cb41-364" aria-hidden="true" tabindex="-1"></a><span class="in">*.knit.md</span></span>
+<span id="cb41-365"><a href="#cb41-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-366"><a href="#cb41-366" aria-hidden="true" tabindex="-1"></a><span class="in"># Temporary files</span></span>
+<span id="cb41-367"><a href="#cb41-367" aria-hidden="true" tabindex="-1"></a><span class="in">*~</span></span>
+<span id="cb41-368"><a href="#cb41-368" aria-hidden="true" tabindex="-1"></a><span class="in">*.swp</span></span>
+<span id="cb41-369"><a href="#cb41-369" aria-hidden="true" tabindex="-1"></a><span class="in">*.swo</span></span>
+<span id="cb41-370"><a href="#cb41-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-371"><a href="#cb41-371" aria-hidden="true" tabindex="-1"></a><span class="in"># Output files</span></span>
+<span id="cb41-372"><a href="#cb41-372" aria-hidden="true" tabindex="-1"></a><span class="in">*.pdf</span></span>
+<span id="cb41-373"><a href="#cb41-373" aria-hidden="true" tabindex="-1"></a><span class="in">*.html</span></span>
+<span id="cb41-374"><a href="#cb41-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-375"><a href="#cb41-375" aria-hidden="true" tabindex="-1"></a><span class="in"># Data files (if large)</span></span>
+<span id="cb41-376"><a href="#cb41-376" aria-hidden="true" tabindex="-1"></a><span class="in">data/raw/*</span></span>
+<span id="cb41-377"><a href="#cb41-377" aria-hidden="true" tabindex="-1"></a><span class="in">!data/raw/.gitkeep</span></span>
+<span id="cb41-378"><a href="#cb41-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-379"><a href="#cb41-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-380"><a href="#cb41-380" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-381"><a href="#cb41-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-382"><a href="#cb41-382" aria-hidden="true" tabindex="-1"></a><span class="fu">## GitHub Workflows</span></span>
+<span id="cb41-383"><a href="#cb41-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-384"><a href="#cb41-384" aria-hidden="true" tabindex="-1"></a><span class="fu">### Create GitHub Repository</span></span>
+<span id="cb41-385"><a href="#cb41-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-386"><a href="#cb41-386" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-387"><a href="#cb41-387" aria-hidden="true" tabindex="-1"></a><span class="co"># Create GitHub repo from R</span></span>
+<span id="cb41-388"><a href="#cb41-388" aria-hidden="true" tabindex="-1"></a><span class="fu">use_github</span>()</span>
+<span id="cb41-389"><a href="#cb41-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-390"><a href="#cb41-390" aria-hidden="true" tabindex="-1"></a><span class="co"># Or manually:</span></span>
+<span id="cb41-391"><a href="#cb41-391" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Create repo on GitHub</span></span>
+<span id="cb41-392"><a href="#cb41-392" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Add remote</span></span>
+<span id="cb41-393"><a href="#cb41-393" aria-hidden="true" tabindex="-1"></a>git remote add origin https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>username<span class="sc">/</span>mypackage.git</span>
+<span id="cb41-394"><a href="#cb41-394" aria-hidden="true" tabindex="-1"></a>git push <span class="sc">-</span>u origin main</span>
+<span id="cb41-395"><a href="#cb41-395" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-396"><a href="#cb41-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-397"><a href="#cb41-397" aria-hidden="true" tabindex="-1"></a><span class="fu">### README</span></span>
+<span id="cb41-398"><a href="#cb41-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-399"><a href="#cb41-399" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-400"><a href="#cb41-400" aria-hidden="true" tabindex="-1"></a><span class="co"># Create README</span></span>
+<span id="cb41-401"><a href="#cb41-401" aria-hidden="true" tabindex="-1"></a><span class="fu">use_readme_rmd</span>()</span>
+<span id="cb41-402"><a href="#cb41-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-403"><a href="#cb41-403" aria-hidden="true" tabindex="-1"></a><span class="co"># README.Rmd</span></span>
+<span id="cb41-404"><a href="#cb41-404" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb41-405"><a href="#cb41-405" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> github_document</span>
+<span id="cb41-406"><a href="#cb41-406" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb41-407"><a href="#cb41-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-408"><a href="#cb41-408" aria-hidden="true" tabindex="-1"></a><span class="co"># mypackage</span></span>
+<span id="cb41-409"><a href="#cb41-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-410"><a href="#cb41-410" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;</span><span class="sc">!--</span> badges<span class="sc">:</span> start <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb41-411"><a href="#cb41-411" aria-hidden="true" tabindex="-1"></a>[<span class="sc">!</span>[R<span class="sc">-</span>CMD<span class="sc">-</span>check](https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>username<span class="sc">/</span>mypackage<span class="sc">/</span>workflows<span class="sc">/</span>R<span class="sc">-</span>CMD<span class="sc">-</span>check<span class="sc">/</span>badge.svg)](https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>username<span class="sc">/</span>mypackage<span class="sc">/</span>actions)</span>
+<span id="cb41-412"><a href="#cb41-412" aria-hidden="true" tabindex="-1"></a>[<span class="sc">!</span>[Codecov](https<span class="sc">:</span><span class="er">//</span>codecov.io<span class="sc">/</span>gh<span class="sc">/</span>username<span class="sc">/</span>mypackage<span class="sc">/</span>branch<span class="sc">/</span>main<span class="sc">/</span>graph<span class="sc">/</span>badge.svg)](https<span class="sc">:</span><span class="er">//</span>codecov.io<span class="sc">/</span>gh<span class="sc">/</span>username<span class="sc">/</span>mypackage)</span>
+<span id="cb41-413"><a href="#cb41-413" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;!--</span> badges<span class="sc">:</span> end <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb41-414"><a href="#cb41-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-415"><a href="#cb41-415" aria-hidden="true" tabindex="-1"></a>The goal of mypackage is to...</span>
+<span id="cb41-416"><a href="#cb41-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-417"><a href="#cb41-417" aria-hidden="true" tabindex="-1"></a><span class="do">## Installation</span></span>
+<span id="cb41-418"><a href="#cb41-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-419"><a href="#cb41-419" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">r</span></span>
+<span id="cb41-420"><a href="#cb41-420" aria-hidden="true" tabindex="-1"></a><span class="at"># chunk: eval=FALSE (development version)</span></span>
+<span id="cb41-421"><a href="#cb41-421" aria-hidden="true" tabindex="-1"></a><span class="at"># Development version</span></span>
+<span id="cb41-422"><a href="#cb41-422" aria-hidden="true" tabindex="-1"></a><span class="at">devtools::install_github("username/mypackage")</span></span>
+<span id="cb41-423"><a href="#cb41-423" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb41-424"><a href="#cb41-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-425"><a href="#cb41-425" aria-hidden="true" tabindex="-1"></a><span class="do">## Example</span></span>
+<span id="cb41-426"><a href="#cb41-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-427"><a href="#cb41-427" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">r</span></span>
+<span id="cb41-428"><a href="#cb41-428" aria-hidden="true" tabindex="-1"></a><span class="at"># chunk: example</span></span>
+<span id="cb41-429"><a href="#cb41-429" aria-hidden="true" tabindex="-1"></a><span class="at">library(mypackage)</span></span>
+<span id="cb41-430"><a href="#cb41-430" aria-hidden="true" tabindex="-1"></a><span class="at">data &lt;- data.frame(x = 1:10, y = rnorm(10))</span></span>
+<span id="cb41-431"><a href="#cb41-431" aria-hidden="true" tabindex="-1"></a><span class="at">result &lt;- clean_data(data)</span></span>
+<span id="cb41-432"><a href="#cb41-432" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb41-433"><a href="#cb41-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-434"><a href="#cb41-434" aria-hidden="true" tabindex="-1"></a><span class="co"># Build README</span></span>
+<span id="cb41-435"><a href="#cb41-435" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">build_readme</span>()</span>
+<span id="cb41-436"><a href="#cb41-436" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-437"><a href="#cb41-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-438"><a href="#cb41-438" aria-hidden="true" tabindex="-1"></a><span class="fu">### LICENSE</span></span>
+<span id="cb41-439"><a href="#cb41-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-440"><a href="#cb41-440" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-441"><a href="#cb41-441" aria-hidden="true" tabindex="-1"></a><span class="co"># Add MIT license</span></span>
+<span id="cb41-442"><a href="#cb41-442" aria-hidden="true" tabindex="-1"></a><span class="fu">use_mit_license</span>(<span class="st">"Your Name"</span>)</span>
+<span id="cb41-443"><a href="#cb41-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-444"><a href="#cb41-444" aria-hidden="true" tabindex="-1"></a><span class="co"># Or GPL-3</span></span>
+<span id="cb41-445"><a href="#cb41-445" aria-hidden="true" tabindex="-1"></a><span class="fu">use_gpl3_license</span>()</span>
+<span id="cb41-446"><a href="#cb41-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-447"><a href="#cb41-447" aria-hidden="true" tabindex="-1"></a><span class="co"># Or Apache 2.0</span></span>
+<span id="cb41-448"><a href="#cb41-448" aria-hidden="true" tabindex="-1"></a><span class="fu">use_apache_license</span>()</span>
+<span id="cb41-449"><a href="#cb41-449" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-450"><a href="#cb41-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-451"><a href="#cb41-451" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-452"><a href="#cb41-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-453"><a href="#cb41-453" aria-hidden="true" tabindex="-1"></a><span class="fu">## Continuous Integration/Deployment</span></span>
+<span id="cb41-454"><a href="#cb41-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-455"><a href="#cb41-455" aria-hidden="true" tabindex="-1"></a><span class="fu">### GitHub Actions - R CMD Check</span></span>
+<span id="cb41-456"><a href="#cb41-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-457"><a href="#cb41-457" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-458"><a href="#cb41-458" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup GitHub Actions</span></span>
+<span id="cb41-459"><a href="#cb41-459" aria-hidden="true" tabindex="-1"></a><span class="fu">use_github_action_check_standard</span>()</span>
+<span id="cb41-460"><a href="#cb41-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-461"><a href="#cb41-461" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/workflows/R-CMD-check.yaml</span></span>
+<span id="cb41-462"><a href="#cb41-462" aria-hidden="true" tabindex="-1"></a>name<span class="sc">:</span> R<span class="sc">-</span>CMD<span class="sc">-</span>check</span>
+<span id="cb41-463"><a href="#cb41-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-464"><a href="#cb41-464" aria-hidden="true" tabindex="-1"></a>on<span class="sc">:</span></span>
+<span id="cb41-465"><a href="#cb41-465" aria-hidden="true" tabindex="-1"></a>  push<span class="sc">:</span></span>
+<span id="cb41-466"><a href="#cb41-466" aria-hidden="true" tabindex="-1"></a>    branches<span class="sc">:</span> [main, master]</span>
+<span id="cb41-467"><a href="#cb41-467" aria-hidden="true" tabindex="-1"></a>  pull_request<span class="sc">:</span></span>
+<span id="cb41-468"><a href="#cb41-468" aria-hidden="true" tabindex="-1"></a>    branches<span class="sc">:</span> [main, master]</span>
+<span id="cb41-469"><a href="#cb41-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-470"><a href="#cb41-470" aria-hidden="true" tabindex="-1"></a>jobs<span class="sc">:</span></span>
+<span id="cb41-471"><a href="#cb41-471" aria-hidden="true" tabindex="-1"></a>  R<span class="sc">-</span>CMD<span class="sc">-</span>check<span class="sc">:</span></span>
+<span id="cb41-472"><a href="#cb41-472" aria-hidden="true" tabindex="-1"></a>    runs<span class="sc">-</span>on<span class="sc">:</span> <span class="er">$</span>{{ matrix.config.os }}</span>
+<span id="cb41-473"><a href="#cb41-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-474"><a href="#cb41-474" aria-hidden="true" tabindex="-1"></a>    name<span class="sc">:</span> <span class="er">$</span>{{ matrix.config.os }} (<span class="sc">$</span>{{ matrix.config.r }})</span>
+<span id="cb41-475"><a href="#cb41-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-476"><a href="#cb41-476" aria-hidden="true" tabindex="-1"></a>    strategy<span class="sc">:</span></span>
+<span id="cb41-477"><a href="#cb41-477" aria-hidden="true" tabindex="-1"></a>      fail<span class="sc">-</span>fast<span class="sc">:</span> false</span>
+<span id="cb41-478"><a href="#cb41-478" aria-hidden="true" tabindex="-1"></a>      matrix<span class="sc">:</span></span>
+<span id="cb41-479"><a href="#cb41-479" aria-hidden="true" tabindex="-1"></a>        config<span class="sc">:</span></span>
+<span id="cb41-480"><a href="#cb41-480" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span> {os<span class="sc">:</span> macos<span class="sc">-</span>latest,   r<span class="sc">:</span> <span class="st">'release'</span>}</span>
+<span id="cb41-481"><a href="#cb41-481" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span> {os<span class="sc">:</span> windows<span class="sc">-</span>latest, r<span class="sc">:</span> <span class="st">'release'</span>}</span>
+<span id="cb41-482"><a href="#cb41-482" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span> {os<span class="sc">:</span> ubuntu<span class="sc">-</span>latest,   r<span class="sc">:</span> <span class="st">'devel'</span>}</span>
+<span id="cb41-483"><a href="#cb41-483" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span> {os<span class="sc">:</span> ubuntu<span class="sc">-</span>latest,   r<span class="sc">:</span> <span class="st">'release'</span>}</span>
+<span id="cb41-484"><a href="#cb41-484" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span> {os<span class="sc">:</span> ubuntu<span class="sc">-</span>latest,   r<span class="sc">:</span> <span class="st">'oldrel-1'</span>}</span>
+<span id="cb41-485"><a href="#cb41-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-486"><a href="#cb41-486" aria-hidden="true" tabindex="-1"></a>    steps<span class="sc">:</span></span>
+<span id="cb41-487"><a href="#cb41-487" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> uses<span class="sc">:</span> actions<span class="sc">/</span>checkout<span class="sc">@</span>v3</span>
+<span id="cb41-488"><a href="#cb41-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-489"><a href="#cb41-489" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>r<span class="sc">@</span>v2</span>
+<span id="cb41-490"><a href="#cb41-490" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb41-491"><a href="#cb41-491" aria-hidden="true" tabindex="-1"></a>          r<span class="sc">-</span>version<span class="sc">:</span> <span class="er">$</span>{{ matrix.config.r }}</span>
+<span id="cb41-492"><a href="#cb41-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-493"><a href="#cb41-493" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>pandoc<span class="sc">@</span>v2</span>
+<span id="cb41-494"><a href="#cb41-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-495"><a href="#cb41-495" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>r<span class="sc">-</span>dependencies<span class="sc">@</span>v2</span>
+<span id="cb41-496"><a href="#cb41-496" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb41-497"><a href="#cb41-497" aria-hidden="true" tabindex="-1"></a>          extra<span class="sc">-</span>packages<span class="sc">:</span> any<span class="sc">::</span>rcmdcheck</span>
+<span id="cb41-498"><a href="#cb41-498" aria-hidden="true" tabindex="-1"></a>          needs<span class="sc">:</span> check</span>
+<span id="cb41-499"><a href="#cb41-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-500"><a href="#cb41-500" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>check<span class="sc">-</span>r<span class="sc">-</span>package<span class="sc">@</span>v2</span>
+<span id="cb41-501"><a href="#cb41-501" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-502"><a href="#cb41-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-503"><a href="#cb41-503" aria-hidden="true" tabindex="-1"></a><span class="fu">### Code Coverage</span></span>
+<span id="cb41-504"><a href="#cb41-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-505"><a href="#cb41-505" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-506"><a href="#cb41-506" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup code coverage</span></span>
+<span id="cb41-507"><a href="#cb41-507" aria-hidden="true" tabindex="-1"></a><span class="fu">use_github_action</span>(<span class="st">"test-coverage"</span>)</span>
+<span id="cb41-508"><a href="#cb41-508" aria-hidden="true" tabindex="-1"></a><span class="fu">use_coverage</span>()</span>
+<span id="cb41-509"><a href="#cb41-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-510"><a href="#cb41-510" aria-hidden="true" tabindex="-1"></a><span class="co"># Run locally</span></span>
+<span id="cb41-511"><a href="#cb41-511" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(covr)</span>
+<span id="cb41-512"><a href="#cb41-512" aria-hidden="true" tabindex="-1"></a><span class="fu">package_coverage</span>()</span>
+<span id="cb41-513"><a href="#cb41-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-514"><a href="#cb41-514" aria-hidden="true" tabindex="-1"></a><span class="co"># View report</span></span>
+<span id="cb41-515"><a href="#cb41-515" aria-hidden="true" tabindex="-1"></a><span class="fu">report</span>()</span>
+<span id="cb41-516"><a href="#cb41-516" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-517"><a href="#cb41-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-518"><a href="#cb41-518" aria-hidden="true" tabindex="-1"></a><span class="fu">### Automatic pkgdown Deployment</span></span>
+<span id="cb41-519"><a href="#cb41-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-520"><a href="#cb41-520" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-521"><a href="#cb41-521" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup automatic website deployment</span></span>
+<span id="cb41-522"><a href="#cb41-522" aria-hidden="true" tabindex="-1"></a><span class="fu">use_github_action</span>(<span class="st">"pkgdown"</span>)</span>
+<span id="cb41-523"><a href="#cb41-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-524"><a href="#cb41-524" aria-hidden="true" tabindex="-1"></a><span class="co"># Website will be built and deployed on push to main</span></span>
+<span id="cb41-525"><a href="#cb41-525" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-526"><a href="#cb41-526" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-527"><a href="#cb41-527" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-528"><a href="#cb41-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-529"><a href="#cb41-529" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Profiling and Optimization</span></span>
+<span id="cb41-530"><a href="#cb41-530" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-531"><a href="#cb41-531" aria-hidden="true" tabindex="-1"></a><span class="fu">### Profiling with profvis</span></span>
+<span id="cb41-532"><a href="#cb41-532" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-533"><a href="#cb41-533" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-534"><a href="#cb41-534" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(profvis)</span>
+<span id="cb41-535"><a href="#cb41-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-536"><a href="#cb41-536" aria-hidden="true" tabindex="-1"></a><span class="co"># Profile code</span></span>
+<span id="cb41-537"><a href="#cb41-537" aria-hidden="true" tabindex="-1"></a><span class="fu">profvis</span>({</span>
+<span id="cb41-538"><a href="#cb41-538" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb41-539"><a href="#cb41-539" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>),</span>
+<span id="cb41-540"><a href="#cb41-540" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>)</span>
+<span id="cb41-541"><a href="#cb41-541" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-542"><a href="#cb41-542" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-543"><a href="#cb41-543" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Slow approach</span></span>
+<span id="cb41-544"><a href="#cb41-544" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">nrow</span>(data))</span>
+<span id="cb41-545"><a href="#cb41-545" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data)) {</span>
+<span id="cb41-546"><a href="#cb41-546" aria-hidden="true" tabindex="-1"></a>    result[i] <span class="ot">&lt;-</span> data<span class="sc">$</span>x[i] <span class="sc">+</span> data<span class="sc">$</span>y[i]</span>
+<span id="cb41-547"><a href="#cb41-547" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-548"><a href="#cb41-548" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-549"><a href="#cb41-549" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fast approach</span></span>
+<span id="cb41-550"><a href="#cb41-550" aria-hidden="true" tabindex="-1"></a>  result2 <span class="ot">&lt;-</span> data<span class="sc">$</span>x <span class="sc">+</span> data<span class="sc">$</span>y</span>
+<span id="cb41-551"><a href="#cb41-551" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb41-552"><a href="#cb41-552" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-553"><a href="#cb41-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-554"><a href="#cb41-554" aria-hidden="true" tabindex="-1"></a><span class="fu">### Benchmarking</span></span>
+<span id="cb41-555"><a href="#cb41-555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-556"><a href="#cb41-556" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-557"><a href="#cb41-557" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bench)</span>
+<span id="cb41-558"><a href="#cb41-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-559"><a href="#cb41-559" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare implementations</span></span>
+<span id="cb41-560"><a href="#cb41-560" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">mark</span>(</span>
+<span id="cb41-561"><a href="#cb41-561" aria-hidden="true" tabindex="-1"></a>  <span class="at">loop =</span> {</span>
+<span id="cb41-562"><a href="#cb41-562" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10000</span>)</span>
+<span id="cb41-563"><a href="#cb41-563" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>) result[i] <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb41-564"><a href="#cb41-564" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb41-565"><a href="#cb41-565" aria-hidden="true" tabindex="-1"></a>  <span class="at">vectorized =</span> {</span>
+<span id="cb41-566"><a href="#cb41-566" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb41-567"><a href="#cb41-567" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb41-568"><a href="#cb41-568" aria-hidden="true" tabindex="-1"></a>  <span class="at">check =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb41-569"><a href="#cb41-569" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">100</span></span>
+<span id="cb41-570"><a href="#cb41-570" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-571"><a href="#cb41-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-572"><a href="#cb41-572" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span>
+<span id="cb41-573"><a href="#cb41-573" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(results)</span>
+<span id="cb41-574"><a href="#cb41-574" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-575"><a href="#cb41-575" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-576"><a href="#cb41-576" aria-hidden="true" tabindex="-1"></a><span class="fu">### Memory Profiling</span></span>
+<span id="cb41-577"><a href="#cb41-577" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-578"><a href="#cb41-578" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-579"><a href="#cb41-579" aria-hidden="true" tabindex="-1"></a><span class="co"># Check object size</span></span>
+<span id="cb41-580"><a href="#cb41-580" aria-hidden="true" tabindex="-1"></a><span class="fu">object.size</span>(large_data)</span>
+<span id="cb41-581"><a href="#cb41-581" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">object.size</span>(large_data), <span class="at">units =</span> <span class="st">"MB"</span>)</span>
+<span id="cb41-582"><a href="#cb41-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-583"><a href="#cb41-583" aria-hidden="true" tabindex="-1"></a><span class="co"># Profile memory</span></span>
+<span id="cb41-584"><a href="#cb41-584" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(profmem)</span>
+<span id="cb41-585"><a href="#cb41-585" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-586"><a href="#cb41-586" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">profmem</span>({</span>
+<span id="cb41-587"><a href="#cb41-587" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fl">1e6</span>)</span>
+<span id="cb41-588"><a href="#cb41-588" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fl">1e6</span>)</span>
+<span id="cb41-589"><a href="#cb41-589" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
+<span id="cb41-590"><a href="#cb41-590" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb41-591"><a href="#cb41-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-592"><a href="#cb41-592" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
+<span id="cb41-593"><a href="#cb41-593" aria-hidden="true" tabindex="-1"></a><span class="fu">total</span>(p)</span>
+<span id="cb41-594"><a href="#cb41-594" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-595"><a href="#cb41-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-596"><a href="#cb41-596" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optimization Strategies</span></span>
+<span id="cb41-597"><a href="#cb41-597" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-598"><a href="#cb41-598" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-599"><a href="#cb41-599" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Vectorization</span></span>
+<span id="cb41-600"><a href="#cb41-600" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb41-601"><a href="#cb41-601" aria-hidden="true" tabindex="-1"></a>sum_squares_slow <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb41-602"><a href="#cb41-602" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb41-603"><a href="#cb41-603" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(x)) {</span>
+<span id="cb41-604"><a href="#cb41-604" aria-hidden="true" tabindex="-1"></a>    total <span class="ot">&lt;-</span> total <span class="sc">+</span> x[i]<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb41-605"><a href="#cb41-605" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-606"><a href="#cb41-606" aria-hidden="true" tabindex="-1"></a>  total</span>
+<span id="cb41-607"><a href="#cb41-607" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-608"><a href="#cb41-608" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-609"><a href="#cb41-609" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb41-610"><a href="#cb41-610" aria-hidden="true" tabindex="-1"></a>sum_squares_fast <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb41-611"><a href="#cb41-611" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb41-612"><a href="#cb41-612" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-613"><a href="#cb41-613" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-614"><a href="#cb41-614" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Pre-allocation</span></span>
+<span id="cb41-615"><a href="#cb41-615" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb41-616"><a href="#cb41-616" aria-hidden="true" tabindex="-1"></a>grow_vector <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb41-617"><a href="#cb41-617" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb41-618"><a href="#cb41-618" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb41-619"><a href="#cb41-619" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> <span class="fu">c</span>(result, i<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb41-620"><a href="#cb41-620" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-621"><a href="#cb41-621" aria-hidden="true" tabindex="-1"></a>  result</span>
+<span id="cb41-622"><a href="#cb41-622" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-623"><a href="#cb41-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-624"><a href="#cb41-624" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb41-625"><a href="#cb41-625" aria-hidden="true" tabindex="-1"></a>preallocate_vector <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb41-626"><a href="#cb41-626" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb41-627"><a href="#cb41-627" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb41-628"><a href="#cb41-628" aria-hidden="true" tabindex="-1"></a>    result[i] <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb41-629"><a href="#cb41-629" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-630"><a href="#cb41-630" aria-hidden="true" tabindex="-1"></a>  result</span>
+<span id="cb41-631"><a href="#cb41-631" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-632"><a href="#cb41-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-633"><a href="#cb41-633" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Use efficient data structures</span></span>
+<span id="cb41-634"><a href="#cb41-634" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb41-635"><a href="#cb41-635" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(large_df)  <span class="co"># Fast operations</span></span>
+<span id="cb41-636"><a href="#cb41-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-637"><a href="#cb41-637" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Parallel processing</span></span>
+<span id="cb41-638"><a href="#cb41-638" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb41-639"><a href="#cb41-639" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb41-640"><a href="#cb41-640" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">parLapply</span>(cl, data_list, expensive_function)</span>
+<span id="cb41-641"><a href="#cb41-641" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
+<span id="cb41-642"><a href="#cb41-642" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-643"><a href="#cb41-643" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-644"><a href="#cb41-644" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-645"><a href="#cb41-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-646"><a href="#cb41-646" aria-hidden="true" tabindex="-1"></a><span class="fu">## Package Distribution</span></span>
+<span id="cb41-647"><a href="#cb41-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-648"><a href="#cb41-648" aria-hidden="true" tabindex="-1"></a><span class="fu">### CRAN Submission</span></span>
+<span id="cb41-649"><a href="#cb41-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-650"><a href="#cb41-650" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-651"><a href="#cb41-651" aria-hidden="true" tabindex="-1"></a><span class="co"># Check package thoroughly</span></span>
+<span id="cb41-652"><a href="#cb41-652" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check</span>()</span>
+<span id="cb41-653"><a href="#cb41-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-654"><a href="#cb41-654" aria-hidden="true" tabindex="-1"></a><span class="co"># Check on multiple R versions</span></span>
+<span id="cb41-655"><a href="#cb41-655" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check_rhub</span>()</span>
+<span id="cb41-656"><a href="#cb41-656" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check_win_devel</span>()</span>
+<span id="cb41-657"><a href="#cb41-657" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check_mac_release</span>()</span>
+<span id="cb41-658"><a href="#cb41-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-659"><a href="#cb41-659" aria-hidden="true" tabindex="-1"></a><span class="co"># Build package</span></span>
+<span id="cb41-660"><a href="#cb41-660" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">build</span>()</span>
+<span id="cb41-661"><a href="#cb41-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-662"><a href="#cb41-662" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit to CRAN</span></span>
+<span id="cb41-663"><a href="#cb41-663" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">submit_cran</span>()</span>
+<span id="cb41-664"><a href="#cb41-664" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-665"><a href="#cb41-665" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-666"><a href="#cb41-666" aria-hidden="true" tabindex="-1"></a><span class="fu">### CRAN Release Checklist</span></span>
+<span id="cb41-667"><a href="#cb41-667" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-668"><a href="#cb41-668" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-669"><a href="#cb41-669" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Update version number</span></span>
+<span id="cb41-670"><a href="#cb41-670" aria-hidden="true" tabindex="-1"></a><span class="fu">use_version</span>()</span>
+<span id="cb41-671"><a href="#cb41-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-672"><a href="#cb41-672" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Update NEWS.md</span></span>
+<span id="cb41-673"><a href="#cb41-673" aria-hidden="true" tabindex="-1"></a><span class="fu">use_news_md</span>()</span>
+<span id="cb41-674"><a href="#cb41-674" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-675"><a href="#cb41-675" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run checks</span></span>
+<span id="cb41-676"><a href="#cb41-676" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check</span>()</span>
+<span id="cb41-677"><a href="#cb41-677" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check_rhub</span>()</span>
+<span id="cb41-678"><a href="#cb41-678" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check_win_devel</span>()</span>
+<span id="cb41-679"><a href="#cb41-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-680"><a href="#cb41-680" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Update cran-comments.md</span></span>
+<span id="cb41-681"><a href="#cb41-681" aria-hidden="true" tabindex="-1"></a><span class="fu">use_cran_comments</span>()</span>
+<span id="cb41-682"><a href="#cb41-682" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-683"><a href="#cb41-683" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Build package</span></span>
+<span id="cb41-684"><a href="#cb41-684" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">build</span>()</span>
+<span id="cb41-685"><a href="#cb41-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-686"><a href="#cb41-686" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Submit</span></span>
+<span id="cb41-687"><a href="#cb41-687" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">submit_cran</span>()</span>
+<span id="cb41-688"><a href="#cb41-688" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-689"><a href="#cb41-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-690"><a href="#cb41-690" aria-hidden="true" tabindex="-1"></a><span class="fu">### R-universe (Alternative)</span></span>
+<span id="cb41-691"><a href="#cb41-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-692"><a href="#cb41-692" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-693"><a href="#cb41-693" aria-hidden="true" tabindex="-1"></a><span class="co"># Easy distribution without CRAN submission</span></span>
+<span id="cb41-694"><a href="#cb41-694" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup at https://r-universe.dev</span></span>
+<span id="cb41-695"><a href="#cb41-695" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-696"><a href="#cb41-696" aria-hidden="true" tabindex="-1"></a><span class="co"># Users install with:</span></span>
+<span id="cb41-697"><a href="#cb41-697" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"mypackage"</span>, <span class="at">repos =</span> <span class="st">"https://username.r-universe.dev"</span>)</span>
+<span id="cb41-698"><a href="#cb41-698" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-699"><a href="#cb41-699" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-700"><a href="#cb41-700" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-701"><a href="#cb41-701" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-702"><a href="#cb41-702" aria-hidden="true" tabindex="-1"></a><span class="fu">## Development Tools</span></span>
+<span id="cb41-703"><a href="#cb41-703" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-704"><a href="#cb41-704" aria-hidden="true" tabindex="-1"></a><span class="fu">### RStudio Addins</span></span>
+<span id="cb41-705"><a href="#cb41-705" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-706"><a href="#cb41-706" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-707"><a href="#cb41-707" aria-hidden="true" tabindex="-1"></a><span class="co"># Create addin</span></span>
+<span id="cb41-708"><a href="#cb41-708" aria-hidden="true" tabindex="-1"></a><span class="fu">use_addin</span>(<span class="st">"insert_pipe"</span>)</span>
+<span id="cb41-709"><a href="#cb41-709" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-710"><a href="#cb41-710" aria-hidden="true" tabindex="-1"></a><span class="co"># inst/rstudio/addins.dcf</span></span>
+<span id="cb41-711"><a href="#cb41-711" aria-hidden="true" tabindex="-1"></a>Name<span class="sc">:</span> Insert Pipe</span>
+<span id="cb41-712"><a href="#cb41-712" aria-hidden="true" tabindex="-1"></a>Description<span class="sc">:</span> Inserts <span class="sc">%&gt;%</span> at cursor</span>
+<span id="cb41-713"><a href="#cb41-713" aria-hidden="true" tabindex="-1"></a>Binding<span class="sc">:</span> insert_pipe</span>
+<span id="cb41-714"><a href="#cb41-714" aria-hidden="true" tabindex="-1"></a>Interactive<span class="sc">:</span> false</span>
+<span id="cb41-715"><a href="#cb41-715" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-716"><a href="#cb41-716" aria-hidden="true" tabindex="-1"></a><span class="co"># R/addins.R</span></span>
+<span id="cb41-717"><a href="#cb41-717" aria-hidden="true" tabindex="-1"></a>insert_pipe <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb41-718"><a href="#cb41-718" aria-hidden="true" tabindex="-1"></a>  rstudioapi<span class="sc">::</span><span class="fu">insertText</span>(<span class="st">" %&gt;% "</span>)</span>
+<span id="cb41-719"><a href="#cb41-719" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-720"><a href="#cb41-720" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-721"><a href="#cb41-721" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-722"><a href="#cb41-722" aria-hidden="true" tabindex="-1"></a><span class="fu">### Custom RStudio Snippets</span></span>
+<span id="cb41-723"><a href="#cb41-723" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-724"><a href="#cb41-724" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-725"><a href="#cb41-725" aria-hidden="true" tabindex="-1"></a><span class="co"># Edit snippets</span></span>
+<span id="cb41-726"><a href="#cb41-726" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_rstudio_snippets</span>()</span>
+<span id="cb41-727"><a href="#cb41-727" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-728"><a href="#cb41-728" aria-hidden="true" tabindex="-1"></a><span class="co"># Add custom snippets:</span></span>
+<span id="cb41-729"><a href="#cb41-729" aria-hidden="true" tabindex="-1"></a>snippet fun</span>
+<span id="cb41-730"><a href="#cb41-730" aria-hidden="true" tabindex="-1"></a>    <span class="sc">$</span>{<span class="dv">1</span><span class="sc">:</span>name} <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="sc">$</span>{<span class="dv">2</span><span class="sc">:</span>args}) {</span>
+<span id="cb41-731"><a href="#cb41-731" aria-hidden="true" tabindex="-1"></a>        <span class="sc">$</span>{<span class="dv">0</span>}</span>
+<span id="cb41-732"><a href="#cb41-732" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb41-733"><a href="#cb41-733" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-734"><a href="#cb41-734" aria-hidden="true" tabindex="-1"></a>snippet test</span>
+<span id="cb41-735"><a href="#cb41-735" aria-hidden="true" tabindex="-1"></a>    <span class="fu">test_that</span>(<span class="st">"${1:description}"</span>, {</span>
+<span id="cb41-736"><a href="#cb41-736" aria-hidden="true" tabindex="-1"></a>        <span class="sc">$</span>{<span class="dv">0</span>}</span>
+<span id="cb41-737"><a href="#cb41-737" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb41-738"><a href="#cb41-738" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-739"><a href="#cb41-739" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-740"><a href="#cb41-740" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pre-commit Hooks</span></span>
+<span id="cb41-741"><a href="#cb41-741" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-742"><a href="#cb41-742" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-743"><a href="#cb41-743" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup pre-commit hooks</span></span>
+<span id="cb41-744"><a href="#cb41-744" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(precommit)</span>
+<span id="cb41-745"><a href="#cb41-745" aria-hidden="true" tabindex="-1"></a><span class="fu">use_precommit</span>()</span>
+<span id="cb41-746"><a href="#cb41-746" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-747"><a href="#cb41-747" aria-hidden="true" tabindex="-1"></a><span class="co"># .pre-commit-config.yaml</span></span>
+<span id="cb41-748"><a href="#cb41-748" aria-hidden="true" tabindex="-1"></a>repos<span class="sc">:</span></span>
+<span id="cb41-749"><a href="#cb41-749" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>   repo<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>lorenzwalthert<span class="sc">/</span>precommit</span>
+<span id="cb41-750"><a href="#cb41-750" aria-hidden="true" tabindex="-1"></a>    rev<span class="sc">:</span> v0.<span class="fl">3.2</span></span>
+<span id="cb41-751"><a href="#cb41-751" aria-hidden="true" tabindex="-1"></a>    hooks<span class="sc">:</span></span>
+<span id="cb41-752"><a href="#cb41-752" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> style<span class="sc">-</span>files</span>
+<span id="cb41-753"><a href="#cb41-753" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> roxygenize</span>
+<span id="cb41-754"><a href="#cb41-754" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> use<span class="sc">-</span>tidy<span class="sc">-</span>description</span>
+<span id="cb41-755"><a href="#cb41-755" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> spell<span class="sc">-</span>check</span>
+<span id="cb41-756"><a href="#cb41-756" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> lintr</span>
+<span id="cb41-757"><a href="#cb41-757" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> readme<span class="sc">-</span>rmd<span class="sc">-</span>rendered</span>
+<span id="cb41-758"><a href="#cb41-758" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> parsable<span class="sc">-</span>R</span>
+<span id="cb41-759"><a href="#cb41-759" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>   id<span class="sc">:</span> no<span class="sc">-</span>browser<span class="sc">-</span>statement</span>
+<span id="cb41-760"><a href="#cb41-760" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-761"><a href="#cb41-761" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-762"><a href="#cb41-762" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-763"><a href="#cb41-763" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-764"><a href="#cb41-764" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Quality</span></span>
+<span id="cb41-765"><a href="#cb41-765" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-766"><a href="#cb41-766" aria-hidden="true" tabindex="-1"></a><span class="fu">### Static Code Analysis</span></span>
+<span id="cb41-767"><a href="#cb41-767" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-768"><a href="#cb41-768" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-769"><a href="#cb41-769" aria-hidden="true" tabindex="-1"></a><span class="co"># lintr - code style checking</span></span>
+<span id="cb41-770"><a href="#cb41-770" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lintr)</span>
+<span id="cb41-771"><a href="#cb41-771" aria-hidden="true" tabindex="-1"></a><span class="fu">lint_package</span>()</span>
+<span id="cb41-772"><a href="#cb41-772" aria-hidden="true" tabindex="-1"></a><span class="fu">lint</span>(<span class="st">"R/my_function.R"</span>)</span>
+<span id="cb41-773"><a href="#cb41-773" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-774"><a href="#cb41-774" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom linters</span></span>
+<span id="cb41-775"><a href="#cb41-775" aria-hidden="true" tabindex="-1"></a>my_linters <span class="ot">&lt;-</span> <span class="fu">linters_with_defaults</span>(</span>
+<span id="cb41-776"><a href="#cb41-776" aria-hidden="true" tabindex="-1"></a>  <span class="fu">line_length_linter</span>(<span class="dv">120</span>),</span>
+<span id="cb41-777"><a href="#cb41-777" aria-hidden="true" tabindex="-1"></a>  <span class="fu">object_name_linter</span>(<span class="st">"snake_case"</span>)</span>
+<span id="cb41-778"><a href="#cb41-778" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-779"><a href="#cb41-779" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-780"><a href="#cb41-780" aria-hidden="true" tabindex="-1"></a><span class="fu">lint_package</span>(<span class="at">linters =</span> my_linters)</span>
+<span id="cb41-781"><a href="#cb41-781" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-782"><a href="#cb41-782" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-783"><a href="#cb41-783" aria-hidden="true" tabindex="-1"></a><span class="fu">### Code Formatting</span></span>
+<span id="cb41-784"><a href="#cb41-784" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-785"><a href="#cb41-785" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-786"><a href="#cb41-786" aria-hidden="true" tabindex="-1"></a><span class="co"># styler - automatic formatting</span></span>
+<span id="cb41-787"><a href="#cb41-787" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(styler)</span>
+<span id="cb41-788"><a href="#cb41-788" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-789"><a href="#cb41-789" aria-hidden="true" tabindex="-1"></a><span class="co"># Format file</span></span>
+<span id="cb41-790"><a href="#cb41-790" aria-hidden="true" tabindex="-1"></a><span class="fu">style_file</span>(<span class="st">"R/my_function.R"</span>)</span>
+<span id="cb41-791"><a href="#cb41-791" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-792"><a href="#cb41-792" aria-hidden="true" tabindex="-1"></a><span class="co"># Format package</span></span>
+<span id="cb41-793"><a href="#cb41-793" aria-hidden="true" tabindex="-1"></a><span class="fu">style_pkg</span>()</span>
+<span id="cb41-794"><a href="#cb41-794" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-795"><a href="#cb41-795" aria-hidden="true" tabindex="-1"></a><span class="co"># Format with custom style</span></span>
+<span id="cb41-796"><a href="#cb41-796" aria-hidden="true" tabindex="-1"></a><span class="fu">style_pkg</span>(<span class="at">scope =</span> <span class="st">"line_breaks"</span>)</span>
+<span id="cb41-797"><a href="#cb41-797" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-798"><a href="#cb41-798" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-799"><a href="#cb41-799" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spell Checking</span></span>
+<span id="cb41-800"><a href="#cb41-800" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-801"><a href="#cb41-801" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-802"><a href="#cb41-802" aria-hidden="true" tabindex="-1"></a><span class="co"># Check spelling</span></span>
+<span id="cb41-803"><a href="#cb41-803" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spelling)</span>
+<span id="cb41-804"><a href="#cb41-804" aria-hidden="true" tabindex="-1"></a><span class="fu">spell_check_package</span>()</span>
+<span id="cb41-805"><a href="#cb41-805" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-806"><a href="#cb41-806" aria-hidden="true" tabindex="-1"></a><span class="co"># Update wordlist</span></span>
+<span id="cb41-807"><a href="#cb41-807" aria-hidden="true" tabindex="-1"></a><span class="fu">update_wordlist</span>()</span>
+<span id="cb41-808"><a href="#cb41-808" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-809"><a href="#cb41-809" aria-hidden="true" tabindex="-1"></a><span class="co"># Add to .aspell file</span></span>
+<span id="cb41-810"><a href="#cb41-810" aria-hidden="true" tabindex="-1"></a><span class="fu">use_spell_check</span>()</span>
+<span id="cb41-811"><a href="#cb41-811" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-812"><a href="#cb41-812" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-813"><a href="#cb41-813" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-814"><a href="#cb41-814" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-815"><a href="#cb41-815" aria-hidden="true" tabindex="-1"></a><span class="fu">## Best Practices</span></span>
+<span id="cb41-816"><a href="#cb41-816" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-817"><a href="#cb41-817" aria-hidden="true" tabindex="-1"></a><span class="fu">### Package Development Workflow</span></span>
+<span id="cb41-818"><a href="#cb41-818" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-819"><a href="#cb41-819" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-820"><a href="#cb41-820" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Write function</span></span>
+<span id="cb41-821"><a href="#cb41-821" aria-hidden="true" tabindex="-1"></a><span class="fu">use_r</span>(<span class="st">"my_function"</span>)</span>
+<span id="cb41-822"><a href="#cb41-822" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-823"><a href="#cb41-823" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Load all functions</span></span>
+<span id="cb41-824"><a href="#cb41-824" aria-hidden="true" tabindex="-1"></a><span class="fu">load_all</span>()  <span class="co"># or Ctrl+Shift+L</span></span>
+<span id="cb41-825"><a href="#cb41-825" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-826"><a href="#cb41-826" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Test interactively</span></span>
+<span id="cb41-827"><a href="#cb41-827" aria-hidden="true" tabindex="-1"></a><span class="fu">my_function</span>(test_data)</span>
+<span id="cb41-828"><a href="#cb41-828" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-829"><a href="#cb41-829" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Write tests</span></span>
+<span id="cb41-830"><a href="#cb41-830" aria-hidden="true" tabindex="-1"></a><span class="fu">use_test</span>(<span class="st">"my_function"</span>)</span>
+<span id="cb41-831"><a href="#cb41-831" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-832"><a href="#cb41-832" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Run tests</span></span>
+<span id="cb41-833"><a href="#cb41-833" aria-hidden="true" tabindex="-1"></a><span class="fu">test</span>()  <span class="co"># or Ctrl+Shift+T</span></span>
+<span id="cb41-834"><a href="#cb41-834" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-835"><a href="#cb41-835" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Document</span></span>
+<span id="cb41-836"><a href="#cb41-836" aria-hidden="true" tabindex="-1"></a><span class="fu">document</span>()  <span class="co"># or Ctrl+Shift+D</span></span>
+<span id="cb41-837"><a href="#cb41-837" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-838"><a href="#cb41-838" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Check package</span></span>
+<span id="cb41-839"><a href="#cb41-839" aria-hidden="true" tabindex="-1"></a><span class="fu">check</span>()  <span class="co"># or Ctrl+Shift+E</span></span>
+<span id="cb41-840"><a href="#cb41-840" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-841"><a href="#cb41-841" aria-hidden="true" tabindex="-1"></a><span class="co"># 8. Install</span></span>
+<span id="cb41-842"><a href="#cb41-842" aria-hidden="true" tabindex="-1"></a><span class="fu">install</span>()</span>
+<span id="cb41-843"><a href="#cb41-843" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-844"><a href="#cb41-844" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-845"><a href="#cb41-845" aria-hidden="true" tabindex="-1"></a><span class="fu">### Semantic Versioning</span></span>
+<span id="cb41-846"><a href="#cb41-846" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-847"><a href="#cb41-847" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-848"><a href="#cb41-848" aria-hidden="true" tabindex="-1"></a><span class="co"># Version format: MAJOR.MINOR.PATCH</span></span>
+<span id="cb41-849"><a href="#cb41-849" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.0.0 -&gt; 1.0.1 (patch: bug fixes)</span></span>
+<span id="cb41-850"><a href="#cb41-850" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.0.1 -&gt; 1.1.0 (minor: new features, backward compatible)</span></span>
+<span id="cb41-851"><a href="#cb41-851" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.1.0 -&gt; 2.0.0 (major: breaking changes)</span></span>
+<span id="cb41-852"><a href="#cb41-852" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-853"><a href="#cb41-853" aria-hidden="true" tabindex="-1"></a><span class="co"># Update version</span></span>
+<span id="cb41-854"><a href="#cb41-854" aria-hidden="true" tabindex="-1"></a><span class="fu">use_version</span>(<span class="st">"patch"</span>)</span>
+<span id="cb41-855"><a href="#cb41-855" aria-hidden="true" tabindex="-1"></a><span class="fu">use_version</span>(<span class="st">"minor"</span>)</span>
+<span id="cb41-856"><a href="#cb41-856" aria-hidden="true" tabindex="-1"></a><span class="fu">use_version</span>(<span class="st">"major"</span>)</span>
+<span id="cb41-857"><a href="#cb41-857" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-858"><a href="#cb41-858" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-859"><a href="#cb41-859" aria-hidden="true" tabindex="-1"></a><span class="fu">### NEWS.md</span></span>
+<span id="cb41-860"><a href="#cb41-860" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-861"><a href="#cb41-861" aria-hidden="true" tabindex="-1"></a><span class="in">```markdown</span></span>
+<span id="cb41-862"><a href="#cb41-862" aria-hidden="true" tabindex="-1"></a><span class="fu"># mypackage 0.2.0</span></span>
+<span id="cb41-863"><a href="#cb41-863" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-864"><a href="#cb41-864" aria-hidden="true" tabindex="-1"></a><span class="fu">## New features</span></span>
+<span id="cb41-865"><a href="#cb41-865" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-866"><a href="#cb41-866" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Added <span class="in">`new_function()`</span> for advanced analysis (#15)</span>
+<span id="cb41-867"><a href="#cb41-867" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Support for tibbles in <span class="in">`clean_data()`</span> (#18)</span>
+<span id="cb41-868"><a href="#cb41-868" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-869"><a href="#cb41-869" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bug fixes</span></span>
+<span id="cb41-870"><a href="#cb41-870" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-871"><a href="#cb41-871" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Fixed issue with NA handling in <span class="in">`summary_stats()`</span> (#12)</span>
+<span id="cb41-872"><a href="#cb41-872" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Corrected documentation for <span class="in">`transform_data()`</span> (#14)</span>
+<span id="cb41-873"><a href="#cb41-873" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-874"><a href="#cb41-874" aria-hidden="true" tabindex="-1"></a><span class="fu">## Breaking changes</span></span>
+<span id="cb41-875"><a href="#cb41-875" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-876"><a href="#cb41-876" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Renamed <span class="in">`old_function()`</span> to <span class="in">`new_function()`</span></span>
+<span id="cb41-877"><a href="#cb41-877" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Changed default behavior of <span class="in">`clean_data()`</span></span>
+<span id="cb41-878"><a href="#cb41-878" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-879"><a href="#cb41-879" aria-hidden="true" tabindex="-1"></a><span class="fu"># mypackage 0.1.0</span></span>
+<span id="cb41-880"><a href="#cb41-880" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-881"><a href="#cb41-881" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Initial CRAN release</span>
+<span id="cb41-882"><a href="#cb41-882" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-883"><a href="#cb41-883" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-884"><a href="#cb41-884" aria-hidden="true" tabindex="-1"></a><span class="in">### Code Review Checklist</span></span>
+<span id="cb41-885"><a href="#cb41-885" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-886"><a href="#cb41-886" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb41-887"><a href="#cb41-887" aria-hidden="true" tabindex="-1"></a><span class="in"># Before committing:</span></span>
+<span id="cb41-888"><a href="#cb41-888" aria-hidden="true" tabindex="-1"></a><span class="in"># Functions are documented</span></span>
+<span id="cb41-889"><a href="#cb41-889" aria-hidden="true" tabindex="-1"></a><span class="in"># Tests are written and passing</span></span>
+<span id="cb41-890"><a href="#cb41-890" aria-hidden="true" tabindex="-1"></a><span class="in"># Code is formatted (styler)</span></span>
+<span id="cb41-891"><a href="#cb41-891" aria-hidden="true" tabindex="-1"></a><span class="in"># No linter warnings</span></span>
+<span id="cb41-892"><a href="#cb41-892" aria-hidden="true" tabindex="-1"></a><span class="in"># Package checks pass</span></span>
+<span id="cb41-893"><a href="#cb41-893" aria-hidden="true" tabindex="-1"></a><span class="in"># NEWS.md is updated</span></span>
+<span id="cb41-894"><a href="#cb41-894" aria-hidden="true" tabindex="-1"></a><span class="in"># Version number is bumped</span></span>
+<span id="cb41-895"><a href="#cb41-895" aria-hidden="true" tabindex="-1"></a><span class="in"># Examples run correctly</span></span>
+<span id="cb41-896"><a href="#cb41-896" aria-hidden="true" tabindex="-1"></a><span class="in"># Vignettes build</span></span>
+<span id="cb41-897"><a href="#cb41-897" aria-hidden="true" tabindex="-1"></a><span class="in"># No browser() or debug statements</span></span>
+<span id="cb41-898"><a href="#cb41-898" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-899"><a href="#cb41-899" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-900"><a href="#cb41-900" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb41-901"><a href="#cb41-901" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-902"><a href="#cb41-902" aria-hidden="true" tabindex="-1"></a><span class="fu">## Complete Package Example</span></span>
+<span id="cb41-903"><a href="#cb41-903" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-904"><a href="#cb41-904" aria-hidden="true" tabindex="-1"></a><span class="fu">### Final Package Structure</span></span>
+<span id="cb41-905"><a href="#cb41-905" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-906"><a href="#cb41-906" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-907"><a href="#cb41-907" aria-hidden="true" tabindex="-1"></a>mypackage/</span>
+<span id="cb41-908"><a href="#cb41-908" aria-hidden="true" tabindex="-1"></a>├── .github/</span>
+<span id="cb41-909"><a href="#cb41-909" aria-hidden="true" tabindex="-1"></a>│   └── workflows/</span>
+<span id="cb41-910"><a href="#cb41-910" aria-hidden="true" tabindex="-1"></a>│       ├── R-CMD-check.yaml</span>
+<span id="cb41-911"><a href="#cb41-911" aria-hidden="true" tabindex="-1"></a>│       ├── test-coverage.yaml</span>
+<span id="cb41-912"><a href="#cb41-912" aria-hidden="true" tabindex="-1"></a>│       └── pkgdown.yaml</span>
+<span id="cb41-913"><a href="#cb41-913" aria-hidden="true" tabindex="-1"></a>├── R/</span>
+<span id="cb41-914"><a href="#cb41-914" aria-hidden="true" tabindex="-1"></a>│   ├── data_processing.R</span>
+<span id="cb41-915"><a href="#cb41-915" aria-hidden="true" tabindex="-1"></a>│   ├── visualization.R</span>
+<span id="cb41-916"><a href="#cb41-916" aria-hidden="true" tabindex="-1"></a>│   ├── utils.R</span>
+<span id="cb41-917"><a href="#cb41-917" aria-hidden="true" tabindex="-1"></a>│   └── mypackage-package.R</span>
+<span id="cb41-918"><a href="#cb41-918" aria-hidden="true" tabindex="-1"></a>├── man/</span>
+<span id="cb41-919"><a href="#cb41-919" aria-hidden="true" tabindex="-1"></a>│   ├── clean_data.Rd</span>
+<span id="cb41-920"><a href="#cb41-920" aria-hidden="true" tabindex="-1"></a>│   └── mypackage-package.Rd</span>
+<span id="cb41-921"><a href="#cb41-921" aria-hidden="true" tabindex="-1"></a>├── tests/</span>
+<span id="cb41-922"><a href="#cb41-922" aria-hidden="true" tabindex="-1"></a>│   ├── testthat.R</span>
+<span id="cb41-923"><a href="#cb41-923" aria-hidden="true" tabindex="-1"></a>│   └── testthat/</span>
+<span id="cb41-924"><a href="#cb41-924" aria-hidden="true" tabindex="-1"></a>│       ├── test-data_processing.R</span>
+<span id="cb41-925"><a href="#cb41-925" aria-hidden="true" tabindex="-1"></a>│       └── test-visualization.R</span>
+<span id="cb41-926"><a href="#cb41-926" aria-hidden="true" tabindex="-1"></a>├── vignettes/</span>
+<span id="cb41-927"><a href="#cb41-927" aria-hidden="true" tabindex="-1"></a>│   └── introduction.Rmd</span>
+<span id="cb41-928"><a href="#cb41-928" aria-hidden="true" tabindex="-1"></a>├── data/</span>
+<span id="cb41-929"><a href="#cb41-929" aria-hidden="true" tabindex="-1"></a>│   └── sample_data.rda</span>
+<span id="cb41-930"><a href="#cb41-930" aria-hidden="true" tabindex="-1"></a>├── data-raw/</span>
+<span id="cb41-931"><a href="#cb41-931" aria-hidden="true" tabindex="-1"></a>│   └── prep_data.R</span>
+<span id="cb41-932"><a href="#cb41-932" aria-hidden="true" tabindex="-1"></a>├── .gitignore</span>
+<span id="cb41-933"><a href="#cb41-933" aria-hidden="true" tabindex="-1"></a>├── .Rbuildignore</span>
+<span id="cb41-934"><a href="#cb41-934" aria-hidden="true" tabindex="-1"></a>├── DESCRIPTION</span>
+<span id="cb41-935"><a href="#cb41-935" aria-hidden="true" tabindex="-1"></a>├── LICENSE</span>
+<span id="cb41-936"><a href="#cb41-936" aria-hidden="true" tabindex="-1"></a>├── LICENSE.md</span>
+<span id="cb41-937"><a href="#cb41-937" aria-hidden="true" tabindex="-1"></a>├── NAMESPACE</span>
+<span id="cb41-938"><a href="#cb41-938" aria-hidden="true" tabindex="-1"></a>├── NEWS.md</span>
+<span id="cb41-939"><a href="#cb41-939" aria-hidden="true" tabindex="-1"></a>├── README.md</span>
+<span id="cb41-940"><a href="#cb41-940" aria-hidden="true" tabindex="-1"></a>├── README.Rmd</span>
+<span id="cb41-941"><a href="#cb41-941" aria-hidden="true" tabindex="-1"></a>├── cran-comments.md</span>
+<span id="cb41-942"><a href="#cb41-942" aria-hidden="true" tabindex="-1"></a>└── mypackage.Rproj</span>
+<span id="cb41-943"><a href="#cb41-943" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb41-944"><a href="#cb41-944" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-945"><a href="#cb41-945" aria-hidden="true" tabindex="-1"></a><span class="in">---</span></span>
+<span id="cb41-946"><a href="#cb41-946" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-947"><a href="#cb41-947" aria-hidden="true" tabindex="-1"></a><span class="in">## Summary</span></span>
+<span id="cb41-948"><a href="#cb41-948" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-949"><a href="#cb41-949" aria-hidden="true" tabindex="-1"></a><span class="in">### Skills Mastered</span></span>
+<span id="cb41-950"><a href="#cb41-950" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-951"><a href="#cb41-951" aria-hidden="true" tabindex="-1"></a><span class="in">- R package development from scratch</span></span>
+<span id="cb41-952"><a href="#cb41-952" aria-hidden="true" tabindex="-1"></a><span class="in">- Comprehensive documentation with roxygen2</span></span>
+<span id="cb41-953"><a href="#cb41-953" aria-hidden="true" tabindex="-1"></a><span class="in">- Version control with Git and GitHub</span></span>
+<span id="cb41-954"><a href="#cb41-954" aria-hidden="true" tabindex="-1"></a><span class="in">- CI/CD pipelines with GitHub Actions</span></span>
+<span id="cb41-955"><a href="#cb41-955" aria-hidden="true" tabindex="-1"></a><span class="in">- Code profiling and optimization</span></span>
+<span id="cb41-956"><a href="#cb41-956" aria-hidden="true" tabindex="-1"></a><span class="in">- Package distribution (CRAN, GitHub, R-universe)</span></span>
+<span id="cb41-957"><a href="#cb41-957" aria-hidden="true" tabindex="-1"></a><span class="in">- Code quality tools (lintr, styler, spelling)</span></span>
+<span id="cb41-958"><a href="#cb41-958" aria-hidden="true" tabindex="-1"></a><span class="in">- Professional development workflow</span></span>
+<span id="cb41-959"><a href="#cb41-959" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-960"><a href="#cb41-960" aria-hidden="true" tabindex="-1"></a><span class="in">### Resources</span></span>
+<span id="cb41-961"><a href="#cb41-961" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-962"><a href="#cb41-962" aria-hidden="true" tabindex="-1"></a><span class="in">- [R Packages Book](https://r-pkgs.org/) by Hadley Wickham</span></span>
+<span id="cb41-963"><a href="#cb41-963" aria-hidden="true" tabindex="-1"></a><span class="in">- [Writing R Extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html) (Official)</span></span>
+<span id="cb41-964"><a href="#cb41-964" aria-hidden="true" tabindex="-1"></a><span class="in">- [usethis Documentation](https://usethis.r-lib.org/)</span></span>
+<span id="cb41-965"><a href="#cb41-965" aria-hidden="true" tabindex="-1"></a><span class="in">- [devtools Documentation](https://devtools.r-lib.org/)</span></span>
+<span id="cb41-966"><a href="#cb41-966" aria-hidden="true" tabindex="-1"></a><span class="in">- [GitHub Actions for R](https://github.com/r-lib/actions)</span></span>
+<span id="cb41-967"><a href="#cb41-967" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-968"><a href="#cb41-968" aria-hidden="true" tabindex="-1"></a><span class="in">### Next Steps</span></span>
+<span id="cb41-969"><a href="#cb41-969" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-970"><a href="#cb41-970" aria-hidden="true" tabindex="-1"></a><span class="in">1. Build: Create your first R package</span></span>
+<span id="cb41-971"><a href="#cb41-971" aria-hidden="true" tabindex="-1"></a><span class="in">2. Test: Achieve 100% test coverage</span></span>
+<span id="cb41-972"><a href="#cb41-972" aria-hidden="true" tabindex="-1"></a><span class="in">3. Share: Publish on GitHub and CRAN</span></span>
+<span id="cb41-973"><a href="#cb41-973" aria-hidden="true" tabindex="-1"></a><span class="in">4. Contribute: Contribute to open-source R packages</span></span>
+<span id="cb41-974"><a href="#cb41-974" aria-hidden="true" tabindex="-1"></a><span class="in">5. Teach: Share your knowledge with the R community</span></span>
+<span id="cb41-975"><a href="#cb41-975" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-976"><a href="#cb41-976" aria-hidden="true" tabindex="-1"></a><span class="in">---</span></span>
+<span id="cb41-977"><a href="#cb41-977" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-978"><a href="#cb41-978" aria-hidden="true" tabindex="-1"></a><span class="in">Congratulations! </span></span>
+<span id="cb41-979"><a href="#cb41-979" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-980"><a href="#cb41-980" aria-hidden="true" tabindex="-1"></a><span class="in">You've completed the entire R Programming course! You now have the skills to:</span></span>
+<span id="cb41-981"><a href="#cb41-981" aria-hidden="true" tabindex="-1"></a><span class="in">- Write professional R code</span></span>
+<span id="cb41-982"><a href="#cb41-982" aria-hidden="true" tabindex="-1"></a><span class="in">- Build data science projects</span></span>
+<span id="cb41-983"><a href="#cb41-983" aria-hidden="true" tabindex="-1"></a><span class="in">- Create interactive applications</span></span>
+<span id="cb41-984"><a href="#cb41-984" aria-hidden="true" tabindex="-1"></a><span class="in">- Develop and distribute R packages</span></span>
+<span id="cb41-985"><a href="#cb41-985" aria-hidden="true" tabindex="-1"></a><span class="in">- Apply best practices in production environments</span></span>
+<span id="cb41-986"><a href="#cb41-986" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-987"><a href="#cb41-987" aria-hidden="true" tabindex="-1"></a><span class="in">Keep coding, keep learning, and contribute to the R community!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 
