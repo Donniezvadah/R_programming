@@ -55,9 +55,9 @@ autoplot(ts_data) +
 
 Variance increases with level, so we apply a log transform:
 
-\[
+$$
 Y_t = \log(X_t)
-\]
+$$
 
 ```{r}
 log_ts <- log(ts_data)
@@ -87,9 +87,9 @@ adf.test(log_ts)
 
 Not stationary → apply first and seasonal differencing:
 
-\[
+$$
 \nabla (1 - B^{12}) Y_t = (1 - B)(1 - B^{12}) Y_t
-\]
+$$
 
 ```{r}
 d1s <- diff(diff(log_ts), lag=12)
@@ -118,9 +118,9 @@ par(mfrow=c(1,1))
 
 These patterns support the *Airline Model*:
 
-\[
+$$
 \text{ARIMA}(0,1,1)(0,1,1)_{12}
-\]
+$$
 
 ---
 
@@ -135,14 +135,14 @@ summary(fit_airline)
 
 Model equations:
 
-\[
+$$
 (1 - B)(1 - B^{12})Y_t = (1 + \theta_1 B)(1 + \Theta_1 B^{12}) \varepsilon_t
-\]
+$$
 
 Where:
 
-- \(\theta_1\) = non-seasonal MA(1)
-- \(\Theta_1\) = seasonal MA(1)
+- $\theta_1$ = non-seasonal MA(1)
+- $\Theta_1$ = seasonal MA(1)
 
 ---
 
@@ -215,15 +215,15 @@ autoplot(fcast) + ggtitle("Forecasts (Log Scale)")
 
 Given:
 
-\[
+$$
 \hat{X}_t = \exp(\hat{Y}_t)
-\]
+$$
 
 Bias-adjusted mean forecast:
 
-\[
+$$
 E[X_t] = \exp\left(\hat{Y}_t + \frac{\sigma^2}{2}\right)
-\]
+$$
 
 ---
 
@@ -282,29 +282,29 @@ The model tracks the upward trend and seasonal pattern well.
 
 A general multiplicative SARIMA model is written as:
 
-\[
+$$
 \Phi_P(B^s)\phi(B) \nabla^d \nabla_s^D X_t
 = \Theta_Q(B^s)\theta(B)\varepsilon_t,
-\]
+$$
 
 where:
 
-- \(B\) is the backshift operator
-- \(\nabla = 1-B\) is the differencing operator
-- \(\nabla_s = 1-B^s\) is seasonal differencing
-- \(\phi(B)\) and \(\theta(B)\) are nonseasonal AR/MA polynomials
-- \(\Phi_P(B^s)\) and \(\Theta_Q(B^s)\) are seasonal AR/MA polynomials.
+- $B$ is the backshift operator
+- $\nabla = 1-B$ is the differencing operator
+- $\nabla_s = 1-B^s$ is seasonal differencing
+- $\phi(B)$ and $\theta(B)$ are nonseasonal AR/MA polynomials
+- $\Phi_P(B^s)$ and $\Theta_Q(B^s)$ are seasonal AR/MA polynomials.
 
 For the **Airline Model**:
 
-- \(p = 0, d = 1, q = 1\)
-- \(P = 0, D = 1, Q = 1, s = 12\)
+- $p = 0, d = 1, q = 1$
+- $P = 0, D = 1, Q = 1, s = 12$
 
 Thus:
 
-\[
+$$
 (1-B)(1-B^{12})Y_t = (1 + \theta_1 B)(1 + \Theta_1 B^{12})\varepsilon_t.
-\]
+$$
 
 ---
 
@@ -312,15 +312,15 @@ Thus:
 
 One-step-ahead forecast:
 
-\[
+$$
 \hat{Y}_{t+1|t} = 
 \sum_{i=1}^p \phi_i Y_{t+1-i}
 + \sum_{j=1}^q \theta_j \hat{\varepsilon}_{t+1-j}
 + \sum_{k=1}^P \Phi_k Y_{t+1-ks}
 + \sum_{\ell=1}^Q \Theta_\ell \hat{\varepsilon}_{t+1-\ell s}.
-\]
+$$
 
-For multistep forecasts, future residuals \(\hat{\varepsilon}_{t+h}\) are set to 0.
+For multistep forecasts, future residuals $\hat{\varepsilon}_{t+h}$ are set to 0.
 
 ---
 
