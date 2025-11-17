@@ -900,6 +900,206 @@
     ]
   },
   {
+    "objectID": "Forecasting.html",
+    "href": "Forecasting.html",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "",
+    "text": "9.1 Abstract\nThis report presents a comprehensive and mathematically detailed time series analysis…",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#introduction",
+    "href": "Forecasting.html#introduction",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.2 1. Introduction",
+    "text": "9.2 1. Introduction\nForecasting monthly airline passenger volumes is essential for planning, scheduling, and resource allocation. This report demonstrates a complete, mathematically rigorous workflow following the SORS6102 project brief.\nThe objectives include:\n\nData description and preparation\n\nExploratory analysis (trend, seasonality, variance)\n\nStationarity testing\n\nModel identification (ACF/PACF, differencing)\n\nARIMA/SARIMA estimation\n\nResidual diagnostics\n\nForecasting (with back-transformation)\n\nEvaluation of accuracy\n\nInterpretation and recommendations",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#data-and-setup",
+    "href": "Forecasting.html#data-and-setup",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.3 2. Data and Setup",
+    "text": "9.3 2. Data and Setup\n\nlibrary(forecast)\nlibrary(tseries)\nlibrary(ggplot2)\nlibrary(lmtest)\nlibrary(kableExtra)\nlibrary(dplyr)\n\ndata(\"AirPassengers\")\nts_data &lt;- AirPassengers\n\n\n# Required libraries\nlibrary(ggplot2)\nlibrary(viridis)       # colorblind-friendly palette\nlibrary(extrafont)     # for Times New Roman fonts\n\n# If running for the first time (uncomment)\n# extrafont::font_import()\n# extrafont::loadfonts(device=\"pdf\")\n\n# Load data\ndata(\"AirPassengers\")\nts_data &lt;- AirPassengers\n\nThe dataset consists of 144 monthly observations from Jan 1949 – Dec 1960, with frequency 12.\nA raw plot shows increasing variance and multiplicative seasonality:\n\nautoplot(ts_data) +\n  ggtitle(\"Monthly AirPassengers\") +\n  ylab(\"Passengers\")\n\n\n\n\n\n\n\n\n\nlibrary(ggplot2)\nlibrary(viridis)\n\ndata(\"AirPassengers\")\nts_data &lt;- AirPassengers\n\nggplot(\n    data = NULL,\n    aes(x = as.numeric(time(ts_data)),\n        y = as.numeric(ts_data))\n  ) +\n  geom_line(color = viridis(1, option = \"C\"), size = 1.1) +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background  = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text  = element_text(size = 12),\n    axis.line  = element_line(color = \"black\", linewidth = 0.4),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\"),\n    legend.position = \"none\",\n    plot.margin = margin(10,10,10,10)\n  ) +\n  labs(\n    x = \"Year\",\n    y = \"Number of Passengers\"\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#transformation",
+    "href": "Forecasting.html#transformation",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.4 3. Transformation",
+    "text": "9.4 3. Transformation\nVariance increases with level, so we apply a log transform:\n\\[\nY_t = \\log(X_t)\n\\]\n\nlog_ts &lt;- log(ts_data)\nautoplot(log_ts)\n\n\n\n\n\n\n\n\nOr\n\nlog_ts &lt;- log(ts_data)\n\nautoplot(log_ts) +\n  geom_line(color = viridis(1, option = \"C\"), linewidth = 1.1) +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background  = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text  = element_text(size = 12),\n    axis.line  = element_line(color = \"black\", linewidth = 0.4),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\"),\n    legend.position = \"none\",\n    plot.margin = margin(10,10,10,10)\n  ) +\n  labs(\n    x = \"Year\",\n    y = \"Log(Passengers)\"\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#stl-decomposition",
+    "href": "Forecasting.html#stl-decomposition",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.5 4. STL Decomposition",
+    "text": "9.5 4. STL Decomposition\n\nstl_fit &lt;- stl(log_ts, s.window=\"periodic\")\nautoplot(stl_fit)\n\n\n\n\n\n\n\n\nOr\n\nstl_fit &lt;- stl(log_ts, s.window = \"periodic\")\n\nautoplot(stl_fit) +\n  scale_color_viridis_d(option = \"C\") +\n  scale_fill_viridis_d(option = \"C\") +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background  = element_rect(fill = \"white\", color = NA),\n    strip.background = element_rect(fill = \"white\"),\n    strip.text       = element_text(face = \"bold\", size = 13, family = \"serif\"),\n    axis.title       = element_text(face = \"bold\", size = 14),\n    axis.text        = element_text(size = 12),\n    axis.line        = element_line(color = \"black\", linewidth = 0.4),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\"),\n    legend.position  = \"none\",\n    plot.margin      = margin(10,10,10,10)\n  ) +\n  labs(\n    x = \"Year\",\n    y = \"Value\"\n  )\n\n\n\n\n\n\n\n\nTrend and seasonal components are clearly visible.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#stationarity-and-differencing",
+    "href": "Forecasting.html#stationarity-and-differencing",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.6 5. Stationarity and Differencing",
+    "text": "9.6 5. Stationarity and Differencing\nADF test on the logged data:\n\nadf.test(log_ts)\n\n\n    Augmented Dickey-Fuller Test\n\ndata:  log_ts\nDickey-Fuller = -6.4215, Lag order = 5, p-value = 0.01\nalternative hypothesis: stationary\n\n\nNot stationary → apply first and seasonal differencing:\n\\[\n\\nabla (1 - B^{12}) Y_t = (1 - B)(1 - B^{12}) Y_t\n\\]\n\nd1s &lt;- diff(diff(log_ts), lag=12)\nadf.test(d1s)\n\n\n    Augmented Dickey-Fuller Test\n\ndata:  d1s\nDickey-Fuller = -5.1993, Lag order = 5, p-value = 0.01\nalternative hypothesis: stationary",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#acf-and-pacf-analysis",
+    "href": "Forecasting.html#acf-and-pacf-analysis",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.7 6. ACF and PACF Analysis",
+    "text": "9.7 6. ACF and PACF Analysis\nTo identify ARIMA orders, we examine ACF and PACF of the differenced series:\n\npar(mfrow=c(1,2))\nAcf(d1s, main=\"ACF of Differenced Series\")\nPacf(d1s, main=\"PACF of Differenced Series\")\n\n\n\n\n\n\n\npar(mfrow=c(1,1))\n\nOr\n\n# ACF plot\np_acf &lt;- ggAcf(d1s) +\n  scale_color_viridis_d(option = \"C\") +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background  = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text  = element_text(size = 12),\n    plot.title = element_text(face = \"bold\", size = 14),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\")\n  ) +\n  labs(title = \"ACF of Differenced Series\")\n\n# PACF plot\np_pacf &lt;- ggPacf(d1s) +\n  scale_color_viridis_d(option = \"C\") +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background  = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text  = element_text(size = 12),\n    plot.title = element_text(face = \"bold\", size = 14),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\")\n  ) +\n  labs(title = \"PACF of Differenced Series\")\n\n# Display side-by-side\nlibrary(gridExtra)\ngrid.arrange(p_acf, p_pacf, ncol = 2)\n\n\n\n\n\n\n\n\nInterpretation:\n\nSeasonal spikes at lag 12 suggest seasonal differencing was needed.\nACF tailing + PACF significant at lag 1 suggests an MA(1) component.\nSeasonal MA(1) at lag 12 is also likely.\n\nThese patterns support the Airline Model:\n\\[\n\\text{ARIMA}(0,1,1)(0,1,1)_{12}\n\\]",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#model-estimation",
+    "href": "Forecasting.html#model-estimation",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.8 7. Model Estimation",
+    "text": "9.8 7. Model Estimation\n\n9.8.1 7.1 Fit the canonical Airline Model\n\nfit_airline &lt;- Arima(log_ts, order=c(0,1,1), seasonal=c(0,1,1))\nsummary(fit_airline)\n\nSeries: log_ts \nARIMA(0,1,1)(0,1,1)[12] \n\nCoefficients:\n          ma1     sma1\n      -0.4018  -0.5569\ns.e.   0.0896   0.0731\n\nsigma^2 = 0.001371:  log likelihood = 244.7\nAIC=-483.4   AICc=-483.21   BIC=-474.77\n\nTraining set error measures:\n                       ME       RMSE        MAE        MPE      MAPE      MASE\nTraining set 0.0005730622 0.03504883 0.02626034 0.01098898 0.4752815 0.2169522\n                   ACF1\nTraining set 0.01443892\n\n\nModel equations:\n\\[\n(1 - B)(1 - B^{12})Y_t = (1 + \\theta_1 B)(1 + \\Theta_1 B^{12}) \\varepsilon_t\n\\]\nWhere:\n\n\\(\\theta_1\\) = non-seasonal MA(1)\n\\(\\Theta_1\\) = seasonal MA(1)",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#fit-alternative-sarima-models",
+    "href": "Forecasting.html#fit-alternative-sarima-models",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.9 7.2 Fit alternative SARIMA models",
+    "text": "9.9 7.2 Fit alternative SARIMA models\n\nfit_alt1 &lt;- Arima(log_ts, order=c(2,1,1), seasonal=c(0,1,1))\nfit_alt2 &lt;- Arima(log_ts, order=c(0,1,1), seasonal=c(1,1,1))",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#model-comparison",
+    "href": "Forecasting.html#model-comparison",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.10 7.3 Model Comparison",
+    "text": "9.10 7.3 Model Comparison\n\nmodels &lt;- list(\n  Airline = fit_airline,\n  Alt1 = fit_alt1,\n  Alt2 = fit_alt2\n)\n\nmodel_table &lt;- data.frame(\n  Model = names(models),\n  AIC  = sapply(models, AIC),\n  # AICc = sapply(models, forecast::AICc),\n  BIC  = sapply(models, BIC)\n)\n\nkable(model_table, caption=\"Model Selection Criteria\") %&gt;% kable_styling(full_width=FALSE)\n\n\nModel Selection Criteria\n\n\n\nModel\nAIC\nBIC\n\n\n\n\nAirline\nAirline\n-483.3991\n-474.7735\n\n\nAlt1\nAlt1\n-482.2723\n-467.8963\n\n\nAlt2\nAlt2\n-481.9131\n-470.4123\n\n\n\n\n\n\nlibrary(forecast)\n\nfit_alt1 &lt;- Arima(log_ts, order=c(2,1,1), seasonal=c(0,1,1))\nfit_alt2 &lt;- Arima(log_ts, order=c(0,1,1), seasonal=c(1,1,1))\n\nmodels &lt;- list(\n  Airline = fit_airline,\n  Alt1 = fit_alt1,\n  Alt2 = fit_alt2\n)\n\nmodel_table &lt;- data.frame(\n  Model = names(models),\n  AIC  = sapply(models, AIC),\n  # AICc = sapply(models, forecast::AICc),\n  BIC  = sapply(models, BIC)\n)\n\nmodel_table\n\n          Model       AIC       BIC\nAirline Airline -483.3991 -474.7735\nAlt1       Alt1 -482.2723 -467.8963\nAlt2       Alt2 -481.9131 -470.4123\n\n\nConclusion:\nThe Airline Model often achieves the lowest AICc and is preferred for this dataset.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#residual-diagnostics",
+    "href": "Forecasting.html#residual-diagnostics",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.11 8. Residual Diagnostics",
+    "text": "9.11 8. Residual Diagnostics\n\n# Residuals\nres &lt;- residuals(fit_airline)\n\n# --- 1. Residual Time Series Plot ---\np1 &lt;- autoplot(res) +\n  geom_line(color = viridis(1, option = \"C\"), linewidth = 1) +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text = element_text(size = 12),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\")\n  ) +\n  labs(x = \"Time\", y = \"Residuals\")\n\n# --- 2. ACF Plot ---\np2 &lt;- ggAcf(res) +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text = element_text(size = 12),\n    plot.title = element_text(face = \"bold\", size = 14),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\")\n  ) +\n  labs(title = \"ACF of Residuals\")\n\n# --- 3. Histogram with Density ---\np3 &lt;- ggplot(data.frame(res), aes(x = res)) +\n  geom_histogram(aes(y = ..density..),\n                 bins = 20,\n                 fill = viridis(1, option=\"C\"), \n                 color = \"white\",\n                 alpha = 0.9) +\n  geom_density(color = \"black\", linewidth = 1) +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background = element_rect(fill = \"white\", color = NA),\n    plot.background  = element_rect(fill = \"white\", color = NA),\n    axis.title = element_text(face = \"bold\", size = 14),\n    axis.text  = element_text(size = 12),\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\")\n  ) +\n  labs(x = \"Residuals\", y = \"Density\")\n\n# Arrange all three\nlibrary(gridExtra)\ngrid.arrange(p1, p2, p3, ncol = 3)\n\n\n\n\n\n\n\n# Print Ljung-Box Test:\nBox.test(res, lag = 24, type = \"Ljung-Box\", fitdf = 2)\n\n\n    Box-Ljung test\n\ndata:  res\nX-squared = 26.446, df = 22, p-value = 0.233\n\n\n\n9.11.1 Requirements for a valid model:\n\nResiduals ≈ white noise\n\nLjung–Box p-value &gt; 0.05\n\nNo seasonal structure in residuals\n\nApproximate normality\n\n\nBox.test(residuals(fit_airline), lag=24, type=\"Ljung-Box\", fitdf=2)\n\n\n    Box-Ljung test\n\ndata:  residuals(fit_airline)\nX-squared = 26.446, df = 22, p-value = 0.233\n\n\nIf p-value &gt; 0.05, no remaining autocorrelation.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#forecasting",
+    "href": "Forecasting.html#forecasting",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.12 9. Forecasting",
+    "text": "9.12 9. Forecasting\nWe forecast in log scale, then back-transform.\n\n# Forecast (already in log scale)\nfcast &lt;- forecast(fit_airline, h = 24, level = c(80, 95))\n\n# Convert autoplot output into ggplot and restyle it\nautoplot(fcast) +\n  scale_color_viridis_d(option = \"C\") +\n  scale_fill_viridis_d(option = \"C\", alpha = 0.6) +\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background  = element_rect(fill = \"white\", color = NA),\n    plot.background   = element_rect(fill = \"white\", color = NA),\n    axis.title        = element_text(face = \"bold\", size = 14),\n    axis.text         = element_text(size = 12),\n    axis.line         = element_line(color = \"black\", linewidth = 0.4),\n    panel.grid.minor  = element_blank(),\n    panel.grid.major  = element_line(color = \"gray85\"),\n    legend.position   = \"none\",\n    plot.margin       = margin(10,10,10,10)\n  ) +\n  labs(\n    x = \"Year\",\n    y = \"Log(Passengers)\"\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#back-transformation-to-original-scale",
+    "href": "Forecasting.html#back-transformation-to-original-scale",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.13 10. Back-Transformation to Original Scale",
+    "text": "9.13 10. Back-Transformation to Original Scale\nGiven:\n\\[\n\\hat{X}_t = \\exp(\\hat{Y}_t)\n\\]\nBias-adjusted mean forecast:\n\\[\nE[X_t] = \\exp\\left(\\hat{Y}_t + \\frac{\\sigma^2}{2}\\right)\n\\]",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#train-test-evaluation",
+    "href": "Forecasting.html#train-test-evaluation",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.14 11. Train-Test Evaluation",
+    "text": "9.14 11. Train-Test Evaluation\nTake last 24 months as the holdout set:\n\nh &lt;- 24\ntrain_ts &lt;- window(log_ts, end=c(1958,12))\ntest_ts  &lt;- window(log_ts, start=c(1959,1))\n\nfit_train &lt;- Arima(train_ts, order=c(0,1,1), seasonal=c(0,1,1))\nfcast_train &lt;- forecast(fit_train, h=h)\n\nBack-transform:\n\npred &lt;- exp(fcast_train$mean)\nactual &lt;- exp(test_ts)\n\nCompute error metrics:\n\nMAE &lt;- mean(abs(pred - actual))\nRMSE &lt;- sqrt(mean((pred - actual)^2))\nMAPE &lt;- mean(abs((pred - actual)/actual)) * 100\n\ndata.frame(MAE, RMSE, MAPE)\n\n       MAE     RMSE     MAPE\n1 39.44726 43.18367 8.516316",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#forecast-plots-on-original-scale",
+    "href": "Forecasting.html#forecast-plots-on-original-scale",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.15 12. Forecast Plots on Original Scale",
+    "text": "9.15 12. Forecast Plots on Original Scale\nWe now compare forecasts with actual observations (last 24 months):\n\n# Reconstruct training and test data on original scale\ntrain_orig &lt;- ts(exp(train_ts), start = start(train_ts), frequency = 12)\ntest_orig  &lt;- ts(exp(test_ts),  start = start(test_ts),  frequency = 12)\npred_orig  &lt;- ts(pred,          start = start(test_ts),  frequency = 12)\n\n# Plot\nggplot() +\n  geom_line(aes(x = time(train_orig), y = train_orig, \n                color = \"Training\"), linewidth = 1.1) +\n  geom_line(aes(x = time(test_orig), y = test_orig,  \n                color = \"Actual Test\"), linewidth = 1.1) +\n  geom_line(aes(x = time(pred_orig), y = pred_orig,  \n                color = \"Forecast\"), linewidth = 1.1) +\n\n  scale_color_viridis_d(option = \"C\") +\n\n  theme_minimal(base_family = \"serif\") +\n  theme(\n    panel.background  = element_rect(fill = \"white\", color = NA),\n    plot.background   = element_rect(fill = \"white\", color = NA),\n    axis.title        = element_text(face = \"bold\", size = 14),\n    axis.text         = element_text(size = 12),\n    axis.line         = element_line(color = \"black\", linewidth = 0.4),\n    legend.title      = element_blank(),\n    legend.position   = \"bottom\",\n    panel.grid.minor  = element_blank(),\n    panel.grid.major  = element_line(color = \"gray85\"),\n    plot.margin       = margin(10,10,10,10)\n  ) +\n  labs(\n    x = \"Year\",\n    y = \"Passengers\"\n  )\n\n\n\n\n\n\n\n\nThe model tracks the upward trend and seasonal pattern well.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#mathematical-appendix",
+    "href": "Forecasting.html#mathematical-appendix",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.16 13. Mathematical Appendix",
+    "text": "9.16 13. Mathematical Appendix\n\n9.16.1 13.1 SARIMA Model Structure\nA general multiplicative SARIMA model is written as:\n\\[\n\\Phi_P(B^s)\\phi(B) \\nabla^d \\nabla_s^D X_t\n= \\Theta_Q(B^s)\\theta(B)\\varepsilon_t,\n\\]\nwhere:\n\n\\(B\\) is the backshift operator\n\\(\\nabla = 1-B\\) is the differencing operator\n\\(\\nabla_s = 1-B^s\\) is seasonal differencing\n\\(\\phi(B)\\) and \\(\\theta(B)\\) are nonseasonal AR/MA polynomials\n\\(\\Phi_P(B^s)\\) and \\(\\Theta_Q(B^s)\\) are seasonal AR/MA polynomials.\n\nFor the Airline Model:\n\n\\(p = 0, d = 1, q = 1\\)\n\\(P = 0, D = 1, Q = 1, s = 12\\)\n\nThus:\n\\[\n(1-B)(1-B^{12})Y_t = (1 + \\theta_1 B)(1 + \\Theta_1 B^{12})\\varepsilon_t.\n\\]\n\n\n\n9.16.2 13.2 Forecast Recursion\nOne-step-ahead forecast:\n\\[\n\\hat{Y}_{t+1|t} =\n\\sum_{i=1}^p \\phi_i Y_{t+1-i}\n+ \\sum_{j=1}^q \\theta_j \\hat{\\varepsilon}_{t+1-j}\n+ \\sum_{k=1}^P \\Phi_k Y_{t+1-ks}\n+ \\sum_{\\ell=1}^Q \\Theta_\\ell \\hat{\\varepsilon}_{t+1-\\ell s}.\n\\]\nFor multistep forecasts, future residuals \\(\\hat{\\varepsilon}_{t+h}\\) are set to 0.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#discussion",
+    "href": "Forecasting.html#discussion",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.17 14. Discussion",
+    "text": "9.17 14. Discussion\n\n9.17.1 Model Performance\n\nThe model captures both trend and seasonality with only two MA parameters.\nDiagnostics confirm no residual autocorrelation, meaning model structure is adequate.\nForecasts follow the real series closely in the holdout period.\n\n\n\n9.17.2 Strengths\n\nSimple, interpretable, historically successful model.\nPerforms extremely well for multiplicative seasonal series.\n\n\n\n9.17.3 Limitations\n\nNo external regressors included.\nLong-term forecasts may underestimate structural changes.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#recommendations",
+    "href": "Forecasting.html#recommendations",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.18 15. Recommendations",
+    "text": "9.18 15. Recommendations\n\nRefit the model periodically as new data arrives.\n\nConsider SARIMAX models if external factors (e.g., economic indicators) are relevant.\n\nFor long-term forecasting, evaluate exponential smoothing or structural models.\n\nUse bootstrap intervals for more robust uncertainty quantification.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#conclusion",
+    "href": "Forecasting.html#conclusion",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.19 16. Conclusion",
+    "text": "9.19 16. Conclusion\nThis report demonstrated a full forecasting workflow, including:\n\ndata transformation\n\ndecomposition\n\nstationarity testing\n\nSARIMA identification\n\nparameter estimation\n\ndiagnostics\n\nforecasting\n\nevaluation\n\nThe canonical Airline Model provides an excellent fit and strong forecasting accuracy.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
+    "objectID": "Forecasting.html#references",
+    "href": "Forecasting.html#references",
+    "title": "9  Time Series Analysis and Forecasting of Air Passengers",
+    "section": "9.20 17. References",
+    "text": "9.20 17. References\n\nBox, G.E.P., Jenkins, G.M., Reinsel, G.C., & Ljung, G.M. (2015).\nTime Series Analysis: Forecasting and Control.\nHyndman, R.J., & Athanasopoulos, G. (2018).\nForecasting: Principles and Practice.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Time Series Analysis and Forecasting of Air Passengers</span>"
+    ]
+  },
+  {
     "objectID": "appendix_resources.html",
     "href": "appendix_resources.html",
     "title": "Appendix A — Code & Data Resources",
