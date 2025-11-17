@@ -19,6 +19,8 @@
 
 ## Introduction to R
 
+## This is a Live session
+
 ### What is R?
 
 R is a powerful programming language specifically designed for:
