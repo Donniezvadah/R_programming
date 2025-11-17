@@ -13,6 +13,7 @@ book:
     - 4_Shiny_Apps_in_R.md
     - 5_Modules_and_Functions.md
     - 6_R_Developer_Tools.md
+    - Forecasting.Rmd
   appendices:
     - appendix_resources.qmd
   navbar:
@@ -29,5 +30,12 @@ format:
     css: styles.css
     footer: |
       <div class="site-footer">© 2025 Donnie</div>
+    code-tools: true
+    code-fold: false
+    execute:
+      echo: true
+      warning: false
+      message: false
+      cache: false
 
 editor: visual

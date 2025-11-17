@@ -197,6 +197,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">R Developer Tools</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Forecasting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Time Series Analysis and Forecasting of Air Passengers</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -300,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shiny Apps in R</span></h1>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Shiny Apps in R</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -1151,6 +1157,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Continue to Modules &amp; Functions! 🚀</strong></p>
 
 
+<!-- -->
+
 </section>
 </section>
 
@@ -1225,6 +1233,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -1571,7 +1630,908 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Modules and Functions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
-</nav>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Shiny Apps in R</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Table of Contents</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="co">[</span><span class="ot">Introduction to Shiny</span><span class="co">](#introduction-to-shiny)</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="co">[</span><span class="ot">Basic App Structure</span><span class="co">](#basic-app-structure)</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="co">[</span><span class="ot">UI Components</span><span class="co">](#ui-components)</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span><span class="co">[</span><span class="ot">Server Logic and Reactivity</span><span class="co">](#server-logic-and-reactivity)</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span><span class="co">[</span><span class="ot">Layouts and Themes</span><span class="co">](#layouts-and-themes)</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span><span class="co">[</span><span class="ot">Interactive Outputs</span><span class="co">](#interactive-outputs)</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span><span class="co">[</span><span class="ot">Advanced Reactivity</span><span class="co">](#advanced-reactivity)</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span><span class="co">[</span><span class="ot">Shiny Modules</span><span class="co">](#shiny-modules)</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span><span class="co">[</span><span class="ot">Deployment</span><span class="co">](#deployment)</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span><span class="co">[</span><span class="ot">Best Practices</span><span class="co">](#best-practices)</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction to Shiny</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### What is Shiny?</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>Shiny is an R package that makes it easy to build interactive web applications directly from R without requiring HTML, CSS, or JavaScript knowledge.</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>**Key Features:**</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Reactive programming model</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Rich UI components</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Easy deployment</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Integration with R packages</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Real-time interactivity</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Installation</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Shiny</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"shiny"</span>)</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Load library</span></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Run example app</span></span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a><span class="fu">runExample</span>(<span class="st">"01_hello"</span>)</span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Basic App Structure</span></span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a><span class="fu">### Minimal Shiny App</span></span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Define UI</span></span>
+<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"My First Shiny App"</span>),</span>
+<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-56"><a href="#cb33-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb33-58"><a href="#cb33-58" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sliderInput</span>(<span class="st">"num"</span>, <span class="st">"Choose a number:"</span>, </span>
+<span id="cb33-59"><a href="#cb33-59" aria-hidden="true" tabindex="-1"></a>                  <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">100</span>, <span class="at">value =</span> <span class="dv">50</span>)</span>
+<span id="cb33-60"><a href="#cb33-60" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb33-61"><a href="#cb33-61" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-62"><a href="#cb33-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a>      <span class="fu">textOutput</span>(<span class="st">"result"</span>)</span>
+<span id="cb33-64"><a href="#cb33-64" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-67"><a href="#cb33-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Define server</span></span>
+<span id="cb33-69"><a href="#cb33-69" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-70"><a href="#cb33-70" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>result <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb33-71"><a href="#cb33-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"You selected:"</span>, input<span class="sc">$</span>num)</span>
+<span id="cb33-72"><a href="#cb33-72" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-73"><a href="#cb33-73" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-74"><a href="#cb33-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-75"><a href="#cb33-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Run app</span></span>
+<span id="cb33-76"><a href="#cb33-76" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span>
+<span id="cb33-77"><a href="#cb33-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-78"><a href="#cb33-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-79"><a href="#cb33-79" aria-hidden="true" tabindex="-1"></a><span class="fu">### File Structure</span></span>
+<span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a>**Single-file app (app.R):**</span>
+<span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a><span class="co"># app.R</span></span>
+<span id="cb33-84"><a href="#cb33-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb33-85"><a href="#cb33-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-86"><a href="#cb33-86" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-87"><a href="#cb33-87" aria-hidden="true" tabindex="-1"></a>  <span class="co"># UI code</span></span>
+<span id="cb33-88"><a href="#cb33-88" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-89"><a href="#cb33-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-90"><a href="#cb33-90" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-91"><a href="#cb33-91" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Server code</span></span>
+<span id="cb33-92"><a href="#cb33-92" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-93"><a href="#cb33-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-94"><a href="#cb33-94" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span>
+<span id="cb33-95"><a href="#cb33-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-96"><a href="#cb33-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-97"><a href="#cb33-97" aria-hidden="true" tabindex="-1"></a>**Two-file app:**</span>
+<span id="cb33-98"><a href="#cb33-98" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-99"><a href="#cb33-99" aria-hidden="true" tabindex="-1"></a><span class="co"># ui.R</span></span>
+<span id="cb33-100"><a href="#cb33-100" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb33-101"><a href="#cb33-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-102"><a href="#cb33-102" aria-hidden="true" tabindex="-1"></a><span class="fu">fluidPage</span>(</span>
+<span id="cb33-103"><a href="#cb33-103" aria-hidden="true" tabindex="-1"></a>  <span class="co"># UI code</span></span>
+<span id="cb33-104"><a href="#cb33-104" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-105"><a href="#cb33-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-106"><a href="#cb33-106" aria-hidden="true" tabindex="-1"></a><span class="co"># server.R</span></span>
+<span id="cb33-107"><a href="#cb33-107" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb33-108"><a href="#cb33-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-109"><a href="#cb33-109" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-110"><a href="#cb33-110" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Server code</span></span>
+<span id="cb33-111"><a href="#cb33-111" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-112"><a href="#cb33-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-114"><a href="#cb33-114" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-115"><a href="#cb33-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-116"><a href="#cb33-116" aria-hidden="true" tabindex="-1"></a><span class="fu">## UI Components</span></span>
+<span id="cb33-117"><a href="#cb33-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-118"><a href="#cb33-118" aria-hidden="true" tabindex="-1"></a><span class="fu">### Input Widgets</span></span>
+<span id="cb33-119"><a href="#cb33-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-120"><a href="#cb33-120" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-121"><a href="#cb33-121" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-122"><a href="#cb33-122" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Text input</span></span>
+<span id="cb33-123"><a href="#cb33-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textInput</span>(<span class="st">"name"</span>, <span class="st">"Enter your name:"</span>, <span class="at">value =</span> <span class="st">""</span>),</span>
+<span id="cb33-124"><a href="#cb33-124" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Numeric input</span></span>
+<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">numericInput</span>(<span class="st">"age"</span>, <span class="st">"Enter your age:"</span>, <span class="at">value =</span> <span class="dv">25</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">120</span>),</span>
+<span id="cb33-127"><a href="#cb33-127" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-128"><a href="#cb33-128" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Slider</span></span>
+<span id="cb33-129"><a href="#cb33-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sliderInput</span>(<span class="st">"height"</span>, <span class="st">"Height (cm):"</span>, <span class="at">min =</span> <span class="dv">100</span>, <span class="at">max =</span> <span class="dv">250</span>, <span class="at">value =</span> <span class="dv">170</span>),</span>
+<span id="cb33-130"><a href="#cb33-130" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-131"><a href="#cb33-131" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Range slider</span></span>
+<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sliderInput</span>(<span class="st">"range"</span>, <span class="st">"Select range:"</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">100</span>, <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">75</span>)),</span>
+<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-134"><a href="#cb33-134" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Checkbox</span></span>
+<span id="cb33-135"><a href="#cb33-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">checkboxInput</span>(<span class="st">"subscribe"</span>, <span class="st">"Subscribe to newsletter"</span>, <span class="at">value =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb33-136"><a href="#cb33-136" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-137"><a href="#cb33-137" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Checkbox group</span></span>
+<span id="cb33-138"><a href="#cb33-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">checkboxGroupInput</span>(<span class="st">"interests"</span>, <span class="st">"Interests:"</span>,</span>
+<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a>                     <span class="at">choices =</span> <span class="fu">c</span>(<span class="st">"Sports"</span>, <span class="st">"Music"</span>, <span class="st">"Reading"</span>, <span class="st">"Travel"</span>)),</span>
+<span id="cb33-140"><a href="#cb33-140" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-141"><a href="#cb33-141" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Radio buttons</span></span>
+<span id="cb33-142"><a href="#cb33-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">radioButtons</span>(<span class="st">"gender"</span>, <span class="st">"Gender:"</span>,</span>
+<span id="cb33-143"><a href="#cb33-143" aria-hidden="true" tabindex="-1"></a>               <span class="at">choices =</span> <span class="fu">c</span>(<span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Other"</span>)),</span>
+<span id="cb33-144"><a href="#cb33-144" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-145"><a href="#cb33-145" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select dropdown</span></span>
+<span id="cb33-146"><a href="#cb33-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">selectInput</span>(<span class="st">"country"</span>, <span class="st">"Country:"</span>,</span>
+<span id="cb33-147"><a href="#cb33-147" aria-hidden="true" tabindex="-1"></a>              <span class="at">choices =</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"Canada"</span>, <span class="st">"UK"</span>, <span class="st">"Australia"</span>)),</span>
+<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-149"><a href="#cb33-149" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Multiple select</span></span>
+<span id="cb33-150"><a href="#cb33-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">selectInput</span>(<span class="st">"languages"</span>, <span class="st">"Languages:"</span>,</span>
+<span id="cb33-151"><a href="#cb33-151" aria-hidden="true" tabindex="-1"></a>              <span class="at">choices =</span> <span class="fu">c</span>(<span class="st">"R"</span>, <span class="st">"Python"</span>, <span class="st">"Julia"</span>, <span class="st">"SQL"</span>),</span>
+<span id="cb33-152"><a href="#cb33-152" aria-hidden="true" tabindex="-1"></a>              <span class="at">multiple =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-153"><a href="#cb33-153" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-154"><a href="#cb33-154" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Date input</span></span>
+<span id="cb33-155"><a href="#cb33-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dateInput</span>(<span class="st">"birth_date"</span>, <span class="st">"Birth Date:"</span>, <span class="at">value =</span> <span class="st">"2000-01-01"</span>),</span>
+<span id="cb33-156"><a href="#cb33-156" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-157"><a href="#cb33-157" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Date range</span></span>
+<span id="cb33-158"><a href="#cb33-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dateRangeInput</span>(<span class="st">"date_range"</span>, <span class="st">"Select date range:"</span>),</span>
+<span id="cb33-159"><a href="#cb33-159" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-160"><a href="#cb33-160" aria-hidden="true" tabindex="-1"></a>  <span class="co"># File upload</span></span>
+<span id="cb33-161"><a href="#cb33-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fileInput</span>(<span class="st">"file"</span>, <span class="st">"Upload CSV file:"</span>, <span class="at">accept =</span> <span class="fu">c</span>(<span class="st">".csv"</span>)),</span>
+<span id="cb33-162"><a href="#cb33-162" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-163"><a href="#cb33-163" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Action button</span></span>
+<span id="cb33-164"><a href="#cb33-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">actionButton</span>(<span class="st">"submit"</span>, <span class="st">"Submit"</span>, <span class="at">class =</span> <span class="st">"btn-primary"</span>),</span>
+<span id="cb33-165"><a href="#cb33-165" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-166"><a href="#cb33-166" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Download button</span></span>
+<span id="cb33-167"><a href="#cb33-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">downloadButton</span>(<span class="st">"download"</span>, <span class="st">"Download Data"</span>)</span>
+<span id="cb33-168"><a href="#cb33-168" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-169"><a href="#cb33-169" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-170"><a href="#cb33-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-171"><a href="#cb33-171" aria-hidden="true" tabindex="-1"></a><span class="fu">### Output Widgets</span></span>
+<span id="cb33-172"><a href="#cb33-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-173"><a href="#cb33-173" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-174"><a href="#cb33-174" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-175"><a href="#cb33-175" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Text output</span></span>
+<span id="cb33-176"><a href="#cb33-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textOutput</span>(<span class="st">"text"</span>),</span>
+<span id="cb33-177"><a href="#cb33-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">verbatimTextOutput</span>(<span class="st">"code"</span>),</span>
+<span id="cb33-178"><a href="#cb33-178" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-179"><a href="#cb33-179" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Table output</span></span>
+<span id="cb33-180"><a href="#cb33-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableOutput</span>(<span class="st">"table"</span>),</span>
+<span id="cb33-181"><a href="#cb33-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dataTableOutput</span>(<span class="st">"datatable"</span>),</span>
+<span id="cb33-182"><a href="#cb33-182" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-183"><a href="#cb33-183" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot output</span></span>
+<span id="cb33-184"><a href="#cb33-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotOutput</span>(<span class="st">"plot"</span>),</span>
+<span id="cb33-185"><a href="#cb33-185" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-186"><a href="#cb33-186" aria-hidden="true" tabindex="-1"></a>  <span class="co"># UI output (dynamic UI)</span></span>
+<span id="cb33-187"><a href="#cb33-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">uiOutput</span>(<span class="st">"dynamic_ui"</span>),</span>
+<span id="cb33-188"><a href="#cb33-188" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-189"><a href="#cb33-189" aria-hidden="true" tabindex="-1"></a>  <span class="co"># HTML output</span></span>
+<span id="cb33-190"><a href="#cb33-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">htmlOutput</span>(<span class="st">"html"</span>)</span>
+<span id="cb33-191"><a href="#cb33-191" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-192"><a href="#cb33-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-193"><a href="#cb33-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-194"><a href="#cb33-194" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-195"><a href="#cb33-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-196"><a href="#cb33-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## Server Logic and Reactivity</span></span>
+<span id="cb33-197"><a href="#cb33-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-198"><a href="#cb33-198" aria-hidden="true" tabindex="-1"></a><span class="fu">### Basic Reactivity</span></span>
+<span id="cb33-199"><a href="#cb33-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-200"><a href="#cb33-200" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-201"><a href="#cb33-201" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-202"><a href="#cb33-202" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-203"><a href="#cb33-203" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Render text</span></span>
+<span id="cb33-204"><a href="#cb33-204" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>text <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb33-205"><a href="#cb33-205" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"Hello,"</span>, input<span class="sc">$</span>name)</span>
+<span id="cb33-206"><a href="#cb33-206" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-207"><a href="#cb33-207" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-208"><a href="#cb33-208" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Render table</span></span>
+<span id="cb33-209"><a href="#cb33-209" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>table <span class="ot">&lt;-</span> <span class="fu">renderTable</span>({</span>
+<span id="cb33-210"><a href="#cb33-210" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(mtcars, input<span class="sc">$</span>rows)</span>
+<span id="cb33-211"><a href="#cb33-211" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-212"><a href="#cb33-212" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-213"><a href="#cb33-213" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Render plot</span></span>
+<span id="cb33-214"><a href="#cb33-214" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb33-215"><a href="#cb33-215" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hist</span>(<span class="fu">rnorm</span>(input<span class="sc">$</span>n), <span class="at">main =</span> <span class="st">"Random Normal Distribution"</span>)</span>
+<span id="cb33-216"><a href="#cb33-216" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-217"><a href="#cb33-217" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-218"><a href="#cb33-218" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Render data table (interactive)</span></span>
+<span id="cb33-219"><a href="#cb33-219" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>datatable <span class="ot">&lt;-</span> <span class="fu">renderDataTable</span>({</span>
+<span id="cb33-220"><a href="#cb33-220" aria-hidden="true" tabindex="-1"></a>    mtcars</span>
+<span id="cb33-221"><a href="#cb33-221" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-222"><a href="#cb33-222" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-223"><a href="#cb33-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-224"><a href="#cb33-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-225"><a href="#cb33-225" aria-hidden="true" tabindex="-1"></a><span class="fu">### Reactive Expressions</span></span>
+<span id="cb33-226"><a href="#cb33-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-227"><a href="#cb33-227" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-228"><a href="#cb33-228" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-229"><a href="#cb33-229" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-230"><a href="#cb33-230" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reactive expression (cached)</span></span>
+<span id="cb33-231"><a href="#cb33-231" aria-hidden="true" tabindex="-1"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb33-232"><a href="#cb33-232" aria-hidden="true" tabindex="-1"></a>    mtcars[mtcars<span class="sc">$</span>cyl <span class="sc">==</span> input<span class="sc">$</span>cyl, ]</span>
+<span id="cb33-233"><a href="#cb33-233" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-234"><a href="#cb33-234" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-235"><a href="#cb33-235" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use reactive expression</span></span>
+<span id="cb33-236"><a href="#cb33-236" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb33-237"><a href="#cb33-237" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hist</span>(<span class="fu">filtered_data</span>()<span class="sc">$</span>mpg)</span>
+<span id="cb33-238"><a href="#cb33-238" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-239"><a href="#cb33-239" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-240"><a href="#cb33-240" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>summary <span class="ot">&lt;-</span> <span class="fu">renderPrint</span>({</span>
+<span id="cb33-241"><a href="#cb33-241" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(<span class="fu">filtered_data</span>())</span>
+<span id="cb33-242"><a href="#cb33-242" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-243"><a href="#cb33-243" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-246"><a href="#cb33-246" aria-hidden="true" tabindex="-1"></a><span class="fu">### Observers and Events</span></span>
+<span id="cb33-247"><a href="#cb33-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-248"><a href="#cb33-248" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-249"><a href="#cb33-249" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-250"><a href="#cb33-250" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-251"><a href="#cb33-251" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Observer (runs automatically)</span></span>
+<span id="cb33-252"><a href="#cb33-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observe</span>({</span>
+<span id="cb33-253"><a href="#cb33-253" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Slider value:"</span>, input<span class="sc">$</span>num))</span>
+<span id="cb33-254"><a href="#cb33-254" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-255"><a href="#cb33-255" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-256"><a href="#cb33-256" aria-hidden="true" tabindex="-1"></a>  <span class="co"># observeEvent (runs on specific event)</span></span>
+<span id="cb33-257"><a href="#cb33-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>submit, {</span>
+<span id="cb33-258"><a href="#cb33-258" aria-hidden="true" tabindex="-1"></a>    <span class="fu">showNotification</span>(<span class="st">"Form submitted!"</span>, <span class="at">type =</span> <span class="st">"message"</span>)</span>
+<span id="cb33-259"><a href="#cb33-259" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-260"><a href="#cb33-260" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-261"><a href="#cb33-261" aria-hidden="true" tabindex="-1"></a>  <span class="co"># eventReactive (creates reactive value)</span></span>
+<span id="cb33-262"><a href="#cb33-262" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">eventReactive</span>(input<span class="sc">$</span>load, {</span>
+<span id="cb33-263"><a href="#cb33-263" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(input<span class="sc">$</span>file<span class="sc">$</span>datapath)</span>
+<span id="cb33-264"><a href="#cb33-264" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-265"><a href="#cb33-265" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-266"><a href="#cb33-266" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>table <span class="ot">&lt;-</span> <span class="fu">renderTable</span>({</span>
+<span id="cb33-267"><a href="#cb33-267" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data</span>()</span>
+<span id="cb33-268"><a href="#cb33-268" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-269"><a href="#cb33-269" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-270"><a href="#cb33-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-271"><a href="#cb33-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-272"><a href="#cb33-272" aria-hidden="true" tabindex="-1"></a><span class="fu">### Reactive Values</span></span>
+<span id="cb33-273"><a href="#cb33-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-274"><a href="#cb33-274" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-275"><a href="#cb33-275" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-276"><a href="#cb33-276" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-277"><a href="#cb33-277" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create reactive values</span></span>
+<span id="cb33-278"><a href="#cb33-278" aria-hidden="true" tabindex="-1"></a>  values <span class="ot">&lt;-</span> <span class="fu">reactiveValues</span>(</span>
+<span id="cb33-279"><a href="#cb33-279" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="dv">0</span>,</span>
+<span id="cb33-280"><a href="#cb33-280" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="cn">NULL</span></span>
+<span id="cb33-281"><a href="#cb33-281" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-282"><a href="#cb33-282" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-283"><a href="#cb33-283" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update reactive values</span></span>
+<span id="cb33-284"><a href="#cb33-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>increment, {</span>
+<span id="cb33-285"><a href="#cb33-285" aria-hidden="true" tabindex="-1"></a>    values<span class="sc">$</span>count <span class="ot">&lt;-</span> values<span class="sc">$</span>count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb33-286"><a href="#cb33-286" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-287"><a href="#cb33-287" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-288"><a href="#cb33-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>load, {</span>
+<span id="cb33-289"><a href="#cb33-289" aria-hidden="true" tabindex="-1"></a>    values<span class="sc">$</span>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(input<span class="sc">$</span>file<span class="sc">$</span>datapath)</span>
+<span id="cb33-290"><a href="#cb33-290" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-291"><a href="#cb33-291" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-292"><a href="#cb33-292" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use reactive values</span></span>
+<span id="cb33-293"><a href="#cb33-293" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>count <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb33-294"><a href="#cb33-294" aria-hidden="true" tabindex="-1"></a>    values<span class="sc">$</span>count</span>
+<span id="cb33-295"><a href="#cb33-295" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-296"><a href="#cb33-296" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-297"><a href="#cb33-297" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-298"><a href="#cb33-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-299"><a href="#cb33-299" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-300"><a href="#cb33-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-301"><a href="#cb33-301" aria-hidden="true" tabindex="-1"></a><span class="fu">## Layouts and Themes</span></span>
+<span id="cb33-302"><a href="#cb33-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-303"><a href="#cb33-303" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sidebar Layout</span></span>
+<span id="cb33-304"><a href="#cb33-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-305"><a href="#cb33-305" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-306"><a href="#cb33-306" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-307"><a href="#cb33-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"My App"</span>),</span>
+<span id="cb33-308"><a href="#cb33-308" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-309"><a href="#cb33-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb33-310"><a href="#cb33-310" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb33-311"><a href="#cb33-311" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Inputs</span></span>
+<span id="cb33-312"><a href="#cb33-312" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sliderInput</span>(<span class="st">"num"</span>, <span class="st">"Number:"</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">50</span>)</span>
+<span id="cb33-313"><a href="#cb33-313" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb33-314"><a href="#cb33-314" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-315"><a href="#cb33-315" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb33-316"><a href="#cb33-316" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Outputs</span></span>
+<span id="cb33-317"><a href="#cb33-317" aria-hidden="true" tabindex="-1"></a>      <span class="fu">plotOutput</span>(<span class="st">"plot"</span>)</span>
+<span id="cb33-318"><a href="#cb33-318" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-319"><a href="#cb33-319" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-321"><a href="#cb33-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-323"><a href="#cb33-323" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tabset Layout</span></span>
+<span id="cb33-324"><a href="#cb33-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-325"><a href="#cb33-325" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"Tabbed Interface"</span>),</span>
+<span id="cb33-328"><a href="#cb33-328" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabsetPanel</span>(</span>
+<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Plot"</span>, <span class="fu">plotOutput</span>(<span class="st">"plot"</span>)),</span>
+<span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Summary"</span>, <span class="fu">verbatimTextOutput</span>(<span class="st">"summary"</span>)),</span>
+<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Table"</span>, <span class="fu">tableOutput</span>(<span class="st">"table"</span>)),</span>
+<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"About"</span>, <span class="fu">includeMarkdown</span>(<span class="st">"about.md"</span>))</span>
+<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a><span class="fu">### Navigation Bar</span></span>
+<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">navbarPage</span>(</span>
+<span id="cb33-342"><a href="#cb33-342" aria-hidden="true" tabindex="-1"></a>  <span class="st">"My App"</span>,</span>
+<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Home"</span>,</span>
+<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a>    <span class="fu">h1</span>(<span class="st">"Welcome"</span>),</span>
+<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a>    <span class="fu">p</span>(<span class="st">"This is the home page."</span>)</span>
+<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Analysis"</span>,</span>
+<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarLayout</span>(</span>
+<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sidebarPanel</span>(<span class="fu">sliderInput</span>(<span class="st">"n"</span>, <span class="st">"N:"</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">50</span>)),</span>
+<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mainPanel</span>(<span class="fu">plotOutput</span>(<span class="st">"plot"</span>))</span>
+<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Data"</span>,</span>
+<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dataTableOutput</span>(<span class="st">"table"</span>)</span>
+<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">navbarMenu</span>(<span class="st">"More"</span>,</span>
+<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Sub-page 1"</span>),</span>
+<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Sub-page 2"</span>)</span>
+<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-367"><a href="#cb33-367" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dashboard Layout</span></span>
+<span id="cb33-368"><a href="#cb33-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-372"><a href="#cb33-372" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
+<span id="cb33-373"><a href="#cb33-373" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">"My Dashboard"</span>),</span>
+<span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardSidebar</span>(</span>
+<span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarMenu</span>(</span>
+<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">"Dashboard"</span>, <span class="at">tabName =</span> <span class="st">"dashboard"</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"dashboard"</span>)),</span>
+<span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">"Data"</span>, <span class="at">tabName =</span> <span class="st">"data"</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"table"</span>)),</span>
+<span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">"Settings"</span>, <span class="at">tabName =</span> <span class="st">"settings"</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"cog"</span>))</span>
+<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardBody</span>(</span>
+<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabItems</span>(</span>
+<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">"dashboard"</span>,</span>
+<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a>        <span class="fu">fluidRow</span>(</span>
+<span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a>          <span class="fu">valueBox</span>(<span class="dv">123</span>, <span class="st">"Total Sales"</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"dollar"</span>), <span class="at">color =</span> <span class="st">"green"</span>),</span>
+<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a>          <span class="fu">valueBox</span>(<span class="dv">456</span>, <span class="st">"Customers"</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"users"</span>), <span class="at">color =</span> <span class="st">"blue"</span>),</span>
+<span id="cb33-389"><a href="#cb33-389" aria-hidden="true" tabindex="-1"></a>          <span class="fu">valueBox</span>(<span class="dv">789</span>, <span class="st">"Products"</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"box"</span>), <span class="at">color =</span> <span class="st">"yellow"</span>)</span>
+<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a>        <span class="fu">fluidRow</span>(</span>
+<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a>          <span class="fu">box</span>(<span class="at">title =</span> <span class="st">"Plot"</span>, <span class="fu">plotOutput</span>(<span class="st">"plot"</span>), <span class="at">width =</span> <span class="dv">6</span>),</span>
+<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a>          <span class="fu">box</span>(<span class="at">title =</span> <span class="st">"Summary"</span>, <span class="fu">verbatimTextOutput</span>(<span class="st">"summary"</span>), <span class="at">width =</span> <span class="dv">6</span>)</span>
+<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">"data"</span>,</span>
+<span id="cb33-398"><a href="#cb33-398" aria-hidden="true" tabindex="-1"></a>        <span class="fu">dataTableOutput</span>(<span class="st">"table"</span>)</span>
+<span id="cb33-399"><a href="#cb33-399" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-401"><a href="#cb33-401" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-403"><a href="#cb33-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a><span class="fu">### Themes</span></span>
+<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinythemes)</span>
+<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-411"><a href="#cb33-411" aria-hidden="true" tabindex="-1"></a>  <span class="at">theme =</span> <span class="fu">shinytheme</span>(<span class="st">"flatly"</span>),  <span class="co"># or cerulean, cosmo, darkly, etc.</span></span>
+<span id="cb33-412"><a href="#cb33-412" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"Themed App"</span>),</span>
+<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Rest of UI</span></span>
+<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-417"><a href="#cb33-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-418"><a href="#cb33-418" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom CSS</span></span>
+<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">head</span>(</span>
+<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">style</span>(<span class="fu">HTML</span>(<span class="st">"</span></span>
+<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a><span class="st">      .title { color: #007bff; }</span></span>
+<span id="cb33-423"><a href="#cb33-423" aria-hidden="true" tabindex="-1"></a><span class="st">      .sidebar { background-color: #f8f9fa; }</span></span>
+<span id="cb33-424"><a href="#cb33-424" aria-hidden="true" tabindex="-1"></a><span class="st">    "</span>))</span>
+<span id="cb33-425"><a href="#cb33-425" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-426"><a href="#cb33-426" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Rest of UI</span></span>
+<span id="cb33-428"><a href="#cb33-428" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-430"><a href="#cb33-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-432"><a href="#cb33-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-433"><a href="#cb33-433" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interactive Outputs</span></span>
+<span id="cb33-434"><a href="#cb33-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-435"><a href="#cb33-435" aria-hidden="true" tabindex="-1"></a><span class="fu">### Plotly (Interactive Plots)</span></span>
+<span id="cb33-436"><a href="#cb33-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-438"><a href="#cb33-438" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-440"><a href="#cb33-440" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlotly</span>({</span>
+<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> wt, <span class="at">y =</span> mpg, <span class="at">color =</span> <span class="fu">factor</span>(cyl))) <span class="sc">+</span></span>
+<span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>()</span>
+<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplotly</span>(p)</span>
+<span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-451"><a href="#cb33-451" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotlyOutput</span>(<span class="st">"plot"</span>)</span>
+<span id="cb33-452"><a href="#cb33-452" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-453"><a href="#cb33-453" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-454"><a href="#cb33-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-455"><a href="#cb33-455" aria-hidden="true" tabindex="-1"></a><span class="fu">### DT (Interactive Tables)</span></span>
+<span id="cb33-456"><a href="#cb33-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-457"><a href="#cb33-457" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-458"><a href="#cb33-458" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb33-459"><a href="#cb33-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-460"><a href="#cb33-460" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-461"><a href="#cb33-461" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>table <span class="ot">&lt;-</span> <span class="fu">renderDataTable</span>({</span>
+<span id="cb33-462"><a href="#cb33-462" aria-hidden="true" tabindex="-1"></a>    <span class="fu">datatable</span>(mtcars, </span>
+<span id="cb33-463"><a href="#cb33-463" aria-hidden="true" tabindex="-1"></a>              <span class="at">filter =</span> <span class="st">'top'</span>,</span>
+<span id="cb33-464"><a href="#cb33-464" aria-hidden="true" tabindex="-1"></a>              <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb33-465"><a href="#cb33-465" aria-hidden="true" tabindex="-1"></a>                <span class="at">pageLength =</span> <span class="dv">10</span>,</span>
+<span id="cb33-466"><a href="#cb33-466" aria-hidden="true" tabindex="-1"></a>                <span class="at">searching =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb33-467"><a href="#cb33-467" aria-hidden="true" tabindex="-1"></a>                <span class="at">ordering =</span> <span class="cn">TRUE</span></span>
+<span id="cb33-468"><a href="#cb33-468" aria-hidden="true" tabindex="-1"></a>              ))</span>
+<span id="cb33-469"><a href="#cb33-469" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-470"><a href="#cb33-470" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-471"><a href="#cb33-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-472"><a href="#cb33-472" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-473"><a href="#cb33-473" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dataTableOutput</span>(<span class="st">"table"</span>)</span>
+<span id="cb33-474"><a href="#cb33-474" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-475"><a href="#cb33-475" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-476"><a href="#cb33-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-477"><a href="#cb33-477" aria-hidden="true" tabindex="-1"></a><span class="fu">### Leaflet (Interactive Maps)</span></span>
+<span id="cb33-478"><a href="#cb33-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-479"><a href="#cb33-479" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-480"><a href="#cb33-480" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb33-481"><a href="#cb33-481" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-482"><a href="#cb33-482" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-483"><a href="#cb33-483" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
+<span id="cb33-484"><a href="#cb33-484" aria-hidden="true" tabindex="-1"></a>    <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb33-485"><a href="#cb33-485" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb33-486"><a href="#cb33-486" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addMarkers</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">122.4194</span>, <span class="at">lat =</span> <span class="fl">37.7749</span>, </span>
+<span id="cb33-487"><a href="#cb33-487" aria-hidden="true" tabindex="-1"></a>                 <span class="at">popup =</span> <span class="st">"San Francisco"</span>)</span>
+<span id="cb33-488"><a href="#cb33-488" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-489"><a href="#cb33-489" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-490"><a href="#cb33-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-491"><a href="#cb33-491" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-492"><a href="#cb33-492" aria-hidden="true" tabindex="-1"></a>  <span class="fu">leafletOutput</span>(<span class="st">"map"</span>)</span>
+<span id="cb33-493"><a href="#cb33-493" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-494"><a href="#cb33-494" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-495"><a href="#cb33-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-496"><a href="#cb33-496" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-497"><a href="#cb33-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a><span class="fu">## Advanced Reactivity</span></span>
+<span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a><span class="fu">### Isolate and Debounce</span></span>
+<span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-504"><a href="#cb33-504" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-505"><a href="#cb33-505" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Isolate - prevent reactivity</span></span>
+<span id="cb33-506"><a href="#cb33-506" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>text <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb33-507"><a href="#cb33-507" aria-hidden="true" tabindex="-1"></a>    input<span class="sc">$</span>button  <span class="co"># Trigger on button click</span></span>
+<span id="cb33-508"><a href="#cb33-508" aria-hidden="true" tabindex="-1"></a>    <span class="fu">isolate</span>({</span>
+<span id="cb33-509"><a href="#cb33-509" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(<span class="st">"Value:"</span>, input<span class="sc">$</span>slider)  <span class="co"># Don't react to slider changes</span></span>
+<span id="cb33-510"><a href="#cb33-510" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb33-511"><a href="#cb33-511" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-512"><a href="#cb33-512" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-513"><a href="#cb33-513" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Debounce - delay reactivity</span></span>
+<span id="cb33-514"><a href="#cb33-514" aria-hidden="true" tabindex="-1"></a>  debounced_value <span class="ot">&lt;-</span> <span class="fu">debounce</span>(<span class="fu">reactive</span>(input<span class="sc">$</span>text), <span class="dv">1000</span>)  <span class="co"># 1 second delay</span></span>
+<span id="cb33-515"><a href="#cb33-515" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-516"><a href="#cb33-516" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>result <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb33-517"><a href="#cb33-517" aria-hidden="true" tabindex="-1"></a>    <span class="fu">debounced_value</span>()</span>
+<span id="cb33-518"><a href="#cb33-518" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-519"><a href="#cb33-519" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-520"><a href="#cb33-520" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-521"><a href="#cb33-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-522"><a href="#cb33-522" aria-hidden="true" tabindex="-1"></a><span class="fu">### Validation</span></span>
+<span id="cb33-523"><a href="#cb33-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-524"><a href="#cb33-524" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-525"><a href="#cb33-525" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-526"><a href="#cb33-526" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-527"><a href="#cb33-527" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb33-528"><a href="#cb33-528" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Validate input</span></span>
+<span id="cb33-529"><a href="#cb33-529" aria-hidden="true" tabindex="-1"></a>    <span class="fu">validate</span>(</span>
+<span id="cb33-530"><a href="#cb33-530" aria-hidden="true" tabindex="-1"></a>      <span class="fu">need</span>(input<span class="sc">$</span>n <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"Please select a positive number"</span>),</span>
+<span id="cb33-531"><a href="#cb33-531" aria-hidden="true" tabindex="-1"></a>      <span class="fu">need</span>(input<span class="sc">$</span>n <span class="sc">&lt;=</span> <span class="dv">1000</span>, <span class="st">"Number too large"</span>)</span>
+<span id="cb33-532"><a href="#cb33-532" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-533"><a href="#cb33-533" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-534"><a href="#cb33-534" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hist</span>(<span class="fu">rnorm</span>(input<span class="sc">$</span>n))</span>
+<span id="cb33-535"><a href="#cb33-535" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-536"><a href="#cb33-536" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-537"><a href="#cb33-537" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-538"><a href="#cb33-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-539"><a href="#cb33-539" aria-hidden="true" tabindex="-1"></a><span class="fu">### Progress Indicators</span></span>
+<span id="cb33-540"><a href="#cb33-540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-541"><a href="#cb33-541" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-542"><a href="#cb33-542" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-543"><a href="#cb33-543" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-544"><a href="#cb33-544" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>run, {</span>
+<span id="cb33-545"><a href="#cb33-545" aria-hidden="true" tabindex="-1"></a>    <span class="fu">withProgress</span>(<span class="at">message =</span> <span class="st">'Processing...'</span>, <span class="at">value =</span> <span class="dv">0</span>, {</span>
+<span id="cb33-546"><a href="#cb33-546" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb33-547"><a href="#cb33-547" aria-hidden="true" tabindex="-1"></a>        <span class="fu">incProgress</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>, <span class="at">detail =</span> <span class="fu">paste</span>(<span class="st">"Step"</span>, i))</span>
+<span id="cb33-548"><a href="#cb33-548" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb33-549"><a href="#cb33-549" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb33-550"><a href="#cb33-550" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb33-551"><a href="#cb33-551" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-552"><a href="#cb33-552" aria-hidden="true" tabindex="-1"></a>    <span class="fu">showNotification</span>(<span class="st">"Processing complete!"</span>, <span class="at">type =</span> <span class="st">"message"</span>)</span>
+<span id="cb33-553"><a href="#cb33-553" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-554"><a href="#cb33-554" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-555"><a href="#cb33-555" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-556"><a href="#cb33-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-557"><a href="#cb33-557" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modal Dialogs</span></span>
+<span id="cb33-558"><a href="#cb33-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-559"><a href="#cb33-559" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-560"><a href="#cb33-560" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-561"><a href="#cb33-561" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-562"><a href="#cb33-562" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>show_modal, {</span>
+<span id="cb33-563"><a href="#cb33-563" aria-hidden="true" tabindex="-1"></a>    <span class="fu">showModal</span>(<span class="fu">modalDialog</span>(</span>
+<span id="cb33-564"><a href="#cb33-564" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Important Message"</span>,</span>
+<span id="cb33-565"><a href="#cb33-565" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Are you sure you want to continue?"</span>,</span>
+<span id="cb33-566"><a href="#cb33-566" aria-hidden="true" tabindex="-1"></a>      <span class="at">footer =</span> <span class="fu">tagList</span>(</span>
+<span id="cb33-567"><a href="#cb33-567" aria-hidden="true" tabindex="-1"></a>        <span class="fu">modalButton</span>(<span class="st">"Cancel"</span>),</span>
+<span id="cb33-568"><a href="#cb33-568" aria-hidden="true" tabindex="-1"></a>        <span class="fu">actionButton</span>(<span class="st">"confirm"</span>, <span class="st">"Confirm"</span>)</span>
+<span id="cb33-569"><a href="#cb33-569" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb33-570"><a href="#cb33-570" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb33-571"><a href="#cb33-571" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-572"><a href="#cb33-572" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-573"><a href="#cb33-573" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>confirm, {</span>
+<span id="cb33-574"><a href="#cb33-574" aria-hidden="true" tabindex="-1"></a>    <span class="fu">removeModal</span>()</span>
+<span id="cb33-575"><a href="#cb33-575" aria-hidden="true" tabindex="-1"></a>    <span class="fu">showNotification</span>(<span class="st">"Confirmed!"</span>, <span class="at">type =</span> <span class="st">"message"</span>)</span>
+<span id="cb33-576"><a href="#cb33-576" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-577"><a href="#cb33-577" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-578"><a href="#cb33-578" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-579"><a href="#cb33-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-580"><a href="#cb33-580" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-581"><a href="#cb33-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-582"><a href="#cb33-582" aria-hidden="true" tabindex="-1"></a><span class="fu">## Shiny Modules</span></span>
+<span id="cb33-583"><a href="#cb33-583" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-584"><a href="#cb33-584" aria-hidden="true" tabindex="-1"></a><span class="fu">### Creating a Module</span></span>
+<span id="cb33-585"><a href="#cb33-585" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-586"><a href="#cb33-586" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-587"><a href="#cb33-587" aria-hidden="true" tabindex="-1"></a><span class="co"># Module UI function</span></span>
+<span id="cb33-588"><a href="#cb33-588" aria-hidden="true" tabindex="-1"></a>histogramUI <span class="ot">&lt;-</span> <span class="cf">function</span>(id) {</span>
+<span id="cb33-589"><a href="#cb33-589" aria-hidden="true" tabindex="-1"></a>  ns <span class="ot">&lt;-</span> <span class="fu">NS</span>(id)</span>
+<span id="cb33-590"><a href="#cb33-590" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-591"><a href="#cb33-591" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tagList</span>(</span>
+<span id="cb33-592"><a href="#cb33-592" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sliderInput</span>(<span class="fu">ns</span>(<span class="st">"bins"</span>), <span class="st">"Number of bins:"</span>, <span class="dv">1</span>, <span class="dv">50</span>, <span class="dv">30</span>),</span>
+<span id="cb33-593"><a href="#cb33-593" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plotOutput</span>(<span class="fu">ns</span>(<span class="st">"plot"</span>))</span>
+<span id="cb33-594"><a href="#cb33-594" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-595"><a href="#cb33-595" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-596"><a href="#cb33-596" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-597"><a href="#cb33-597" aria-hidden="true" tabindex="-1"></a><span class="co"># Module server function</span></span>
+<span id="cb33-598"><a href="#cb33-598" aria-hidden="true" tabindex="-1"></a>histogramServer <span class="ot">&lt;-</span> <span class="cf">function</span>(id, data) {</span>
+<span id="cb33-599"><a href="#cb33-599" aria-hidden="true" tabindex="-1"></a>  <span class="fu">moduleServer</span>(id, <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-600"><a href="#cb33-600" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb33-601"><a href="#cb33-601" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hist</span>(<span class="fu">data</span>(), <span class="at">breaks =</span> input<span class="sc">$</span>bins, <span class="at">main =</span> <span class="st">"Histogram"</span>)</span>
+<span id="cb33-602"><a href="#cb33-602" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb33-603"><a href="#cb33-603" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-604"><a href="#cb33-604" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-605"><a href="#cb33-605" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-606"><a href="#cb33-606" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-607"><a href="#cb33-607" aria-hidden="true" tabindex="-1"></a><span class="fu">### Using Modules</span></span>
+<span id="cb33-608"><a href="#cb33-608" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-609"><a href="#cb33-609" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-610"><a href="#cb33-610" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb33-611"><a href="#cb33-611" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"Modular App"</span>),</span>
+<span id="cb33-612"><a href="#cb33-612" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-613"><a href="#cb33-613" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabsetPanel</span>(</span>
+<span id="cb33-614"><a href="#cb33-614" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Dataset 1"</span>, <span class="fu">histogramUI</span>(<span class="st">"hist1"</span>)),</span>
+<span id="cb33-615"><a href="#cb33-615" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabPanel</span>(<span class="st">"Dataset 2"</span>, <span class="fu">histogramUI</span>(<span class="st">"hist2"</span>))</span>
+<span id="cb33-616"><a href="#cb33-616" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-617"><a href="#cb33-617" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-618"><a href="#cb33-618" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-619"><a href="#cb33-619" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-620"><a href="#cb33-620" aria-hidden="true" tabindex="-1"></a>  data1 <span class="ot">&lt;-</span> <span class="fu">reactive</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb33-621"><a href="#cb33-621" aria-hidden="true" tabindex="-1"></a>  data2 <span class="ot">&lt;-</span> <span class="fu">reactive</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">10</span>))</span>
+<span id="cb33-622"><a href="#cb33-622" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-623"><a href="#cb33-623" aria-hidden="true" tabindex="-1"></a>  <span class="fu">histogramServer</span>(<span class="st">"hist1"</span>, data1)</span>
+<span id="cb33-624"><a href="#cb33-624" aria-hidden="true" tabindex="-1"></a>  <span class="fu">histogramServer</span>(<span class="st">"hist2"</span>, data2)</span>
+<span id="cb33-625"><a href="#cb33-625" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-626"><a href="#cb33-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-627"><a href="#cb33-627" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span>
+<span id="cb33-628"><a href="#cb33-628" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-629"><a href="#cb33-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-630"><a href="#cb33-630" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-631"><a href="#cb33-631" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-632"><a href="#cb33-632" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deployment</span></span>
+<span id="cb33-633"><a href="#cb33-633" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-634"><a href="#cb33-634" aria-hidden="true" tabindex="-1"></a><span class="fu">### shinyapps.io</span></span>
+<span id="cb33-635"><a href="#cb33-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-636"><a href="#cb33-636" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-637"><a href="#cb33-637" aria-hidden="true" tabindex="-1"></a><span class="co"># Install rsconnect</span></span>
+<span id="cb33-638"><a href="#cb33-638" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"rsconnect"</span>)</span>
+<span id="cb33-639"><a href="#cb33-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-640"><a href="#cb33-640" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up account</span></span>
+<span id="cb33-641"><a href="#cb33-641" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsconnect)</span>
+<span id="cb33-642"><a href="#cb33-642" aria-hidden="true" tabindex="-1"></a><span class="fu">setAccountInfo</span>(</span>
+<span id="cb33-643"><a href="#cb33-643" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">"your-account-name"</span>,</span>
+<span id="cb33-644"><a href="#cb33-644" aria-hidden="true" tabindex="-1"></a>  <span class="at">token =</span> <span class="st">"your-token"</span>,</span>
+<span id="cb33-645"><a href="#cb33-645" aria-hidden="true" tabindex="-1"></a>  <span class="at">secret =</span> <span class="st">"your-secret"</span></span>
+<span id="cb33-646"><a href="#cb33-646" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-647"><a href="#cb33-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-648"><a href="#cb33-648" aria-hidden="true" tabindex="-1"></a><span class="co"># Deploy</span></span>
+<span id="cb33-649"><a href="#cb33-649" aria-hidden="true" tabindex="-1"></a>rsconnect<span class="sc">::</span><span class="fu">deployApp</span>(<span class="at">appDir =</span> <span class="st">"path/to/app"</span>)</span>
+<span id="cb33-650"><a href="#cb33-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-651"><a href="#cb33-651" aria-hidden="true" tabindex="-1"></a><span class="co"># Update app</span></span>
+<span id="cb33-652"><a href="#cb33-652" aria-hidden="true" tabindex="-1"></a>rsconnect<span class="sc">::</span><span class="fu">deployApp</span>(<span class="at">appDir =</span> <span class="st">"path/to/app"</span>, <span class="at">forceUpdate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-653"><a href="#cb33-653" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-654"><a href="#cb33-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-655"><a href="#cb33-655" aria-hidden="true" tabindex="-1"></a><span class="fu">### Shiny Server (Self-hosted)</span></span>
+<span id="cb33-656"><a href="#cb33-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-657"><a href="#cb33-657" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb33-658"><a href="#cb33-658" aria-hidden="true" tabindex="-1"></a><span class="co"># Install on Ubuntu</span></span>
+<span id="cb33-659"><a href="#cb33-659" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install gdebi-core</span>
+<span id="cb33-660"><a href="#cb33-660" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://download3.rstudio.org/ubuntu-18.04/x86_64/shiny-server-1.5.18.987-amd64.deb</span>
+<span id="cb33-661"><a href="#cb33-661" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> gdebi shiny-server-1.5.18.987-amd64.deb</span>
+<span id="cb33-662"><a href="#cb33-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-663"><a href="#cb33-663" aria-hidden="true" tabindex="-1"></a><span class="co"># App location</span></span>
+<span id="cb33-664"><a href="#cb33-664" aria-hidden="true" tabindex="-1"></a><span class="ex">/srv/shiny-server/</span></span>
+<span id="cb33-665"><a href="#cb33-665" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-666"><a href="#cb33-666" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuration</span></span>
+<span id="cb33-667"><a href="#cb33-667" aria-hidden="true" tabindex="-1"></a><span class="ex">/etc/shiny-server/shiny-server.conf</span></span>
+<span id="cb33-668"><a href="#cb33-668" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-669"><a href="#cb33-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-670"><a href="#cb33-670" aria-hidden="true" tabindex="-1"></a><span class="fu">### Docker</span></span>
+<span id="cb33-671"><a href="#cb33-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-672"><a href="#cb33-672" aria-hidden="true" tabindex="-1"></a><span class="in">```dockerfile</span></span>
+<span id="cb33-673"><a href="#cb33-673" aria-hidden="true" tabindex="-1"></a><span class="in"># Dockerfile</span></span>
+<span id="cb33-674"><a href="#cb33-674" aria-hidden="true" tabindex="-1"></a><span class="in">FROM rocker/shiny:latest</span></span>
+<span id="cb33-675"><a href="#cb33-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-676"><a href="#cb33-676" aria-hidden="true" tabindex="-1"></a><span class="in"># Install R packages</span></span>
+<span id="cb33-677"><a href="#cb33-677" aria-hidden="true" tabindex="-1"></a><span class="in">RUN R -e "install.packages(c('shiny', 'tidyverse', 'plotly'))"</span></span>
+<span id="cb33-678"><a href="#cb33-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-679"><a href="#cb33-679" aria-hidden="true" tabindex="-1"></a><span class="in"># Copy app files</span></span>
+<span id="cb33-680"><a href="#cb33-680" aria-hidden="true" tabindex="-1"></a><span class="in">COPY app.R /srv/shiny-server/</span></span>
+<span id="cb33-681"><a href="#cb33-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-682"><a href="#cb33-682" aria-hidden="true" tabindex="-1"></a><span class="in"># Expose port</span></span>
+<span id="cb33-683"><a href="#cb33-683" aria-hidden="true" tabindex="-1"></a><span class="in">EXPOSE 3838</span></span>
+<span id="cb33-684"><a href="#cb33-684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-685"><a href="#cb33-685" aria-hidden="true" tabindex="-1"></a><span class="in"># Run app</span></span>
+<span id="cb33-686"><a href="#cb33-686" aria-hidden="true" tabindex="-1"></a><span class="in">CMD ["/usr/bin/shiny-server"]</span></span>
+<span id="cb33-687"><a href="#cb33-687" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-688"><a href="#cb33-688" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-689"><a href="#cb33-689" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb33-690"><a href="#cb33-690" aria-hidden="true" tabindex="-1"></a><span class="co"># Build and run</span></span>
+<span id="cb33-691"><a href="#cb33-691" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-shiny-app .</span>
+<span id="cb33-692"><a href="#cb33-692" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 3838:3838 my-shiny-app</span>
+<span id="cb33-693"><a href="#cb33-693" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-694"><a href="#cb33-694" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-695"><a href="#cb33-695" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-696"><a href="#cb33-696" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-697"><a href="#cb33-697" aria-hidden="true" tabindex="-1"></a><span class="fu">## Best Practices</span></span>
+<span id="cb33-698"><a href="#cb33-698" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-699"><a href="#cb33-699" aria-hidden="true" tabindex="-1"></a><span class="fu">### Performance Optimization</span></span>
+<span id="cb33-700"><a href="#cb33-700" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-701"><a href="#cb33-701" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-702"><a href="#cb33-702" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Use reactive expressions for expensive computations</span></span>
+<span id="cb33-703"><a href="#cb33-703" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb33-704"><a href="#cb33-704" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Expensive operation</span></span>
+<span id="cb33-705"><a href="#cb33-705" aria-hidden="true" tabindex="-1"></a>  large_dataset <span class="sc">%&gt;%</span> <span class="fu">filter</span>(category <span class="sc">==</span> input<span class="sc">$</span>category)</span>
+<span id="cb33-706"><a href="#cb33-706" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-707"><a href="#cb33-707" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-708"><a href="#cb33-708" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Cache results</span></span>
+<span id="cb33-709"><a href="#cb33-709" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(memoise)</span>
+<span id="cb33-710"><a href="#cb33-710" aria-hidden="true" tabindex="-1"></a>expensive_function <span class="ot">&lt;-</span> <span class="fu">memoise</span>(<span class="cf">function</span>(x) {</span>
+<span id="cb33-711"><a href="#cb33-711" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">2</span>)  <span class="co"># Simulate expensive operation</span></span>
+<span id="cb33-712"><a href="#cb33-712" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb33-713"><a href="#cb33-713" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-714"><a href="#cb33-714" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-715"><a href="#cb33-715" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Use async for long-running tasks</span></span>
+<span id="cb33-716"><a href="#cb33-716" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(promises)</span>
+<span id="cb33-717"><a href="#cb33-717" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb33-718"><a href="#cb33-718" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb33-719"><a href="#cb33-719" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-720"><a href="#cb33-720" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>result <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb33-721"><a href="#cb33-721" aria-hidden="true" tabindex="-1"></a>  <span class="fu">future</span>({</span>
+<span id="cb33-722"><a href="#cb33-722" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Long-running computation</span></span>
+<span id="cb33-723"><a href="#cb33-723" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slow_function</span>()</span>
+<span id="cb33-724"><a href="#cb33-724" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%...&gt;%</span> {</span>
+<span id="cb33-725"><a href="#cb33-725" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">"Result:"</span>, .)</span>
+<span id="cb33-726"><a href="#cb33-726" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-727"><a href="#cb33-727" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-728"><a href="#cb33-728" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-729"><a href="#cb33-729" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Limit reactive updates</span></span>
+<span id="cb33-730"><a href="#cb33-730" aria-hidden="true" tabindex="-1"></a><span class="fu">debounce</span>(<span class="fu">reactive</span>(input<span class="sc">$</span>text), <span class="dv">1000</span>)</span>
+<span id="cb33-731"><a href="#cb33-731" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-732"><a href="#cb33-732" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-733"><a href="#cb33-733" aria-hidden="true" tabindex="-1"></a><span class="fu">### Code Organization</span></span>
+<span id="cb33-734"><a href="#cb33-734" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-735"><a href="#cb33-735" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-736"><a href="#cb33-736" aria-hidden="true" tabindex="-1"></a><span class="co"># Project structure</span></span>
+<span id="cb33-737"><a href="#cb33-737" aria-hidden="true" tabindex="-1"></a><span class="co"># my_app/</span></span>
+<span id="cb33-738"><a href="#cb33-738" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── app.R (or ui.R + server.R)</span></span>
+<span id="cb33-739"><a href="#cb33-739" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── R/</span></span>
+<span id="cb33-740"><a href="#cb33-740" aria-hidden="true" tabindex="-1"></a><span class="co"># │   ├── modules.R</span></span>
+<span id="cb33-741"><a href="#cb33-741" aria-hidden="true" tabindex="-1"></a><span class="co"># │   ├── utils.R</span></span>
+<span id="cb33-742"><a href="#cb33-742" aria-hidden="true" tabindex="-1"></a><span class="co"># │   └── data_processing.R</span></span>
+<span id="cb33-743"><a href="#cb33-743" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── data/</span></span>
+<span id="cb33-744"><a href="#cb33-744" aria-hidden="true" tabindex="-1"></a><span class="co"># │   └── dataset.csv</span></span>
+<span id="cb33-745"><a href="#cb33-745" aria-hidden="true" tabindex="-1"></a><span class="co"># ├── www/</span></span>
+<span id="cb33-746"><a href="#cb33-746" aria-hidden="true" tabindex="-1"></a><span class="co"># │   ├── styles.css</span></span>
+<span id="cb33-747"><a href="#cb33-747" aria-hidden="true" tabindex="-1"></a><span class="co"># │   └── logo.png</span></span>
+<span id="cb33-748"><a href="#cb33-748" aria-hidden="true" tabindex="-1"></a><span class="co"># └── README.md</span></span>
+<span id="cb33-749"><a href="#cb33-749" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-750"><a href="#cb33-750" aria-hidden="true" tabindex="-1"></a><span class="co"># Source helper functions</span></span>
+<span id="cb33-751"><a href="#cb33-751" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/utils.R"</span>)</span>
+<span id="cb33-752"><a href="#cb33-752" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/modules.R"</span>)</span>
+<span id="cb33-753"><a href="#cb33-753" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-754"><a href="#cb33-754" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-755"><a href="#cb33-755" aria-hidden="true" tabindex="-1"></a><span class="fu">### Security</span></span>
+<span id="cb33-756"><a href="#cb33-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-757"><a href="#cb33-757" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-758"><a href="#cb33-758" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Validate user input</span></span>
+<span id="cb33-759"><a href="#cb33-759" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-760"><a href="#cb33-760" aria-hidden="true" tabindex="-1"></a>  safe_input <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb33-761"><a href="#cb33-761" aria-hidden="true" tabindex="-1"></a>    <span class="fu">validate</span>(<span class="fu">need</span>(<span class="fu">is.numeric</span>(input<span class="sc">$</span>value), <span class="st">"Must be numeric"</span>))</span>
+<span id="cb33-762"><a href="#cb33-762" aria-hidden="true" tabindex="-1"></a>    <span class="fu">validate</span>(<span class="fu">need</span>(input<span class="sc">$</span>value <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"Must be positive"</span>))</span>
+<span id="cb33-763"><a href="#cb33-763" aria-hidden="true" tabindex="-1"></a>    input<span class="sc">$</span>value</span>
+<span id="cb33-764"><a href="#cb33-764" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-765"><a href="#cb33-765" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-766"><a href="#cb33-766" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-767"><a href="#cb33-767" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Use environment variables for secrets</span></span>
+<span id="cb33-768"><a href="#cb33-768" aria-hidden="true" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">"API_KEY"</span>)</span>
+<span id="cb33-769"><a href="#cb33-769" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-770"><a href="#cb33-770" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Sanitize file uploads</span></span>
+<span id="cb33-771"><a href="#cb33-771" aria-hidden="true" tabindex="-1"></a><span class="fu">observeEvent</span>(input<span class="sc">$</span>file, {</span>
+<span id="cb33-772"><a href="#cb33-772" aria-hidden="true" tabindex="-1"></a>  <span class="fu">validate</span>(<span class="fu">need</span>(tools<span class="sc">::</span><span class="fu">file_ext</span>(input<span class="sc">$</span>file<span class="sc">$</span>name) <span class="sc">==</span> <span class="st">"csv"</span>, <span class="st">"Only CSV files"</span>))</span>
+<span id="cb33-773"><a href="#cb33-773" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-774"><a href="#cb33-774" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-775"><a href="#cb33-775" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Set session timeout</span></span>
+<span id="cb33-776"><a href="#cb33-776" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">shiny.maxRequestSize =</span> <span class="dv">30</span><span class="sc">*</span><span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>)  <span class="co"># 30 MB limit</span></span>
+<span id="cb33-777"><a href="#cb33-777" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-778"><a href="#cb33-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-779"><a href="#cb33-779" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-780"><a href="#cb33-780" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-781"><a href="#cb33-781" aria-hidden="true" tabindex="-1"></a><span class="fu">## Complete Example App</span></span>
+<span id="cb33-782"><a href="#cb33-782" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-783"><a href="#cb33-783" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb33-784"><a href="#cb33-784" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb33-785"><a href="#cb33-785" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb33-786"><a href="#cb33-786" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb33-787"><a href="#cb33-787" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb33-788"><a href="#cb33-788" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-789"><a href="#cb33-789" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">navbarPage</span>(</span>
+<span id="cb33-790"><a href="#cb33-790" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Data Explorer"</span>,</span>
+<span id="cb33-791"><a href="#cb33-791" aria-hidden="true" tabindex="-1"></a>  <span class="at">theme =</span> shinythemes<span class="sc">::</span><span class="fu">shinytheme</span>(<span class="st">"flatly"</span>),</span>
+<span id="cb33-792"><a href="#cb33-792" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-793"><a href="#cb33-793" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Data"</span>,</span>
+<span id="cb33-794"><a href="#cb33-794" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarLayout</span>(</span>
+<span id="cb33-795"><a href="#cb33-795" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sidebarPanel</span>(</span>
+<span id="cb33-796"><a href="#cb33-796" aria-hidden="true" tabindex="-1"></a>        <span class="fu">fileInput</span>(<span class="st">"file"</span>, <span class="st">"Upload CSV"</span>, <span class="at">accept =</span> <span class="st">".csv"</span>),</span>
+<span id="cb33-797"><a href="#cb33-797" aria-hidden="true" tabindex="-1"></a>        <span class="fu">hr</span>(),</span>
+<span id="cb33-798"><a href="#cb33-798" aria-hidden="true" tabindex="-1"></a>        <span class="fu">uiOutput</span>(<span class="st">"variable_selector"</span>)</span>
+<span id="cb33-799"><a href="#cb33-799" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb33-800"><a href="#cb33-800" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mainPanel</span>(</span>
+<span id="cb33-801"><a href="#cb33-801" aria-hidden="true" tabindex="-1"></a>        <span class="fu">dataTableOutput</span>(<span class="st">"data_table"</span>)</span>
+<span id="cb33-802"><a href="#cb33-802" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb33-803"><a href="#cb33-803" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-804"><a href="#cb33-804" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-805"><a href="#cb33-805" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-806"><a href="#cb33-806" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Visualize"</span>,</span>
+<span id="cb33-807"><a href="#cb33-807" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarLayout</span>(</span>
+<span id="cb33-808"><a href="#cb33-808" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sidebarPanel</span>(</span>
+<span id="cb33-809"><a href="#cb33-809" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectInput</span>(<span class="st">"x_var"</span>, <span class="st">"X Variable:"</span>, <span class="at">choices =</span> <span class="cn">NULL</span>),</span>
+<span id="cb33-810"><a href="#cb33-810" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectInput</span>(<span class="st">"y_var"</span>, <span class="st">"Y Variable:"</span>, <span class="at">choices =</span> <span class="cn">NULL</span>),</span>
+<span id="cb33-811"><a href="#cb33-811" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectInput</span>(<span class="st">"color_var"</span>, <span class="st">"Color by:"</span>, <span class="at">choices =</span> <span class="cn">NULL</span>)</span>
+<span id="cb33-812"><a href="#cb33-812" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb33-813"><a href="#cb33-813" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mainPanel</span>(</span>
+<span id="cb33-814"><a href="#cb33-814" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plotlyOutput</span>(<span class="st">"scatter_plot"</span>, <span class="at">height =</span> <span class="st">"600px"</span>)</span>
+<span id="cb33-815"><a href="#cb33-815" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb33-816"><a href="#cb33-816" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-817"><a href="#cb33-817" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb33-818"><a href="#cb33-818" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-819"><a href="#cb33-819" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Summary"</span>,</span>
+<span id="cb33-820"><a href="#cb33-820" aria-hidden="true" tabindex="-1"></a>    <span class="fu">verbatimTextOutput</span>(<span class="st">"summary"</span>)</span>
+<span id="cb33-821"><a href="#cb33-821" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-822"><a href="#cb33-822" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-823"><a href="#cb33-823" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-824"><a href="#cb33-824" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb33-825"><a href="#cb33-825" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-826"><a href="#cb33-826" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load data</span></span>
+<span id="cb33-827"><a href="#cb33-827" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb33-828"><a href="#cb33-828" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(input<span class="sc">$</span>file)</span>
+<span id="cb33-829"><a href="#cb33-829" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(input<span class="sc">$</span>file<span class="sc">$</span>datapath)</span>
+<span id="cb33-830"><a href="#cb33-830" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-831"><a href="#cb33-831" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-832"><a href="#cb33-832" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update variable selectors</span></span>
+<span id="cb33-833"><a href="#cb33-833" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observe</span>({</span>
+<span id="cb33-834"><a href="#cb33-834" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(<span class="fu">data</span>())</span>
+<span id="cb33-835"><a href="#cb33-835" aria-hidden="true" tabindex="-1"></a>    vars <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">data</span>())</span>
+<span id="cb33-836"><a href="#cb33-836" aria-hidden="true" tabindex="-1"></a>    numeric_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">select</span>(<span class="fu">data</span>(), <span class="fu">where</span>(is.numeric)))</span>
+<span id="cb33-837"><a href="#cb33-837" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-838"><a href="#cb33-838" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateSelectInput</span>(session, <span class="st">"x_var"</span>, <span class="at">choices =</span> numeric_vars)</span>
+<span id="cb33-839"><a href="#cb33-839" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateSelectInput</span>(session, <span class="st">"y_var"</span>, <span class="at">choices =</span> numeric_vars)</span>
+<span id="cb33-840"><a href="#cb33-840" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateSelectInput</span>(session, <span class="st">"color_var"</span>, <span class="at">choices =</span> vars)</span>
+<span id="cb33-841"><a href="#cb33-841" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-842"><a href="#cb33-842" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-843"><a href="#cb33-843" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Data table</span></span>
+<span id="cb33-844"><a href="#cb33-844" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>data_table <span class="ot">&lt;-</span> <span class="fu">renderDataTable</span>({</span>
+<span id="cb33-845"><a href="#cb33-845" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(<span class="fu">data</span>())</span>
+<span id="cb33-846"><a href="#cb33-846" aria-hidden="true" tabindex="-1"></a>    <span class="fu">datatable</span>(<span class="fu">data</span>(), <span class="at">filter =</span> <span class="st">'top'</span>, <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">25</span>))</span>
+<span id="cb33-847"><a href="#cb33-847" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-848"><a href="#cb33-848" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-849"><a href="#cb33-849" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scatter plot</span></span>
+<span id="cb33-850"><a href="#cb33-850" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>scatter_plot <span class="ot">&lt;-</span> <span class="fu">renderPlotly</span>({</span>
+<span id="cb33-851"><a href="#cb33-851" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(<span class="fu">data</span>(), input<span class="sc">$</span>x_var, input<span class="sc">$</span>y_var)</span>
+<span id="cb33-852"><a href="#cb33-852" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-853"><a href="#cb33-853" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">data</span>(), <span class="fu">aes_string</span>(<span class="at">x =</span> input<span class="sc">$</span>x_var, <span class="at">y =</span> input<span class="sc">$</span>y_var, </span>
+<span id="cb33-854"><a href="#cb33-854" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">color =</span> input<span class="sc">$</span>color_var)) <span class="sc">+</span></span>
+<span id="cb33-855"><a href="#cb33-855" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb33-856"><a href="#cb33-856" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb33-857"><a href="#cb33-857" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(input<span class="sc">$</span>y_var, <span class="st">"vs"</span>, input<span class="sc">$</span>x_var))</span>
+<span id="cb33-858"><a href="#cb33-858" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-859"><a href="#cb33-859" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplotly</span>(p)</span>
+<span id="cb33-860"><a href="#cb33-860" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-861"><a href="#cb33-861" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-862"><a href="#cb33-862" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summary</span></span>
+<span id="cb33-863"><a href="#cb33-863" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>summary <span class="ot">&lt;-</span> <span class="fu">renderPrint</span>({</span>
+<span id="cb33-864"><a href="#cb33-864" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(<span class="fu">data</span>())</span>
+<span id="cb33-865"><a href="#cb33-865" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(<span class="fu">data</span>())</span>
+<span id="cb33-866"><a href="#cb33-866" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-867"><a href="#cb33-867" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-868"><a href="#cb33-868" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-869"><a href="#cb33-869" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span>
+<span id="cb33-870"><a href="#cb33-870" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-871"><a href="#cb33-871" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-872"><a href="#cb33-872" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb33-873"><a href="#cb33-873" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-874"><a href="#cb33-874" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb33-875"><a href="#cb33-875" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-876"><a href="#cb33-876" aria-hidden="true" tabindex="-1"></a><span class="fu">### Skills Learned</span></span>
+<span id="cb33-877"><a href="#cb33-877" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-878"><a href="#cb33-878" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Shiny app structure (UI/Server)</span>
+<span id="cb33-879"><a href="#cb33-879" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Input and output widgets</span>
+<span id="cb33-880"><a href="#cb33-880" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Reactive programming</span>
+<span id="cb33-881"><a href="#cb33-881" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Layouts and themes</span>
+<span id="cb33-882"><a href="#cb33-882" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Interactive visualizations</span>
+<span id="cb33-883"><a href="#cb33-883" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Shiny modules for reusability</span>
+<span id="cb33-884"><a href="#cb33-884" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Deployment strategies</span>
+<span id="cb33-885"><a href="#cb33-885" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ Best practices and optimization</span>
+<span id="cb33-886"><a href="#cb33-886" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-887"><a href="#cb33-887" aria-hidden="true" tabindex="-1"></a><span class="fu">### Next Steps</span></span>
+<span id="cb33-888"><a href="#cb33-888" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-889"><a href="#cb33-889" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Build:** Create your own interactive dashboard</span>
+<span id="cb33-890"><a href="#cb33-890" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Explore:** shinydashboard, shinyWidgets, shinyjs packages</span>
+<span id="cb33-891"><a href="#cb33-891" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Deploy:** Share your app on shinyapps.io</span>
+<span id="cb33-892"><a href="#cb33-892" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Learn:** Move to <span class="in">`5_Modules_and_Functions.md`</span> for software engineering</span>
+<span id="cb33-893"><a href="#cb33-893" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-894"><a href="#cb33-894" aria-hidden="true" tabindex="-1"></a><span class="fu">### Resources</span></span>
+<span id="cb33-895"><a href="#cb33-895" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-896"><a href="#cb33-896" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Shiny Gallery</span><span class="co">](https://shiny.rstudio.com/gallery/)</span></span>
+<span id="cb33-897"><a href="#cb33-897" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Mastering Shiny Book</span><span class="co">](https://mastering-shiny.org/)</span></span>
+<span id="cb33-898"><a href="#cb33-898" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Shiny Cheat Sheet</span><span class="co">](https://shiny.rstudio.com/articles/cheatsheet.html)</span></span>
+<span id="cb33-899"><a href="#cb33-899" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-900"><a href="#cb33-900" aria-hidden="true" tabindex="-1"></a>**Continue to Modules &amp; Functions! 🚀**</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 
